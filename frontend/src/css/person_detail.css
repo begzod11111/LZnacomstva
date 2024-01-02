@@ -1,0 +1,169 @@
+.person-profile {
+    padding: 2vw 20% 0 20%;
+    display: flex;
+    width: 100%;
+    min-height: 70%;
+    max-height: 75%;
+    overflow: auto;
+    position: relative;
+}
+.person-profile::-webkit-scrollbar {
+    display: none;
+}
+.person-profile > a {
+    position: fixed;
+    width: 4vw;
+    height: 4vw;
+    flex-shrink: 0;
+    top: 50%;
+    font-size: 1.5vw;
+}
+.person-profile > a.right {
+    right: 15%;
+}
+.person-profile > a.left {
+    left: 15%;
+}
+.person-profile > a:first-child {
+    right: 15%;
+}
+.pagination-bt svg {
+    width: 30px;
+    height: 30px;
+    flex-shrink: 0;
+}
+.person-photo-ct {
+    height: 100%;
+    min-height: 4vw;
+    position: relative;
+    width: 25vw;
+    display: flex;
+    flex-wrap: wrap;
+}
+.person-photo-ct .main-bt {
+    position: absolute;
+    bottom: 10%;
+    left: 50%;
+    width: 4vw;
+    height: 4vw;
+    flex-shrink: 0;
+    transform: translate(-50%, -50%);
+}
+.person-photo-ct .bookmark {
+    font-size: 2vw;
+    position: absolute;
+    z-index: 99;
+    top: 4vh;
+    left: 2vw;
+    color: #FF4B55;
+}
+.person-photo-ct .main-bt > i {
+    font-size: 1.7vw;
+}
+.person-photo-ct .main-photo {
+    position: relative;
+    border-radius: 3vw;
+    width: 100%;
+    height: 90%;
+    flex-shrink: 0;
+    padding: 10px;
+}
+.person-photo-ct img {
+    border-radius: 1vw;
+    width: calc(25% - 8px);
+    height: 5vw;
+    flex-shrink: 0;
+    object-fit: cover;
+}
+.person-photo-ct img:not(:last-child, .main-photo) {
+    margin-right: 10px;
+}
+.person-questionnaire {
+    width: 33vw;
+    margin: 1vw 0 0 1vw;
+    height: 100%;
+}
+.person-questionnaire span:last-child {
+    color: #8B5D9A;
+    font-size: 1vw;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 150%; /* 21px */
+}
+.person-questionnaire span > .user-active {
+    height: 1vw;
+    width: 1vw;
+    right: 0;
+    filter: drop-shadow(0px 4px 20px #33E159);
+}
+.person-questionnaire div > span {
+    position: relative;
+    padding-right: 2vw;
+    color: #FFF;
+    font-size: 2vw;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 150%; /* 48px */
+}
+.person-questionnaire div > .main-bt {
+    font-size: 1vw;
+    margin-top: 1vw;
+    width: 15vw;
+    height: 2.5vw;
+}
+.person-questionnaire div:not(.about-me-ct) {
+}
+.person-questionnaire > p {
+    margin-top: 1.5vw;
+    color: #FFFDFD;
+    font-size: 1.2vw;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 150%; /* 27px */
+}
+.person-questionnaire ul .line-element {
+    z-index: 2;
+    margin: 1.5vw 0;
+    width: 100%;
+    position: relative;
+    color: #FFFDFD;
+    font-size: 1vw;
+    font-style: normal;
+    font-weight: 200;
+    line-height: 150%; /* 24px */
+}
+.person-questionnaire div > button {
+    width: 250px;
+}
+.person-questionnaire ul {
+    margin-top: 10px;
+}
+.person-questionnaire ul li span {
+    z-index: 3;
+    padding: 0 5px;
+    background: #230e2b;
+
+}
+.person-questionnaire ul li span:last-child {
+    right: 0;
+    font-size: 1vw;
+    position: absolute
+}
+.line-element::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background-image: repeating-linear-gradient(to right, #4A2956, #4A2956 7px, transparent 7px, transparent 15px);
+}
+.about-me-ct {
+    padding: 10px;
+    color: #FFFDFD;
+    font-size: 1vw;
+    font-style: normal;
+    font-weight: 300;
+    line-height: 150%; /* 24px */
+}

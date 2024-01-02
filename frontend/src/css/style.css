@@ -1,0 +1,561 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@500&display=swap');
+@import "reset.css";
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@300;500&display=swap');
+/* ------------------------------------ Main style ---------------------------------------*/
+
+.main-container {
+    font-family: 'Rubik', sans-serif;
+    width: 100%;
+    height: 100vh;
+    background: #230e2b;
+    position: relative;
+}
+
+.main-link-bt {
+    display: flex;
+    flex-shrink: 0;
+    border-radius: 500px;
+    align-items: center;
+    border: .2vw solid  #EE0979;
+    justify-content: center;
+    color: #FFFFFF;
+    font-size: 2vh;
+    font-style: normal;
+    font-weight: 400;
+}
+.banner_1 {
+    position: absolute;
+    z-index: 1;
+    height: 100%;
+    top: 0;
+    width: 20%;
+    filter: drop-shadow(0px 20px 30px rgba(179, 34, 31, 0.20));
+}
+.banner_2 {
+    position: absolute;
+    z-index: 1;
+    right: 0;
+    height: 90%;
+    top: 10%;
+    width: 20%;
+    filter: drop-shadow(0px 20px 30px rgba(179, 34, 31, 0.20));
+}
+.main-input-text {
+    padding: 0 1vw;
+    display: flex;
+    border-radius: 500px;
+    background: #42204E no-repeat;
+    flex-shrink: 0;
+    align-items: center;
+}
+
+.main-input-text i {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3vh;
+    color: #8B5D9A;
+    padding: 5px 10px 5px 5px;
+}
+.main-input-text input {
+    color: #8B5D9A;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 150%; /* 24px */
+    float: right;
+    height: 100%;
+    width: 100%;
+    font-size: 1vw;
+}
+
+.main-input-text input::placeholder {
+    color: #8B5D9A;
+    font-size: 1vw;
+    font-weight: 400;
+}
+.main-bt {
+    position: relative;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9;
+    border-radius: 500px;
+    color: #FFF;
+    font-size: 2vh;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 150%; /* 24px */
+    background: linear-gradient(90deg, #EE0979 0%, #FF6A00 100%);
+    box-shadow: 0 20px 30px 0 rgba(179, 34, 31, 0.20);
+    transition: background-color 100ms ease;
+}
+
+.main-bt::before {
+    content: '';
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    border-radius: 500px;
+    z-index: -1;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    transition: opacity .7s ease;
+    background: linear-gradient(90deg, #FFC700 0%, #FF005C 100%);
+    box-shadow: 0 20px 30px 0 rgba(179, 34, 31, 0.20);
+    opacity: 0;
+}
+.main-bt:hover::before {
+    opacity: 1;
+}
+.main-bt:active {
+    background: #F43048;
+    box-shadow: 0 20px 30px 0 rgba(179, 34, 31, 0.20);
+}
+.main-data-input {
+    font-size: 2vh;
+    color: #8B5D9A;
+    position: relative;
+    align-items: center;
+    display: flex;
+    width: 100%;
+    height: 15%;
+}
+.main-data-input input {
+    padding: 10px;
+    height: 100%;
+    width: calc(30% - 10px);
+    border-radius: 500px;
+    text-align: center;
+    background: #42204E;
+    color: #8B5D9A;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 150%; /* 24px */
+}
+.main-data-input select {
+    padding: 0 10%;
+    height: 100%;
+    width: 40%;
+    margin: 0 10px;
+    border-radius: 500px;
+    background: #42204E;
+    -webkit-appearance: none;
+    text-align: left;
+    appearance: none;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 150%; /* 24px */
+}
+.main-data-input i {
+    font-size: 2.5vh;
+    position: absolute;
+    right: 35%;
+    pointer-events: none;
+}
+.male-female-ct {
+    margin-bottom: 10px;
+    align-items: center;
+    display: flex;
+    width: 100%;
+    height: 15%;
+}
+.main-container .male-female-ct label {
+    z-index: 1;
+    margin: 0;
+    display: flex;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: calc(50% - 5px);
+    border-radius: 500px;
+}
+.male-checkbox::before {
+    border: 2px solid #0575E6;
+}
+.female-checkbox::before {
+    border: 1px solid #EC008C;
+}
+.male-female-ct input {appearance: none;}
+.male-female-ct label:last-child {margin-left: 10px;}
+.male-female-ct label::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: -1;
+    height: 100%;
+    width: 100%;
+    border-radius: 500px;
+    box-shadow: 0 20px 30px 0 rgba(179, 34, 31, 0.10);
+}
+
+.male-female-ct #male-checkbox:checked + .male-checkbox:before {
+    border: none;
+    background: linear-gradient(90deg, #0575E6 0%, #021B79 100%);
+}
+.male-female-ct #female-checkbox:checked + .female-checkbox:before {
+    border: none;
+    background: linear-gradient(90deg, #EC008C 0%, #FC6767 100%);
+}
+.ava-photo {
+    position: relative;
+    overflow: hidden;
+    height: 3vw;
+    width: 3vw;
+    border-radius: 50px;
+    border: 1px solid blueviolet;
+}
+.ava-photo img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+.icon-country {
+    position: relative;
+    height: 2vw;
+    width: 2.5vw;
+    border-radius: 10px;
+    overflow: hidden;
+}
+.icon-country img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+.user-active {
+    position: absolute;
+    z-index: 3;
+    top: 0;
+    right: -1.5vw;
+    height: .7vw;
+    width: .7vw;
+    border-radius: 20px;
+    background: #33E159;
+}
+    /* --------------------------------------top bar--------------------------------------------*/
+.dating-location {
+    padding: 10px;
+    display: flex;
+    font-size: 1vw;
+    align-items: center;
+    justify-content: center;
+}
+.dating-location span {
+    font-family: 'Rubik', sans-serif;
+    color: #FFFFFF;
+    padding-right: 10px;
+}
+
+.dating-location select {
+    background: transparent;
+    color: #FFFFFF;
+}
+
+.flag-countries {
+    width: 26px;
+    height: 100%;
+}
+/*------------------------------------------------ Header ----------------------------------------------*/
+header {
+    z-index: 2;
+    position: relative;
+    background: transparent;
+    display: flex;
+    width: 100%;
+    height: 10%;
+    padding: 0 15%;
+    align-items: center;
+}
+.main-header {
+    background: #2D1436;
+}
+.main-header .user-header-ct {
+    position: static;
+    align-items: center;
+    margin-left: 2vw;
+    display: flex;
+}
+.main-header .icons-header {
+    position: relative;
+    width: 7%;
+    display: flex;
+    align-items: center;
+}
+.icons-header button {
+    padding: .5vw 0;
+    width: 50%;
+    font-size: 1.5vw;
+    color: #925FA4;
+}
+.icons-header button:last-child {
+    padding-right: 1%;
+}
+.main-header .icons-header > span {
+    pointer-events: none;
+    color: #FFF;
+    padding: 4% 6%;
+    text-align: center;
+    font-size: .6vw;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 150%; /* 15px */
+    flex-shrink: 0;
+    border-radius: 20px;
+    background: linear-gradient(90deg, #EE0979 0%, #FF6A00 100%);
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+.icons-header > img {
+    height: 24px;
+}
+.icons-header > img:not(:last-child) {
+    margin-right: 20px;
+}
+.main-header .user-header-ct span {
+    margin-left: 10px;
+    color: #FFF;
+    font-size: 1vw;
+    font-style: normal;
+    font-weight: 300;
+    line-height: 150%; /* 24px */
+}
+.nav-bar-header .active-link::before {
+    content: '';
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(90deg, #EE0979 0%, #FF6A00 100%);
+    position: absolute;
+    bottom: 0;
+}
+.nav-bar-header .active-link {
+    color: #FE6703;
+}
+.main-header select {
+    appearance: none;
+    margin: 0 2vw 0 1vw;
+    color: #FFF;
+    font-size: 1vw;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 150%; /* 24px */
+}
+.nav-bar-header {
+    font-size: 1vw;
+    padding: 0 3vw;
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+.nav-bar-header > a {
+    color: #FFF;
+    position: relative;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 150%; /* 24px */
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.nav-bar-header > a:hover:before {
+    content: '';
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(90deg, #EE0979 0%, #FF6A00 100%);
+    position: absolute;
+    bottom: 0;
+}
+.nav-bar-header > a:hover {
+    color: #FE6703;
+}
+.nav-bar-header > a:not(:last-child) {
+    margin-right: 3vw;
+}
+header .logo {
+    margin: 0 20px;
+    background: transparent;
+    height: 100%;
+    width: 2.5vw;
+}
+.site-name {
+    margin-right: 1vw;
+    color: #FFF;
+    font-size: 2.5vh;
+    font-family: 'Rubik', sans-serif;
+}
+
+.span-h2 {
+    position: absolute;
+    right: calc(12% + 15%);
+    color: #FFF;
+    font-family: 'Rubik', sans-serif;
+    font-size: 2vh;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 150%; /* 24px */
+}
+
+header > .registered {
+    position: absolute;
+    right: 15%;
+    height: 70%;
+    width: 10%;
+}
+
+/* ------------------------------------------- sing-in-ct ------------------------------------------------*/
+
+.center-form-ct {
+    position: absolute;
+    top: 55%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 40%;
+    height: 50%;
+}
+
+.center-form-ct h1 {
+    width: 100%;
+    color: #FFF;
+    text-align: center;
+    font-size: 2.5vw;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 150%; /* 90px */
+    font-family: 'Rubik', sans-serif;
+}
+
+.center-form-ct p {
+    margin-top: 10px;
+    width: 100%;
+    color: #FFF;
+    text-align: center;
+    font-family: 'Rubik', sans-serif;
+    font-size: .8vw;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 150%; /* 24px */
+}
+
+.center-form-ct form {
+    margin: 10px auto 10px auto;
+    width: 60%;
+    height: 60%;
+}
+.center-form-ct form .main-input-text {
+    width: 100%;
+    height: 23%;
+}
+.center-form-ct form .main-bt {
+    width: 100%;
+    height: 23%;
+}
+.center-form-ct form label {
+    margin-bottom: 10px;
+}
+.change-password {
+    display: block;
+    margin: 10px auto 0 auto;
+    color:  #925FA4;
+    text-align: center;
+    font-size: 2vh;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 150%; /* 21px */
+}
+
+/*--------------------------------------------- footer ---------------------------------------------*/
+footer {
+    bottom: 0;
+    left: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    transform: translate(-50%, -50%);
+    width: 75%;
+    font-size: .7vw;
+}
+.nav-footer a {
+    color: #EEE;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 150%; /* 21px */
+}
+
+.nav-footer a:not(:last-child){
+    margin-right: 20px;
+}
+
+.margin-l-footer {
+    margin-left: 60px;
+    color: #EEE;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 150%; /* 21px */
+}
+
+/*-------------------------------------------------- a curtain ---------------------------------------------------*/
+
+.a-curtain {
+    position: absolute;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    width: 100%;
+    background: rgba(29, 11, 35, 0.85);
+    backdrop-filter: blur(2px);
+    transition: visibility, opacity ease .5s;
+
+}
+
+.a-curtain form {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    position: relative;
+    border-radius: 50px;
+    background: #1C0A22;
+    width: 40%;
+    height: 35%;
+    flex-shrink: 0;
+}
+.a-curtain form h2 {
+    color: #FFF;
+    text-align: center;
+    font-size: 3.5vh;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 150%; /* 48px */
+}
+.a-curtain form span {
+    margin-top: 10px;
+    color: #6E447B;
+    text-align: center;
+    font-size: 2vh;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 150%; /* 24px */
+}
+.a-curtain form .main-bt {
+    width: 50%;
+    height: 20%;
+}
+.a-curtain form .main-input-text {
+    width: 50%;
+    height: 20%;
+}
+.close {
+    opacity: 0;
+    visibility: hidden;
+}
+.a-curtain form button {margin-top: 10px}
+.a-curtain form label {margin-top: 10px}
