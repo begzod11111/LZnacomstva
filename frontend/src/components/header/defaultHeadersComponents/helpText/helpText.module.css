@@ -1,0 +1,10 @@
+.helpText {
+    position: absolute;
+    right: calc(12% + 15%);
+    color: #FFF;
+    font-family: 'Rubik', sans-serif;
+    font-size: 2vh;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 150%; /* 24px */
+}

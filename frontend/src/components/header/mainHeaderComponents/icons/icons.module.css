@@ -1,0 +1,41 @@
+.iconsHeader {
+    margin: 0 1%;
+    position: relative;
+    width: 8%;
+    display: flex;
+}
+.iconsHeader button {
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    padding: .5vw 0;
+    margin: 0 .5vw;
+    width: 50%;
+    font-size: 1.8vw;
+    color: #925FA4;
+}
+.iconsHeader button:last-child {
+    padding-right: 1%;
+}
+.iconsHeader > span {
+    pointer-events: none;
+    color: #FFF;
+    padding: .3vw .5vw;
+    text-align: center;
+    font-size: .6vw;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 150%; /* 15px */
+    flex-shrink: 0;
+    border-radius: 10vw;
+    background: linear-gradient(90deg, #EE0979 0%, #FF6A00 100%);
+    position: absolute;
+    top: 0;
+    left: 3.6vw;
+}
+.iconsHeader > img {
+    height: 24px;
+}
+.iconsHeader > img:not(:last-child) {
+    margin-right: 20px;
+}

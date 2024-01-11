@@ -1,0 +1,9 @@
+.countryList {
+    appearance: none;
+    margin-right: 1vw;
+    color: #FFF;
+    font-size: 1vw;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 150%; /* 24px */
+}

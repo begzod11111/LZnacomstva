@@ -41,7 +41,7 @@
 .people-list li:not(:last-child) {
     margin-right: 20px;
 }
-.people-list li .main-bt {
+.people-list li .mainBt {
     position: absolute;
     bottom: 0;
     height: 15%;

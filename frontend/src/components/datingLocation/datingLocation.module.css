@@ -1,0 +1,23 @@
+.datingLocation {
+    padding: 10px;
+    display: flex;
+    font-size: 1vw;
+    align-items: center;
+    justify-content: center;
+}
+.datingLocation span {
+    font-family: 'Rubik', sans-serif;
+    color: #FFFFFF;
+    padding-right: 10px;
+}
+
+.datingLocation select {
+    background: transparent;
+    color: #FFFFFF;
+    z-index: 3;
+}
+
+.flagCountries {
+    width: 26px;
+    height: 100%;
+}

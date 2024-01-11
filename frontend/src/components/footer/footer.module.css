@@ -1,0 +1,29 @@
+footer {
+    bottom: 0;
+    left: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: absolute;
+    transform: translate(-50%, -50%);
+    width: 50%;
+    font-size: .7vw;
+    color: #EEE;
+    z-index: 3;
+}
+
+footer .margin-l-footer {
+    margin-left: 60px;
+    color: #EEE;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 150%; /* 21px */
+}
+
+footer a.margin-l-footer {
+        margin-left: 60px;
+    color: #EEE;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 150%; /* 21px */
+}

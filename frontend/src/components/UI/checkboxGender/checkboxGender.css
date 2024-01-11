@@ -1,0 +1,55 @@
+.genderCheckboxCt {
+    margin-bottom: 10px;
+    align-items: center;
+    display: flex;
+    width: 100%;
+    height: 3vw;
+}
+.genderCheckboxCt label {
+    z-index: 1;
+    margin: 0;
+    display: flex;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: calc(50% - 5px);
+    border-radius: 500px;
+}
+.maleCheckbox::before {
+    border: 2px solid #0575E6;
+}
+.femaleCheckbox::before {
+    border: 1px solid #EC008C;
+}
+.genderCheckboxCt input {appearance: none;}
+.genderCheckboxCt label:last-child {margin-left: 10px;}
+.genderCheckboxCt label::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: -1;
+    height: 100%;
+    width: 100%;
+    border-radius: 500px;
+    box-shadow: 0 20px 30px 0 rgba(179, 34, 31, 0.10);
+}
+
+.genderCheckboxCt #male-checkbox:checked + .maleCheckbox:before {
+    border: none;
+    background: linear-gradient(90deg, #0575E6 0%, #021B79 100%);
+}
+.genderCheckboxCt #female-checkbox:checked + .femaleCheckbox:before {
+    border: none;
+    background: linear-gradient(90deg, #EC008C 0%, #FC6767 100%);
+}
+
+.male-female-ct #male-checkbox:checked + .maleCheckbox:before {
+    border: none;
+    background: linear-gradient(90deg, #0575E6 0%, #021B79 100%);
+}
+.male-female-ct #female-checkbox:checked + .femaleCheckbox:before {
+    border: none;
+    background: linear-gradient(90deg, #EC008C 0%, #FC6767 100%);
+}

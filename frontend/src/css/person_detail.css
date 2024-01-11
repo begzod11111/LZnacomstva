@@ -40,7 +40,7 @@
     display: flex;
     flex-wrap: wrap;
 }
-.person-photo-ct .main-bt {
+.person-photo-ct .mainBt {
     position: absolute;
     bottom: 10%;
     left: 50%;
@@ -57,7 +57,7 @@
     left: 2vw;
     color: #FF4B55;
 }
-.person-photo-ct .main-bt > i {
+.person-photo-ct .mainBt > i {
     font-size: 1.7vw;
 }
 .person-photo-ct .main-photo {
@@ -105,7 +105,7 @@
     font-weight: 500;
     line-height: 150%; /* 48px */
 }
-.person-questionnaire div > .main-bt {
+.person-questionnaire div > .mainBt {
     font-size: 1vw;
     margin-top: 1vw;
     width: 15vw;

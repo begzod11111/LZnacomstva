@@ -1,0 +1,15 @@
+.userAvaCt {
+    width: 12vw;
+    position: static;
+    align-items: center;
+    margin-left: 1.5vw;
+    display: flex;
+}
+.userAvaCt span {
+    margin-left: 10px;
+    color: #FFF;
+    font-size: 1vw;
+    font-style: normal;
+    font-weight: 300;
+    line-height: 150%; /* 24px */
+}

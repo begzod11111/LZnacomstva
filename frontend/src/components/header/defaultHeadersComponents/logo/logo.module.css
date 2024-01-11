@@ -1,0 +1,13 @@
+.logo {
+    position: static;
+    margin: 0 1vw;
+    background: transparent;
+    height: 100%;
+    width: 3vw;
+}
+
+.logo img {
+    height: 100%;
+    width: 100%;
+    background-size: cover;
+}

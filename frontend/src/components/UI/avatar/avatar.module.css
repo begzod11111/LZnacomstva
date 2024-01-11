@@ -1,0 +1,13 @@
+.userAvatar {
+    position: relative;
+    overflow: hidden;
+    height: 3vw;
+    width: 3vw;
+    border-radius: 50px;
+    border: 1px solid blueviolet;
+}
+.userAvatar img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
