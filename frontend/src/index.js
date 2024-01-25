@@ -3,12 +3,12 @@ import ReactDOM from 'react-dom/client';
 import './css/style.css';
 import SingIn from "./components/singIn/SingIn";
 import SingUp from "./components/singUp/SingUp";
-
+import QuestionnaireList from "./components/questionnairesList/QuestionnaireList";
 const root = ReactDOM.createRoot(document.getElementById('main-container'));
 
 
 root.render(
-    <SingIn/>
+    <QuestionnaireList/>
 );
 
 

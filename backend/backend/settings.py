@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 import os
 from pathlib import Path
 
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -26,7 +27,6 @@ SECRET_KEY = 'django-insecure-5lk3*ek(4z1l$nt8y455@ck+0yu$l&ag*x*os8tf*ylotjc9b6
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -43,8 +43,9 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'corsheaders',
     # Local
-    'questionnaire.apps.QuestionnaireConfig',
-    'api.apps.ApiConfig'
+    'accounts.apps.AccountsConfig',
+    'profiles.apps.ProfilesConfig',
+    'api.apps.ApiConfig',
 ]
 
 MIDDLEWARE = [
@@ -58,6 +59,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+AUTH_USER_MODEL = 'accounts.Account'
 
 ROOT_URLCONF = 'backend.urls'
 
@@ -98,17 +101,19 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 DJOSER = {
-    'PASSWORD_RESET_CONFIRM_URL': 'api/v1/users/reset_password_confirm/{uid}/{token}',
-    'USERNAME_RESET_CONFIRM_URL': 'api/v1/username/reset/confirm/{uid}/{token}',
+    'PASSWORD_RESET_CONFIRM_URL': 'auth/users/reset_password_confirm/{uid}/{token}',
+    'USERNAME_RESET_CONFIRM_URL': 'auth/username/reset/confirm/{uid}/{token}',
     'ACTIVATION_URL': '#/activate/{uid}/{token}',
     'SEND_ACTIVATION_EMAIL': True,
-    'SERIALIZERS': {},
+    'SERIALIZERS': {
+        'user_create': 'accounts.serializers.AccountRegisterSerializer',
+    },
     'LOGIN_FIELD': "email",
     'PASSWORD_RESET_CONFIRM_RETYPE': True,
 }
 
 AUTHENTICATION_BACKENDS = [
-    'questionnaire.authentication.EmailAuthBackend',
+    'accounts.authentication.EmailAuthBackend',
     'django.contrib.auth.backends.ModelBackend',
 ]
 

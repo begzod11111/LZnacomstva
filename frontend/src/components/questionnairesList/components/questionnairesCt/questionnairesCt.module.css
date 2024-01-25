@@ -1,0 +1,9 @@
+.peopleListCt {
+    overflow: auto;
+    margin: 0 auto;
+    width: 70%;
+    height: 75%;
+}
+.peopleListCt::-webkit-scrollbar {
+    display: none;
+}

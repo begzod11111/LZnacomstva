@@ -9,17 +9,38 @@ import FormCt from "../form/FormCt";
 import MainInput from "../UI/input/MainInput";
 import {MdEmail} from "react-icons/md";
 import {RiLockPasswordFill} from "react-icons/ri";
-import classes from './singUp.module.css'
 import MainBt from "../UI/button/mainBt";
-import ChangePasswordBt from "../UI/button/changePasswordBt";
 import Footer from "../footer/Footer";
-import React from "react";
+import React, {useState} from "react";
 import {FaUser} from "react-icons/fa";
 import DataTimeInput from "../UI/input/dataTimeInput";
 import CheckBoxsGender from "../UI/checkboxGender/checkboxGender";
+import axios from "axios";
 
 
 function SingUp() {
+    const [email, setEmail] = useState("")
+    const [password, setPassword] = useState('')
+    const [username, setUsername] = useState('')
+
+    function GetQuestionnaire(){
+        axios.post(
+            'http://127.0.0.1:8000/api/v1/auth/registration/',
+            {
+                "username": username,
+                "email": email,
+                "password": password,
+                "profile": {}
+            }
+        )
+        .then(function (response) {
+            console.log(response);
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+    }
+
     return (
         <>
             <Banners leftBanner={banner_1} rightBanner={banner_2}/>
@@ -29,17 +50,31 @@ function SingUp() {
                 <LinkBt>Регистрация</LinkBt>
             </HeaderCt>
             <FormCt
-                className={classes.centerFormCt}
                 hText='Создай новый аккаунт'
                 pText='Присоединяйся к сообществу из 518 млн человек!'
-
             >
-                <MainInput icon={<FaUser/>} placeholder='Ваше имя'/>
+                <MainInput
+                    icon={<FaUser/>}
+                    placeholder='Ваше имя'
+                    onChange={event => setUsername(event.target.value)}
+                />
                 <DataTimeInput/>
                 <CheckBoxsGender/>
-                <MainInput icon={<MdEmail/>} placeholder='Введите электронную почту'/>
-                <MainInput icon={<RiLockPasswordFill/>} placeholder='Введите пароль' type='password'/>
-                <MainBt type='button'>Создать аккаунт</MainBt>
+                <MainInput
+                    icon={<MdEmail/>}
+                    placeholder='Введите электронную почту'
+                    onChange={event => setEmail(event.target.value)}
+                />
+                <MainInput
+                    icon={<RiLockPasswordFill/>}
+                    placeholder='Введите пароль'
+                    type='password'
+                    onChange={event => setPassword(event.target.value)}
+                />
+                <MainBt
+                    onClick={GetQuestionnaire}
+                    type='button'
+                >Создать аккаунт</MainBt>
             </FormCt>
             <Footer/>
         </>

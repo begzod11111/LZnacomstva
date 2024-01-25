@@ -1,0 +1,9 @@
+.categoryName {
+    width: 100%;
+    margin: 2vh 0;
+    color: #FFF;
+    font-size: 1.5vw;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 150%; /* 42px */
+}

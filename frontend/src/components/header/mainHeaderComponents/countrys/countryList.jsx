@@ -3,12 +3,12 @@ import classes from './countryList.module.css'
 
 function CountryList() {
     return (
-        <label className={classes.countryList}>
+        <div className={classes.countryList}>
             <i className="ri-arrow-down-s-line"></i>
             <select>
                 <option>Россия</option>
             </select>
-        </label>
+        </div>
     )
 }
 

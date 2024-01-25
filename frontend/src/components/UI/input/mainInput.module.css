@@ -40,7 +40,7 @@
     position: relative;
     align-items: center;
     display: flex;
-    width: 100%;
+    width: 60%;
 }
 .dataTimeInputLabel input {
     padding: 10px;
