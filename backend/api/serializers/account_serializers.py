@@ -1,23 +1,32 @@
 from rest_framework import serializers
+from rest_framework.serializers import ModelSerializer
+
 from accounts.models import Account
 from api.models.gender import Gender
+from api.serializers.base_serializers import BaseDynamicSerializer
 from profiles.models import Profile
 from profiles.serializer import ProfileSerializer
-from api.serializers import base_serializers
 
 
 class ProfileRegisterSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Profile
-		fields = ('gender', 'date_of_birth')
+		fields = ('date_of_birth', )
+
+
+class GenderRegisterSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = Gender
+		fields = ('id', )
 
 
 class AccountRegisterSerializer(serializers.ModelSerializer):
 	profile = ProfileRegisterSerializer()
+	gender = GenderRegisterSerializer()
 
 	class Meta:
 		model = Account
-		fields = ('id', 'first_name', 'email', 'password', 'profile')
+		fields = ('id', 'first_name', 'email', 'password', 'profile', 'gender')
 		extra_kwargs = {
 			'password': {
 				'write_only': True
@@ -40,15 +49,23 @@ class AccountRegisterSerializer(serializers.ModelSerializer):
 			email=email,
 			password=validated_data['password']
 		)
-		user.profile.gender = validated_data['profile'].get('gender', Gender.objects.get(id=1))
+		gender_id = validated_data.get('gender').get('id', None)
+		if gender_id is not None:
+			gender = Gender.objects.get(id=gender_id)
+			user.gender = gender
+		else:
+			user.gender = Gender.objects.get(id=1)
 		user.profile.date_of_birth = validated_data['profile'].get('date_of_birth', None)
 		user.profile.save()
+		user.save()
 		return user
 
 
-class AccountSerializer(base_serializers.DynamicSerializer):
-	profile = ProfileSerializer(dynamic_fields=('age', 'gender', 'date_of_birth'))
+class AccountSerializer(BaseDynamicSerializer):
 
 	class Meta:
 		model = Account
 		fields = "__all__"
+		extra_kwargs = {'password': {
+			'write_only': True
+		}}

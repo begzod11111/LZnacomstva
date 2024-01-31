@@ -25,12 +25,13 @@ function SingUp() {
 
     function GetQuestionnaire(){
         axios.post(
-            'http://127.0.0.1:8000/api/v1/auth/registration/',
+            'http://127.0.0.1:8000/auth/users/',
             {
-                "username": username,
+                "first_name": username,
                 "email": email,
                 "password": password,
-                "profile": {}
+                "profile": {},
+                "gender": {}
             }
         )
         .then(function (response) {

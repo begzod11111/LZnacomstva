@@ -1,3 +1,4 @@
+from django.urls import reverse
 from slugify import slugify
 from django.db import models
 
@@ -14,4 +15,4 @@ class GoalMeeting(models.Model):
 		super().save(*args, **kwargs)
 
 	def get_absolute_url(self):
-		pass
+		return reverse('api:goal-meeting-detail', kwargs={'slug': self.slug})

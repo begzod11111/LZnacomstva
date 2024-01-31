@@ -1,7 +1,12 @@
+from collections import OrderedDict
+
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 from rest_framework import serializers
 from django.utils.translation import gettext_lazy as _
+from rest_framework.fields import SkipField
+from rest_framework.relations import PKOnlyObject
+from rest_framework.serializers import ModelSerializer
 
 
 class TokenObtainPairSerializer(serializers.Serializer):
@@ -42,57 +47,40 @@ class TokenObtainPairSerializer(serializers.Serializer):
 		return attrs
 
 
-class DynamicSerializer(serializers.ModelSerializer):
+class DynamicFieldsSerializer(serializers.Serializer):
 
-	def __init__(self, dynamic_fields=None, dynamic_relations=None, *args, **kwargs):
-		self.dynamic_fields = dynamic_fields
-		self.dynamic_relations = dynamic_relations
+	def __init__(self, *args, **kwargs):
+		self.dynamic_fields = kwargs.pop('dynamic_fields', None)
 		super().__init__(*args, **kwargs)
-		if self.dynamic_fields is None:
-			self.dynamic_fields = (field_name for field_name in self.fields.keys())
 
-	# if self.dynamic_relations is not None:
-	# 	for field_name, relation in self.dynamic_relations.items():
-	# 		if any(field_name == field for field in self.fields.keys()):
-	# 			self.fields[field_name] = relation
+	def get_fields(self):
+		fields = super().get_fields()
+		if self.dynamic_fields is not None:
+			new_fields = OrderedDict()
+			for field_name, fields_item in fields.items():
+				if field_name in self.dynamic_fields:
+					new_fields[field_name] = fields_item
+			fields.clear()
+			fields.update(new_fields)
 
-	@property
-	def _readable_fields(self):
-		for field_name, field in self.fields.items():
-			if not field.write_only and field_name in self.dynamic_fields:
-				yield field
+		return fields
 
-	# @staticmethod
-	# def get_attribute_field(instance, field_name, many=False):
-	# 	attr = None
-	# 	try:
-	# 		if many:
-	# 			attr = getattr(instance, field_name).all()
-	# 		else:
-	# 			attr = getattr(instance, field_name)
-	# 	except AttributeError:
-	# 		print(f'No field model {instance} {field_name}')
-	# 	return attr
 
-	# def add_fields(self, instance):
-	# 	data = {}
-	#
-	# 	if self.dynamic_relations is not None:
-	# 		for field_name, field_data in self.dynamic_relations.items():
-	# 			many = field_data.get('many', False)
-	# 			attr = self.get_attribute_field(
-	# 				instance,
-	# 				field_name,
-	# 				many=many
-	# 			)
-	# 			data[field_name] = field_data['serializer'](
-	# 				instance=attr,
-	# 				dynamic_fields=field_data.get('dynamic_fields', set()),
-	# 				many=many
-	# 			).data
-	# 	return data
+class DynamicRelationsSerializer(serializers.Serializer):
+	def __init__(self, *args, **kwargs):
+		self.dynamic_relations = kwargs.pop('dynamic_relations', None)
+		super().__init__(*args, **kwargs)
 
-	# def to_representation(self, instance):
-	# 	data = super().to_representation(instance)
-	# 	data.update(self.add_fields(instance))
-	# 	return data
+		if self.dynamic_relations is not None:
+			for field_name, field in self.dynamic_relations.items():
+				self.fields[field_name] = field
+
+
+class BaseDynamicSerializer(
+	DynamicRelationsSerializer,
+	DynamicFieldsSerializer, ModelSerializer):
+	"""
+	Base dynamic serializer class for models
+	"""
+	pass
+

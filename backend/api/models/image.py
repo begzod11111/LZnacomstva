@@ -32,7 +32,7 @@ class Image(models.Model):
 			return
 		elif not images_count:
 			self.is_main = True
-			super().save(*args, **kwargs)
+		super().save(*args, **kwargs)
 
 	def __str__(self):
 		return f'{self.user.email}- is_main{self.is_main}'

@@ -1,4 +1,6 @@
 from django.db import models
+from django.urls import reverse
+from django.utils.functional import cached_property
 from imagekit.models import ProcessedImageField
 from slugify import slugify
 
@@ -19,4 +21,4 @@ class Country(models.Model):
 		super().save(*args, **kwargs)
 
 	def get_absolute_url(self):
-		pass
+		return reverse('api:country-detail', kwargs={'slug': self.slug})
