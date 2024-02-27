@@ -1,27 +1,26 @@
 import MainBt from "../../../UI/button/mainBt";
 import classes from './questionnairesUL.module.css'
+import React from 'react'
+import {Link} from "react-router-dom";
 
 function QuestionnairesLItem(props) {
-    let questionnaire = props['questionnaire'];
-    let images = questionnaire.profile.images
-    let mainImageUrl;
-    let countryImageUrl;
-    if (images.length){
-        mainImageUrl = 'http://127.0.0.1:8000' + images[0]['image']
-        countryImageUrl = 'http://127.0.0.1:8000' + questionnaire.profile['country']['flag']
-    }
+    let account = props['account'];
+    const country = account['country']
+    const profile = account['profile']
+    const images = account['images'][0]
     return (
-        <li>
-            <img src={mainImageUrl} alt=''/>
+        <li key={account.id}>
+            <Link to={`/profile/${account['slug']}`}/>
+            <img src={images['image']} alt=''/>
             <div>
                 <span className="user-active"></span>
-                <h3>{questionnaire.username} {questionnaire.profile.age}</h3>
+                <h3>{account['last_name']} {profile['age']}</h3>
                 <div className="icon-country">
-                    <img src={countryImageUrl} alt=""/>
+                    <img src={country['flag']} alt=""/>
                 </div>
-                <span className="name-country">{questionnaire.profile['country']['name']}</span>
+                <span className={classes.nameCountry}>{country['name']}</span>
             </div>
-            <MainBt>Cvayp</MainBt>
+            <MainBt>Свайп</MainBt>
         </li>
     )
 }
@@ -30,8 +29,8 @@ function QuestionnairesLItem(props) {
 function QuestionnairesUL(props) {
     return (
         <ul className={classes.peopleList}>
-            {props['questionnaires'].map(item =>
-                <QuestionnairesLItem questionnaire={item} key={item.id}/>
+            {props['accounts'].map(item =>
+                <QuestionnairesLItem account={item}/>
             )}
         </ul>
     )

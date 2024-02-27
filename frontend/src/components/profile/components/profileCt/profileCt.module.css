@@ -1,0 +1,17 @@
+
+
+.profileCt {
+    color: #EEEEEE;
+    position: relative;
+    height: 75%;
+    overflow: auto;
+    width: 70%;
+    margin: 0 auto;
+    display: flex;
+}
+
+.profileCt::-webkit-scrollbar {
+    display: none;
+}
+
+

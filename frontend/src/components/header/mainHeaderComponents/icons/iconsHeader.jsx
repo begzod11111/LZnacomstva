@@ -6,7 +6,7 @@ import {IoMdNotifications, IoMdSearch} from "react-icons/io";
 function IconsHeader(props) {
     return (
         <div className={classes.iconsHeader}>
-            <span>{props.messages}</span>
+            {props.messages ? <span>{props.messages}</span> : ""}
             <button type="button"><IoMdSearch /></button>
             <button type="button"><IoMdNotifications /></button>
         </div>

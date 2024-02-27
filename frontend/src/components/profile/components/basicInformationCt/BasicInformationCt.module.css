@@ -1,0 +1,36 @@
+
+
+.basicInformationCt {
+    color: #EEEEEE;
+    font-family: 'Rubik', sans-serif;
+    width: 30vw;
+    display: flex;
+    flex-wrap: wrap;
+    position: relative;
+    margin: 8vh 3vh 0 3vh;
+}
+
+.basicInformationCt p {
+    margin-top: 2vh;
+    height: 40px;
+    width: 100%;
+}
+
+.basicInformationCt span {
+    width: 40%;
+    height: 3vw;
+    font-size: 10px;
+    display: flex;
+    align-items: center;
+    margin: .5vw 0;
+}
+
+.basicInformationCt label {
+    width: 60%;
+    margin: .5vw 0;
+}
+.basicInformationCt div {
+    width: 60%;
+    margin: .5vw 0;
+}
+

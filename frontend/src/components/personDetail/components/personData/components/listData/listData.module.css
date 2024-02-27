@@ -1,0 +1,35 @@
+.listData .lineElement {
+    z-index: 2;
+    margin: 1.5vw 0;
+    width: 100%;
+    position: relative;
+    color: #FFFDFD;
+    font-size: 1vw;
+    font-style: normal;
+    font-weight: 200;
+    line-height: 150%; /* 24px */
+}
+.listData {
+    margin-top: 10px;
+}
+.listData li span {
+    z-index: 3;
+    padding: 0 5px;
+    background: #230e2b;
+
+}
+.listData li span:last-child {
+    right: 0;
+    font-size: 1vw;
+    position: absolute
+}
+.lineElement::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background-image: repeating-linear-gradient(to right, #4A2956, #4A2956 7px, transparent 7px, transparent 15px);
+}

@@ -69,3 +69,7 @@ class AccountSerializer(BaseDynamicSerializer):
 		extra_kwargs = {'password': {
 			'write_only': True
 		}}
+
+	@staticmethod
+	def get_full_name(obj):
+		return obj.get_fullname

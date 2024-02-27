@@ -16,12 +16,15 @@ import {FaUser} from "react-icons/fa";
 import DataTimeInput from "../UI/input/dataTimeInput";
 import CheckBoxsGender from "../UI/checkboxGender/checkboxGender";
 import axios from "axios";
+import {redirect, useNavigate} from "react-router-dom";
+
 
 
 function SingUp() {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState('')
     const [username, setUsername] = useState('')
+    const navigate = useNavigate();
 
     function GetQuestionnaire(){
         axios.post(
@@ -35,7 +38,12 @@ function SingUp() {
             }
         )
         .then(function (response) {
-            console.log(response);
+            const status = response?.['status']
+            console.log(status)
+            if (status === 201){
+                navigate("/sing-in");
+            }
+            return null
         })
         .catch(function (error) {
             console.log(error);
@@ -47,8 +55,8 @@ function SingUp() {
             <Banners leftBanner={banner_1} rightBanner={banner_2}/>
             <DatingLocation/>
             <HeaderCt>
-                <HelpText>Впервые здесь?</HelpText>
-                <LinkBt>Регистрация</LinkBt>
+                <HelpText>У вас уже есть аккаунт?</HelpText>
+                <LinkBt href="/sing-in">Войти</LinkBt>
             </HeaderCt>
             <FormCt
                 hText='Создай новый аккаунт'

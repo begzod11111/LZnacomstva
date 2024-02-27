@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-5lk3*ek(4z1l$nt8y455@ck+0yu$l&ag*x*os8tf*ylotjc9b6
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
 # Application definition
 
@@ -99,6 +99,8 @@ REST_FRAMEWORK = {
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
 ]
+
+SCHEME = 'http'
 
 DJOSER = {
     'PASSWORD_RESET_CONFIRM_URL': 'auth/users/reset_password_confirm/{uid}/{token}',

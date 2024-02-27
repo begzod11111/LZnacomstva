@@ -74,3 +74,45 @@
     right: 35%;
     pointer-events: none;
 }
+.imageInputLabel {
+    position: relative;
+    border: 2px #925FA4 solid;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+.imageInputLabel .imageInputSVG {
+    height: 30%;
+    width: 30%;
+    color: #925FA4;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.imageInputLabel img {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    visibility: hidden;
+    opacity: 0;
+    z-index: -1;
+}
+.disActiveSVG {
+    display: none;
+}
+.imageInputLabel .imageActive {
+    opacity: 1;
+    visibility: visible;
+    z-index: 2;
+}
+.imageInputLabel input {
+    display: none;
+}
+.disActiveLabelB {
+    border: none;
+}

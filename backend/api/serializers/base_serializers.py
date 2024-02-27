@@ -1,11 +1,8 @@
 from collections import OrderedDict
-
-from django.contrib.auth import authenticate
+from backend import settings
 from django.contrib.auth.models import User
 from rest_framework import serializers
 from django.utils.translation import gettext_lazy as _
-from rest_framework.fields import SkipField
-from rest_framework.relations import PKOnlyObject
 from rest_framework.serializers import ModelSerializer
 
 
@@ -82,5 +79,8 @@ class BaseDynamicSerializer(
 	"""
 	Base dynamic serializer class for models
 	"""
-	pass
-
+	@staticmethod
+	def get_absolute_media_url(relative_path):
+		domain = settings.ALLOWED_HOSTS[0]
+		scheme = settings.SCHEME
+		return f'{scheme}://{domain}:8000/{relative_path}'

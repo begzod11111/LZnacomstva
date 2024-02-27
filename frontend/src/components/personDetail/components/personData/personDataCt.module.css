@@ -1,0 +1,52 @@
+.personDataCt {
+    width: 33vw;
+    margin: 1vw 0 0 1vw;
+    height: 100%;
+}
+.personDataCt span:last-child {
+    color: #8B5D9A;
+    font-size: .8vw;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 150%; /* 21px */
+}
+.personDataCt span > .personActive {
+    height: 1vw;
+    width: 1vw;
+    right: 0;
+    filter: drop-shadow(0px 4px 20px #33E159);
+}
+.personDataCt div > span {
+    position: relative;
+    padding-right: 2vw;
+    color: #FFF;
+    font-size: 2vw;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 150%; /* 48px */
+}
+.personDataCt div > .mainBt {
+    font-size: 1vw;
+    margin-top: 1vw;
+    width: 15vw;
+    height: 2.5vw;
+}
+.personDataCt > p {
+    margin-top: 1.5vw;
+    color: #FFFDFD;
+    font-size: 1.2vw;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 150%; /* 27px */
+}
+.personDataCt div > button {
+    width: 250px;
+}
+.aboutMeCt {
+    padding: 10px;
+    color: #FFFDFD;
+    font-size: 1vw;
+    font-style: normal;
+    font-weight: 300;
+    line-height: 150%; /* 24px */
+}

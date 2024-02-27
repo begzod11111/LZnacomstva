@@ -1,0 +1,30 @@
+.personProfile {
+    padding: 2vw 20% 0 20%;
+    display: flex;
+    width: 100%;
+    min-height: 70%;
+    max-height: 75%;
+    overflow: auto;
+    position: relative;
+}
+.personProfile::-webkit-scrollbar {
+    display: none;
+}
+.personProfile > a {
+    position: fixed;
+    width: 4vw;
+    height: 4vw;
+    flex-shrink: 0;
+    top: 50%;
+    font-size: 1.5vw;
+}
+.personProfile > a.rightLink {
+    right: 15%;
+}
+.personProfile > a.leftLink {
+    left: 15%;
+}
+.personProfile > a .icon {
+    font-size: 4.5vh;
+    font-weight: 400;
+}

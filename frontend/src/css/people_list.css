@@ -41,17 +41,5 @@
     font-weight: 500;
     line-height: 150%; /* 24px */
 }
-.peopleList li .name-country {
-    position: absolute;
-    bottom: 0;
-    left: 35%;
-    padding: 10px;
-    text-align: center;
-    color: #FFF;
-    float: right;
-    font-size: .8vw;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 150%; /* 18px */
-}
+
 

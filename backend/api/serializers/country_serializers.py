@@ -12,3 +12,9 @@ class CountrySerializer(BaseDynamicSerializer):
 	def get_model_absolute_url(obj):
 		return obj.get_absolute_url()
 
+	def to_representation(self, instance):
+		data = super().to_representation(instance)
+		if self.fields.get('flag', False) and instance.flag:
+			data['flag'] = self.get_absolute_media_url(instance.flag.url)
+			return data
+		return data

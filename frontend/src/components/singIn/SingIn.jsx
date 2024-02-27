@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import DatingLocation from "../datingLocation/DatingLocation";
 import HeaderCt from "../header/HeaderCt";
 import HelpText from "../header/defaultHeadersComponents/helpText/HelpText";
@@ -15,11 +15,19 @@ import ChangePasswordBt from "../UI/button/changePasswordBt";
 import Footer from "../footer/Footer";
 import ChangePasswordForm from "../changePasswordForm/changePasswordForm";
 import axios from "axios";
+import {useNavigate} from "react-router-dom";
 
 
 export default function SingIn(props) {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState('')
+    const navigate = useNavigate();
+    useEffect(() => {
+        if (localStorage.getItem('token')){
+            navigate('/goal-meeting/')
+        }
+    }, []);
+
 
     function ClicBt(){
         let formData = new FormData()
@@ -27,13 +35,16 @@ export default function SingIn(props) {
         formData.set('password', password)
         axios({
             method: "post",
-            url: 'http://127.0.0.1:8000/api/v1/auth/token/login/',
+            url: 'http://127.0.0.1:8000/auth/token/login/',
             data: formData
         })
         .then(function (response) {
             const token = response.data['auth_token']
             if (token){
                 localStorage.setItem('token', token);
+                if (localStorage.getItem('token')){
+                    navigate('/goal-meeting/')
+                }
             }
         })
         .catch(function (error) {
@@ -47,7 +58,7 @@ export default function SingIn(props) {
             <DatingLocation/>
             <HeaderCt>
                 <HelpText>Впервые здесь?</HelpText>
-                <LinkBt>Регистрация</LinkBt>
+                <LinkBt href="/sing-up">Регистрация</LinkBt>
             </HeaderCt>
             <FormCt
                 hText='Знакомства без преград'
