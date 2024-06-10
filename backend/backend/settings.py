@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 import os
+from datetime import timedelta
 from pathlib import Path
 
 
@@ -40,8 +41,8 @@ INSTALLED_APPS = [
     # non Local
     'rest_framework',
     'djoser',
-    'rest_framework.authtoken',
     'corsheaders',
+    'rest_framework_simplejwt',
     # Local
     'accounts.apps.AccountsConfig',
     'profiles.apps.ProfilesConfig',
@@ -67,7 +68,7 @@ ROOT_URLCONF = 'backend.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -90,11 +91,24 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.TokenAuthentication',
-        'rest_framework.authentication.BasicAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
     ]
 }
+
+SIMPLE_JWT = {
+
+    'ROTATE_REFRESH_TOKENS': True,
+
+    'BLACKLIST_AFTER_ROTATION': True,
+
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=30),
+
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=60),
+
+    'AUTH_HEADER_TYPES': ('JWT',),
+
+}
+
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
@@ -103,16 +117,20 @@ CORS_ALLOWED_ORIGINS = [
 SCHEME = 'http'
 
 DJOSER = {
-    'PASSWORD_RESET_CONFIRM_URL': 'auth/users/reset_password_confirm/{uid}/{token}',
     'USERNAME_RESET_CONFIRM_URL': 'auth/username/reset/confirm/{uid}/{token}',
     'ACTIVATION_URL': '#/activate/{uid}/{token}',
+    'PASSWORD_RESET_CONFIRM_URL': 'password/reset/confirm/{uid}/{token}',
+    'PASSWORD_RESET_CONFIRM_RETYPE': True,
+    'PASSWORD_RESET_SHOW_EMAIL_NOT_FOUND': True,
     'SEND_ACTIVATION_EMAIL': True,
     'SERIALIZERS': {
         'user_create': 'api.serializers.account_serializers.AccountRegisterSerializer',
     },
     'LOGIN_FIELD': "email",
-    'PASSWORD_RESET_CONFIRM_RETYPE': True,
 }
+
+DOMAIN = 'localhost:8000/auth'
+SITE_NAME = 'LZnacomstva.com'
 
 AUTHENTICATION_BACKENDS = [
     'accounts.authentication.EmailAuthBackend',

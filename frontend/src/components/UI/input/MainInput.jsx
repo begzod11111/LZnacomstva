@@ -1,11 +1,16 @@
 import React from 'react'
 import classes from './mainInput.module.css'
 
-function MainInput(props) {
+function MainInput({defaultValue, icon, placeholder, ...props}) {
     return (
         <label className={classes.mainInputLabel}>
-            <i>{props.icon}</i>
-            <input {...props}/>
+            <i>{icon}</i>
+            {
+                defaultValue  ?
+                <input {...props} defaultValue={defaultValue}/>
+                :
+                <input {...props} placeholder={placeholder ? placeholder : 'Не указанно'}/>
+            }
         </label>
     )
 }

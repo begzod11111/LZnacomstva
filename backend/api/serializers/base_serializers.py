@@ -73,11 +73,27 @@ class DynamicRelationsSerializer(serializers.Serializer):
 				self.fields[field_name] = field
 
 
+class ExcludeFieldsSerializer(serializers.Serializer):
+	def __init__(self, *args, **kwargs):
+		self.exclude_fields = kwargs.pop('exclude_fields', None)
+		super().__init__(*args, **kwargs)
+
+	def get_fields(self):
+		fields = super().get_fields()
+		if self.exclude_fields is not None:
+			for field_name in self.exclude_fields:
+				if field_name in fields:
+					fields.pop(field_name)
+		return fields
+
+
 class BaseDynamicSerializer(
 	DynamicRelationsSerializer,
-	DynamicFieldsSerializer, ModelSerializer):
+	DynamicFieldsSerializer, ExcludeFieldsSerializer,
+	ModelSerializer
+):
 	"""
-	Base dynamic serializer class for models
+	Base serializer for all serializers
 	"""
 	@staticmethod
 	def get_absolute_media_url(relative_path):

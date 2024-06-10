@@ -1,12 +1,11 @@
 .centerFormCt {
     position: absolute;
-    top: 55%;
+    top: 60%;
     left: 50%;
     z-index: 3;
     transform: translate(-50%, -50%);
     width: 40%;
 }
-
 .centerFormCt h1 {
     width: 100%;
     color: #FFF;
@@ -39,11 +38,13 @@
     display: flex;
     flex-direction: column;
 }
-
-.centerFormCt form button, label {
+.centerFormCt form::-webkit-scrollbar {
+    display: none;
+}
+.centerFormCt form > button {
     width: 60%;
 }
-
 .centerFormCt form > label {
     margin-bottom: 10px;
+    width: 60%;
 }

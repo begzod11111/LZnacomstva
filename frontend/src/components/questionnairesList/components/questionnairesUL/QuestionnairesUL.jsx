@@ -30,7 +30,7 @@ function QuestionnairesUL(props) {
     return (
         <ul className={classes.peopleList}>
             {props['accounts'].map(item =>
-                <QuestionnairesLItem account={item}/>
+                <QuestionnairesLItem key={item.slug} account={item}/>
             )}
         </ul>
     )

@@ -3,33 +3,41 @@
 .basicInformationCt {
     color: #EEEEEE;
     font-family: 'Rubik', sans-serif;
-    width: 30vw;
+    width: 32vw;
     display: flex;
     flex-wrap: wrap;
     position: relative;
-    margin: 8vh 3vh 0 3vh;
+    margin: 8vh 0 0 1vh;
 }
 
 .basicInformationCt p {
-    margin-top: 2vh;
-    height: 40px;
+
+    height: 3vw;
+    font-size: 1.5vw;
     width: 100%;
 }
-
+.basicInformationCt p:not(:first-child) {
+    margin-top: 2vw;
+}
 .basicInformationCt span {
     width: 40%;
     height: 3vw;
-    font-size: 10px;
+    font-size: .9vw;
     display: flex;
     align-items: center;
     margin: .5vw 0;
 }
-
-.basicInformationCt label {
+.basicInformationCt > select {
     width: 60%;
     margin: .5vw 0;
+    height: 3vw;
 }
-.basicInformationCt div {
+.basicInformationCt > label, textarea {
+    width: 60%;
+    margin: .5vw 0;
+    height: 3vw;
+}
+.basicInformationCt > div, button {
     width: 60%;
     margin: .5vw 0;
 }

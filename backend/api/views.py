@@ -5,6 +5,10 @@ from rest_framework.authtoken.models import Token
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
+
+from api.serializers.base_serializers import TokenObtainPairSerializer
+
+
 # from .serializers import TokenObtainPairSerializer
 
 # Create your views here.

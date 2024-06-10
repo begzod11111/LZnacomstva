@@ -1,6 +1,5 @@
 .mainInputLabel {
     height: 3vw;
-    padding: 0 1vw;
     display: flex;
     border-radius: 500px;
     background: #42204E no-repeat;
@@ -54,11 +53,10 @@
     font-weight: 400;
     line-height: 150%; /* 24px */
 }
-.dataTimeInputLabel select {
-    padding: 0 10%;
+.selectInput {
     height: 100%;
-    width: 40%;
-    margin: 0 10px;
+    display: flex;
+    padding: 0 10%;
     border-radius: 500px;
     background: #42204E;
     -webkit-appearance: none;
@@ -67,6 +65,21 @@
     font-style: normal;
     font-weight: 400;
     line-height: 150%; /* 24px */
+}
+
+.dataTimeInputLabel div {
+    height: 100%;
+    width: 40%;
+    margin: 0 4%;
+    font-size: .9vw;
+}
+.dataTimeInputLabel div > button {
+    margin: 0;
+}
+.dataTimeInputLabel div > button  {
+    font-size: .9vw;
+    text-align: left;
+    padding-left: 1vw;
 }
 .dataTimeInputLabel i {
     font-size: 2.5vh;
@@ -94,6 +107,7 @@
 .imageInputLabel img {
     top: 50%;
     left: 50%;
+    object-fit: cover;
     transform: translate(-50%, -50%);
     position: absolute;
     height: 100%;
@@ -115,4 +129,133 @@
 }
 .disActiveLabelB {
     border: none;
+}
+
+.textareaInput {
+    min-width: 60%;
+    min-height: 20vh;
+    position: relative;
+    border: 2px transparent solid;
+    color: #925FA4;
+    padding: 10px;
+    width: 60%;
+    max-width: 60%;
+    height: 30vh;
+    border-radius: 30px;
+    background: #42204E;
+    -webkit-appearance: none;
+    text-align: left;
+    appearance: none;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 150%; /* 24px */
+    font-size: 1vw;
+}
+.textareaInput:focus:active {
+    border: 2px #925FA4 solid;
+}
+.textareaInput::placeholder {
+    color: #8B5D9A;
+    font-size: 1vw;
+    font-weight: 400;
+}
+.select__ct {
+    border-radius: 500px;
+    background: #42204E;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+.select__bt {
+    color: #8B5D9A;
+    pointer-events: auto;
+    position: relative;
+    height: 100%;
+    width: 100%;
+    border-radius: 400px;
+    margin: 0;
+    z-index: 18;
+    font-size: 1vw;
+    /*border-top-left-radius: 500px;*/
+    /*border-top-right-radius: 500px;*/
+}
+.select__bt.open:after {
+    transform: rotate(180deg);
+    transition: transform 0.3s ease;
+}
+.select__bt.open {
+    border: 2px solid #925FA4; /* Выберите цвет границы */
+    transition: border 0.3s ease;
+}
+.select__bt.open:after {
+    transform: rotate(180deg);
+    transition: transform 0.3s ease;
+}
+.not_correct {
+    border: red 1px solid;
+}
+.select__ul__close {
+    visibility: hidden;
+    opacity: 0;
+    z-index: -99;
+}
+
+.select__ul {
+    border: 2px solid transparent;
+    pointer-events: none;
+    padding-top: 2vh;
+    margin-top: -2vh;
+    overflow: auto;
+    position: absolute;
+    z-index: 19;
+    background: #42204E;
+    top: 100%;
+    width: 100%;
+    border-bottom-left-radius: 30px;
+    border-bottom-right-radius: 30px;
+    transition: all 0.3s ease;
+    border-bottom: 1px #925FA4 solid;
+}
+.select__ul::-webkit-scrollbar {
+    display: none;
+}
+.select__bt.open + .select__ul {
+    border: 2px solid #925FA4; /* Выберите цвет границы */
+}
+.select__ul li {
+    pointer-events: auto;
+    cursor: pointer;
+    font-size: 10px;
+    padding: 1vh;
+    text-align: center;
+}
+.select__ul .active_li {
+    color: #1C0A22;
+    background-color: #8B5D9A;
+}
+.select__ul li:not(:last-child):not(.active_li):hover {
+    color: #1C0A22;
+    background-color: #8B5D9A;
+}
+.select__ul li:last-child:hover {
+    color: #1C0A22;
+    background-color: #8B5D9A;
+    border-bottom-left-radius: 30px;
+    border-bottom-right-radius: 30px;
+}
+.select__bt:after {
+    content: "▼";
+    font-size: 1vw;
+    position: absolute;
+    z-index: 20;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: 0;
+    right: 0;
+    padding: 0 .8vw;
+    text-align: center;
+    pointer-events: none;
+    box-sizing: border-box;
+    height: 100%;
 }

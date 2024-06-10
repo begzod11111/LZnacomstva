@@ -7,3 +7,7 @@
 .peopleListCt::-webkit-scrollbar {
     display: none;
 }
+
+.peopleListCt button {
+    margin-bottom: 0;
+}

@@ -2,7 +2,7 @@
 
 .imagesCt {
     display: flex;
-    width: 20vw;
+    width: 22.5vw;
     margin: 0 1vw;
     flex-wrap: wrap;
     max-width: 40%;
@@ -10,7 +10,7 @@
     max-height: 71vh;
 }
 .imagesCt .mainImage {
-    height: 50vh;
+    height: 60vh;
     width: 100%;
     margin-bottom: 2vh;
     border-radius: 30px;
@@ -18,7 +18,7 @@
 label {
     border-radius: 20px;
     height: 5vw;
-    width: calc((100% - 20px) / 3);
+    width: calc((100% - 30px) / 4);
 }
 
 .imagesCt label:not(:last-child):not(.mainImage) {

@@ -1,10 +1,10 @@
 import classes from './mainInput.module.css'
 import { MdOutlineAddPhotoAlternate } from "react-icons/md";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import classNames from "classnames";
 
-function ImageInput({className, props}) {
-    const [selectedFile, setSelectedFile] = useState(null);
+function ImageInput({className, imeSrc, ...props}) {
+    const [selectedFile, setSelectedFile] = useState(imeSrc || '');
     const [active, setActive] = useState(false)
     const handleFileChange = (event) => {
         const file = event.target.files[0];
@@ -15,12 +15,18 @@ function ImageInput({className, props}) {
             };
             reader.readAsDataURL(file);
             setActive(true)
-            console.log('ddd')
         }
     };
+    // Если imeSrc изменился и существует, обновляем selectedFile
+    useEffect(() => {
+        if (imeSrc) {
+            setSelectedFile(imeSrc);
+            setActive(true);
+        }
+    }, [imeSrc]);
     let labelClasses = className ? classNames(classes.imageInputLabel, className) : classes.imageInputLabel
     let SVGClasses = classes.imageInputSVG
-    let InputClasses = ""
+    let InputClasses = active ? classes.imageActive : ""
     if (active){
         if (className){
             labelClasses = classNames(classes.imageInputLabel, classes.disActiveLabelB, className)

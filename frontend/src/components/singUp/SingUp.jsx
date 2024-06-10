@@ -11,45 +11,63 @@ import {MdEmail} from "react-icons/md";
 import {RiLockPasswordFill} from "react-icons/ri";
 import MainBt from "../UI/button/mainBt";
 import Footer from "../footer/Footer";
-import React, {useState} from "react";
+import React, {useCallback, useState} from "react";
 import {FaUser} from "react-icons/fa";
-import DataTimeInput from "../UI/input/dataTimeInput";
+import DataTimeInput from "../UI/input/DataTimeInput";
 import CheckBoxsGender from "../UI/checkboxGender/checkboxGender";
 import axios from "axios";
-import {redirect, useNavigate} from "react-router-dom";
-
+import {useNavigate} from "react-router-dom";
+import {AUTH_USERS_URL} from '../../apiUrls'
 
 
 function SingUp() {
-    const [email, setEmail] = useState("")
-    const [password, setPassword] = useState('')
-    const [username, setUsername] = useState('')
+    const [formData, setFormData] = useState({
+        first_name: '',
+        last_name: '',
+        email: '',
+        password: '',
+    })
+    const [dateOfBirth, setDateOfBirth] = useState(null)
     const navigate = useNavigate();
+    const [gender, setGender] = useState(1);
 
-    function GetQuestionnaire(){
-        axios.post(
-            'http://127.0.0.1:8000/auth/users/',
-            {
-                "first_name": username,
-                "email": email,
-                "password": password,
-                "profile": {},
-                "gender": {}
-            }
-        )
-        .then(function (response) {
-            const status = response?.['status']
-            console.log(status)
+
+    const formDateChange = useCallback((key, value) => {
+        setFormData((prevState) => ({
+            ...prevState,
+            [key]: value
+        }));
+    }, []);
+
+    const getDateOfBirth = useCallback((dateObject) => {
+        setDateOfBirth(dateObject);
+    }, []);
+
+    const getGender = useCallback((newGender) => {
+        setGender(newGender);
+    }, []);
+
+    const GetQuestionnaire = useCallback(async () => {
+        let dateStr = dateOfBirth.toISOString()['split']('T')[0];
+        try {
+            const response = await axios.post(
+                AUTH_USERS_URL,
+                {
+                    ...formData,
+                    profile: {
+                        date_of_birth: dateStr,
+                    },
+                    gender: gender
+                }
+            );
+            const status = response?.['status'];
             if (status === 201){
                 navigate("/sing-in");
             }
-            return null
-        })
-        .catch(function (error) {
+        } catch (error) {
             console.log(error);
-        });
-    }
-
+        }
+    }, [formData, dateOfBirth, navigate, gender]);
     return (
         <>
             <Banners leftBanner={banner_1} rightBanner={banner_2}/>
@@ -60,26 +78,26 @@ function SingUp() {
             </HeaderCt>
             <FormCt
                 hText='Создай новый аккаунт'
-                pText='Присоединяйся к сообществу из 518 млн человек!'
-            >
+                pText='Присоединяйся к сообществу из 518 млн человек!'>
                 <MainInput
                     icon={<FaUser/>}
                     placeholder='Ваше имя'
-                    onChange={event => setUsername(event.target.value)}
-                />
-                <DataTimeInput/>
-                <CheckBoxsGender/>
+                    onChange={event => formDateChange('first_name', event.target.value)}/>
+                <MainInput
+                    icon={<FaUser/>}
+                    placeholder='Ваше фамилия'
+                    onChange={event => formDateChange('last_name', event.target.value)}/>
+                <DataTimeInput collBackFunc={getDateOfBirth} />
+                <CheckBoxsGender collBackFunc={getGender}/>
                 <MainInput
                     icon={<MdEmail/>}
                     placeholder='Введите электронную почту'
-                    onChange={event => setEmail(event.target.value)}
-                />
+                    onChange={event => formDateChange("email", event.target.value)}/>
                 <MainInput
                     icon={<RiLockPasswordFill/>}
                     placeholder='Введите пароль'
                     type='password'
-                    onChange={event => setPassword(event.target.value)}
-                />
+                    onChange={event => formDateChange("password", event.target.value)}/>
                 <MainBt
                     onClick={GetQuestionnaire}
                     type='button'

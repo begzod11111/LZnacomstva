@@ -1,3 +1,6 @@
+import json
+from datetime import datetime
+
 from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
 
@@ -14,19 +17,13 @@ class ProfileRegisterSerializer(serializers.ModelSerializer):
 		fields = ('date_of_birth', )
 
 
-class GenderRegisterSerializer(serializers.ModelSerializer):
-	class Meta:
-		model = Gender
-		fields = ('id', )
-
-
 class AccountRegisterSerializer(serializers.ModelSerializer):
 	profile = ProfileRegisterSerializer()
-	gender = GenderRegisterSerializer()
+	gender = serializers.PrimaryKeyRelatedField(queryset=Gender.objects.all())
 
 	class Meta:
 		model = Account
-		fields = ('id', 'first_name', 'email', 'password', 'profile', 'gender')
+		fields = ('id', 'first_name', "last_name", 'email', 'password', 'profile', 'gender')
 		extra_kwargs = {
 			'password': {
 				'write_only': True
@@ -42,20 +39,21 @@ class AccountRegisterSerializer(serializers.ModelSerializer):
 			raise serializers.ValidationError({
 				'email': 'Email already exists'
 			})
-		full_name = validated_data['first_name'].split(' ')
 		user = Account.objects.create_user(
-			last_name=full_name[0],
-			first_name=full_name[1],
+			last_name=validated_data['last_name'],
+			first_name=validated_data['first_name'],
 			email=email,
 			password=validated_data['password']
 		)
-		gender_id = validated_data.get('gender').get('id', None)
-		if gender_id is not None:
-			gender = Gender.objects.get(id=gender_id)
+		gender = validated_data.get('gender', None)
+		if gender is not None:
 			user.gender = gender
 		else:
 			user.gender = Gender.objects.get(id=1)
-		user.profile.date_of_birth = validated_data['profile'].get('date_of_birth', None)
+		date_of_birth = validated_data.get('profile').get('date_of_birth', None)
+		if date_of_birth is not None:
+			# Преобразование строки даты обратно в объект даты
+			user.profile.date_of_birth = date_of_birth
 		user.profile.save()
 		user.save()
 		return user
