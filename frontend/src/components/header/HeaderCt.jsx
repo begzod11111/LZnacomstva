@@ -13,5 +13,4 @@ function HeaderCt({children, ...props}){
         </header>
     )
 }
-
 export default HeaderCt

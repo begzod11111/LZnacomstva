@@ -13,7 +13,7 @@
     justify-content: center;
     font-size: 3vh;
     color: #8B5D9A;
-    padding: 5px 10px 5px 5px;
+    padding: .8vw;
 }
 .mainInputLabel input {
     color: #8B5D9A;
@@ -30,6 +30,14 @@
     color: #8B5D9A;
     font-size: 1vw;
     font-weight: 400;
+}
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active  {
+    border-radius: 500px;
+    background: #42204E no-repeat;
+    color: #8B5D9A;
 }
 
 .dataTimeInputLabel {

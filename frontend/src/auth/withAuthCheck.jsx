@@ -14,7 +14,7 @@ function withAuthCheck(WrappedComponent) {
             };
             fetchToken().then(
 
-                error => console.error('ddd') // Функция, которая будет вызвана, если промис завершится с ошибкой
+                error => console.log()// Функция, которая будет вызвана, если промис завершится с ошибкой
             );
         }, []);
 

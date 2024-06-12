@@ -8,7 +8,7 @@
     z-index: 9;
     border-radius: 500px;
     color: #FFF;
-    font-size: 2vh;
+    font-size: 1vw;
     font-style: normal;
     font-weight: 500;
     line-height: 150%; /* 24px */
@@ -52,7 +52,7 @@
     border: .2vw solid  #EE0979;
     justify-content: center;
     color: #FFFFFF;
-    font-size: 2vh;
+    font-size: 1vw;
     font-style: normal;
     font-weight: 400;
 }

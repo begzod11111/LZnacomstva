@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import DatingLocation from "../datingLocation/DatingLocation";
 import HeaderCt from "../header/HeaderCt";
 import HelpText from "../header/defaultHeadersComponents/helpText/HelpText";
@@ -17,46 +17,31 @@ import ChangePasswordForm from "../changePasswordForm/changePasswordForm";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
 import {CREATE_TOKEN_URL, REFRESH_TOKEN_URL, VERIFY_TOKEN_URL} from "../../apiUrls";
+import classes from '../changePasswordForm/changePassword.module.css'
+import ErrorCt from "../notifications/errorCt";
 
 
 export default function SingIn(props) {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState('')
     const navigate = useNavigate();
-    // useEffect(() => {
-    //     const accessToken = localStorage.getItem('accessToken')
-    //     if (accessToken){
-    //         axios({
-    //             method: 'post',
-    //             url: VERIFY_TOKEN_URL,
-    //             data: {
-    //                 'token': accessToken
-    //             }
-    //         })
-    //         .then(function (response) {
-    //             if (response.status === 200){
-    //                 navigate('/goal-meeting/')
-    //             }
-    //         })
-    //         .catch(async function (error) {
-    //             if (error.data.code === 'token_not_valid') {
-    //                 localStorage.removeItem('accessToken');
-    //                 // localStorage.setItem('accessToken', await getRefreshToken());
-    //             }
-    //             console.log(error);
-    //         });
-    //     }
-    // }, []);
+    const changePasswordRef = useRef(null);
+    const [hasError, setHasError] = useState(false)
 
 
-    function ClicBt(){
-        let formData = new FormData()
-        formData.set('email', email)
-        formData.set('password', password)
+
+    function sendForm(){
+        if (!email || !password){
+            setHasError(true)
+            return
+        }
         axios({
             method: "post",
             url: CREATE_TOKEN_URL,
-            data: formData
+            data: {
+                'email': email,
+                'password': password
+            }
         })
         .then(function (response) {
             const refreshToken = response.data['refresh']
@@ -70,12 +55,24 @@ export default function SingIn(props) {
             }
         })
         .catch(function (error) {
-            console.log(error);
+            if (error.response.status === 401){
+                setHasError(true)
+            }
         });
+    }
+
+    const openChangePassForm = (vent) => {
+        const el = changePasswordRef.current
+        if (el.classList.contains(classes.close)){
+            el.classList.remove(classes.close)
+        } else {
+            el.classList.add(classes.close)
+        }
     }
     return (
         <>
-            <ChangePasswordForm></ChangePasswordForm>
+            {hasError && <ErrorCt errorMessage='Заполните все поля' errorHeader='Ошибка'/>}
+            <ChangePasswordForm refEl={changePasswordRef}></ChangePasswordForm>
             <Banners leftBanner={banner_1} rightBanner={banner_2}/>
             <DatingLocation/>
             <HeaderCt>
@@ -90,20 +87,30 @@ export default function SingIn(props) {
                         icon={<MdEmail/>}
                         placeholder='Введите электронную почту'
                         type='email'
-                        onChange={event => setEmail(event.target.value)}
+                        name='email'
+                        onChange={event => {
+                            setEmail(event.target.value)
+                            setHasError(false)
+                        }}
+                        autoComplete='email'
                     />
                     <MainInput
                         icon={<RiLockPasswordFill/>}
                         placeholder='Введите пароль'
                         type='password'
-                        onChange={event => setPassword(event.target.value)}
+                        name='password'
+                        onChange={event => {
+                            setPassword(event.target.value)
+                            setHasError(false)
+                        }}
+                        autoComplete='current-password'
                     />
 
                     <MainBt
                         type='button'
-                        onClick={ClicBt}
+                        onClick={sendForm}
                     >Войти</MainBt>
-                    <ChangePasswordBt/>
+                    <ChangePasswordBt onClick={openChangePassForm}/>
             </FormCt>
             <Footer/>
         </>

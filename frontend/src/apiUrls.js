@@ -8,3 +8,4 @@ export const GET_COLOR_CHOICES = `${API_BASE_URL}/api/v1/color-choices/`;
 export const CREATE_TOKEN_URL = `${API_BASE_URL}/auth/jwt/create/`;
 export const REFRESH_TOKEN_URL = `${API_BASE_URL}/auth/jwt/refresh/`;
 export const VERIFY_TOKEN_URL = `${API_BASE_URL}/auth/jwt/verify/`;
+export const CHANGE_PASSWORD_URL = `${API_BASE_URL}/auth/users/reset_password/`;
