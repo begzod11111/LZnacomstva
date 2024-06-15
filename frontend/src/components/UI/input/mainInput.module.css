@@ -36,9 +36,11 @@ input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
 input:-webkit-autofill:active  {
     border-radius: 500px;
-    background: #42204E no-repeat;
-    color: #8B5D9A;
+    -webkit-text-fill-color: #8B5D9A;
+    -webkit-box-shadow: 0 0 0 1000px #42204E inset;
+    transition: background-color 5000s ease-in-out 0s;
 }
+
 
 .dataTimeInputLabel {
     height: 3vw;

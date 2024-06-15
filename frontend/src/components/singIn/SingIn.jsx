@@ -18,7 +18,7 @@ import axios from "axios";
 import {useNavigate} from "react-router-dom";
 import {CREATE_TOKEN_URL, REFRESH_TOKEN_URL, VERIFY_TOKEN_URL} from "../../apiUrls";
 import classes from '../changePasswordForm/changePassword.module.css'
-import ErrorCt from "../notifications/errorCt";
+import Error from "../notifications/Error";
 
 
 export default function SingIn(props) {
@@ -26,13 +26,13 @@ export default function SingIn(props) {
     const [password, setPassword] = useState('')
     const navigate = useNavigate();
     const changePasswordRef = useRef(null);
-    const [hasError, setHasError] = useState(false)
+    const [hasError, setHasError] = useState(null)
 
 
 
     function sendForm(){
         if (!email || !password){
-            setHasError(true)
+            setHasError('Заполните все поля')
             return
         }
         axios({
@@ -71,7 +71,7 @@ export default function SingIn(props) {
     }
     return (
         <>
-            {hasError && <ErrorCt errorMessage='Заполните все поля' errorHeader='Ошибка'/>}
+            {hasError && <Error errorMessage={hasError} typeMessage='error'/>}
             <ChangePasswordForm refEl={changePasswordRef}></ChangePasswordForm>
             <Banners leftBanner={banner_1} rightBanner={banner_2}/>
             <DatingLocation/>

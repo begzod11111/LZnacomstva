@@ -1,0 +1,42 @@
+@import url('https://fonts.googleapis.com/css?family=Raleway:300,300i,400,400i,500,500i,600,600i,700,700i,800,800i');
+
+@keyframes slide {
+    0% {
+        top: -100%; /* начальное положение контейнера за пределами экрана */
+    }
+    20%, 80% {
+        top: 5%; /* положение контейнера во время паузы */
+    }
+    100% {
+        top: -100%; /* конечное положение контейнера за пределами экрана */
+    }
+}
+
+
+.errorCt {
+    display: flex;
+    background-color: #f44336;
+    border-radius: 10px;
+    color: white;
+    font-family: 'Raleway', sans-serif;
+    font-weight: 500;
+    padding: 1vw 2vw;
+    position: absolute;
+    top: -100%;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 99;
+    animation: slide 3s forwards;
+}
+
+.errorCt svg {
+    margin-right: 1vw;
+    font-size: 2vw;
+}
+.errorCt h3 {
+    font-size: 1.5vw;
+    font-weight: bold;
+}
+.errorCt p {
+    font-size: 1.2vw;
+}
