@@ -1,6 +1,8 @@
-// src/auth.js
+// src/HOCs.js
 import axios from 'axios';
 import {REFRESH_TOKEN_URL, VERIFY_TOKEN_URL} from "../apiUrls";
+import {useLocation} from "react-router-dom";
+import {useEffect, useState} from "react";
 
 async function verifyToken(token) {
     try {
@@ -52,5 +54,3 @@ export async function getToken() {
         }
     }
 }
-
-

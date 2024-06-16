@@ -18,30 +18,33 @@ import axios from "axios";
 import {useNavigate} from "react-router-dom";
 import {CREATE_TOKEN_URL, REFRESH_TOKEN_URL, VERIFY_TOKEN_URL} from "../../apiUrls";
 import classes from '../changePasswordForm/changePassword.module.css'
-import Error from "../notifications/Error";
+import Notification from "../notifications/Notification";
 
 
-export default function SingIn(props) {
-    const [email, setEmail] = useState("")
-    const [password, setPassword] = useState('')
+export default function SingIn({notification, setNotification, ...props}) {
+    const [data, setData] = useState({
+        'email': '',
+        'password': ''
+    })
     const navigate = useNavigate();
     const changePasswordRef = useRef(null);
-    const [hasError, setHasError] = useState(null)
 
 
 
     function sendForm(){
-        if (!email || !password){
-            setHasError('Заполните все поля')
+
+        if (!data.email || !data.password){
+            setNotification({
+                'errorMessage': 'Заполните все поля',
+                'typeMessage': 'warning',
+                'hasError': true
+            })
             return
         }
         axios({
             method: "post",
             url: CREATE_TOKEN_URL,
-            data: {
-                'email': email,
-                'password': password
-            }
+            data: data
         })
         .then(function (response) {
             const refreshToken = response.data['refresh']
@@ -50,13 +53,31 @@ export default function SingIn(props) {
                 localStorage.setItem('accessToken', accessToken);
                 localStorage.setItem('refreshToken', refreshToken);
                 if (localStorage.getItem('accessToken') && localStorage.getItem('refreshToken')){
-                    navigate('/goal-meeting/')
+                    setNotification({
+                        'errorMessage': 'Вы успешно авторизовались',
+                        'typeMessage': 'success',
+                        'hasError': true
+                    })
+                    setTimeout(() => {
+                        navigate('/goal-meeting/')
+                    }, 1000);
                 }
             }
         })
         .catch(function (error) {
-            if (error.response.status === 401){
-                setHasError(true)
+            if (!error.response) {
+                // Обработка ошибок, когда нет ответа от сервера
+                setNotification({
+                    'errorMessage': 'Ошибка сети',
+                    'typeMessage': 'error',
+                    'hasError': true
+                })
+            } else if (error.response.status === 401){
+                setNotification({
+                    'errorMessage': 'Неверный логин или пароль',
+                    'typeMessage': 'error',
+                    'hasError': true
+                })
             }
         });
     }
@@ -71,7 +92,8 @@ export default function SingIn(props) {
     }
     return (
         <>
-            {hasError && <Error errorMessage={hasError} typeMessage='error'/>}
+            {notification.hasError && <Notification errorMessage={notification.errorMessage}
+                                           typeMessage={notification.typeMessage}/>}
             <ChangePasswordForm refEl={changePasswordRef}></ChangePasswordForm>
             <Banners leftBanner={banner_1} rightBanner={banner_2}/>
             <DatingLocation/>
@@ -89,8 +111,16 @@ export default function SingIn(props) {
                         type='email'
                         name='email'
                         onChange={event => {
-                            setEmail(event.target.value)
-                            setHasError(false)
+                            setData((prevState) => ({
+                                email: event.target.value,
+                                password: prevState.password
+                            }))
+                            setNotification({
+                                'errorMessage': '',
+                                'typeMessage': '',
+                                'hasError': false
+
+                            })
                         }}
                         autoComplete='email'
                     />
@@ -100,8 +130,15 @@ export default function SingIn(props) {
                         type='password'
                         name='password'
                         onChange={event => {
-                            setPassword(event.target.value)
-                            setHasError(false)
+                            setData((prevState) => ({
+                                email: prevState.email,
+                                password: event.target.value,
+                            }))
+                            setNotification({
+                                'errorMessage': '',
+                                'typeMessage': '',
+                                'hasError': false
+                            })
                         }}
                         autoComplete='current-password'
                     />
@@ -113,6 +150,7 @@ export default function SingIn(props) {
                     <ChangePasswordBt onClick={openChangePassForm}/>
             </FormCt>
             <Footer/>
+
         </>
     )
 }

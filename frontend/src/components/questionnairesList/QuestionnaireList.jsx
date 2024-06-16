@@ -12,12 +12,14 @@ import CategoryName from "./components/categotyName/CategoryName";
 import QuestionnairesUL from "./components/questionnairesUL/QuestionnairesUL";
 import axios from "axios";
 import {GOAL_MEETING_URL, REFRESH_TOKEN_URL} from '../../apiUrls'
+import {usePreviousLocation} from "../../HOCs/auth";
+import Notification from "../notifications/Notification";
 
 
-function QuestionnaireList(props) {
+function QuestionnaireList({notification, setNotification, ...props}) {
     const { goalMeetingSlug } = useParams();
     const [data, setData] = useState([]);
-    const [error, setError] = useState('')
+
 
     useEffect(() => {
         let urlAPI = `http://127.0.0.1:8000/api/v1/goal-meeting/`
@@ -36,11 +38,17 @@ function QuestionnaireList(props) {
         .catch(function (error) {
 
             // Вместо простого вывода ошибки в консоль, вы можете установить состояние ошибки
-            setError('Произошла ошибка при загрузке данных. Пожалуйста, попробуйте еще раз позже.');
+            setNotification({
+                'errorMessage': 'Ошибка загрузки данных',
+                'typeMessage': 'error',
+                'hasError': true
+            })
         });
     }, [goalMeetingSlug]);
     return (
         <>
+            {notification.hasError && <Notification typeMessage={notification.typeMessage}
+                                           errorMessage={notification.errorMessage}/> }
             <DatingLocation/>
             <HeaderCt>
                 <NavBarHeader/>
@@ -48,7 +56,6 @@ function QuestionnaireList(props) {
                 <IconsHeader messages='122'/>
                 <UserAvaCt/>
             </HeaderCt>
-            {error && <div>{error}</div>}
             <QuestionnairesCt>
                 {
                     data.map(cat =>
@@ -64,6 +71,11 @@ function QuestionnaireList(props) {
                 }
             </QuestionnairesCt>
             <Footer/>
+            {setNotification({
+                'errorMessage': '',
+                'typeMessage': '',
+                'hasError': false
+            })}
         </>
     )
 }
