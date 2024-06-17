@@ -1,8 +1,10 @@
 import classes from './notifications.module.css'
 import {IoIosCheckmarkCircle, IoIosInformationCircle, IoIosWarning} from "react-icons/io";
+import {useContext, useEffect} from "react";
+import {NotificationContext} from "../../contexts/context";
 
-const Notification = ({errorMessage, typeMessage, ...props}) => {
-
+const Notification = () => {
+    const { notification, setNotification } = useContext(NotificationContext);
     const notificationTypes = {
         'error': {
             'icon': <IoIosWarning />,
@@ -21,14 +23,25 @@ const Notification = ({errorMessage, typeMessage, ...props}) => {
         }
     }
 
-    const myNotification = notificationTypes[typeMessage] || notificationTypes['success']
+    useEffect(() => {
+        setTimeout(() => {
+            setNotification({
+                'message': '',
+                'type': '',
+                'has': false
+            })
+        }, 4150);
+    }, [notification.has]);
+
+    const myNotification = notificationTypes[notification.type] || notificationTypes['success'];
     return (
-        <div className={`${classes.notificationCt} ${myNotification['className']}`} {...props}>
+        notification.has &&
+        <div className={`${classes.notificationCt} ${myNotification['className']}`}>
             {myNotification['icon']}
-          <div>
-            <h3>{myNotification['header']}</h3>
-            <p>{errorMessage}</p>
-          </div>
+            <div>
+                <h3>{myNotification['header']}</h3>
+                <p>{notification.message}</p>
+            </div>
         </div>
     )
 }

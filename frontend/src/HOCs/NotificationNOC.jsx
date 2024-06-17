@@ -3,12 +3,8 @@ import {useState} from "react";
 
 export default function NotificationNOC(WrappedComponent) {
 
-    return function (props) {
-        const [notification, setNotification] = useState({
-            'errorMessage': '',
-            'typeMessage': '',
-            'hasError': false
-        })
+    return function NotificationNOC(props) {
+
         return (
             <WrappedComponent
                 notification={notification}

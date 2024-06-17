@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import {useLocation, useNavigate} from 'react-router-dom';
 import { getToken } from './auth';
 
 function withAuthCheck(WrappedComponent) {
     return function(props) {
         const [token, setToken] = useState(null);
         const navigate = useNavigate();
+        const location = useLocation();
+
 
         useEffect(() => {
             const fetchToken = async () => {
@@ -23,13 +25,19 @@ function withAuthCheck(WrappedComponent) {
                 return; // Если токен еще не был получен, ничего не делаем
             }
             if (!token) {
-                navigate('/sing-in');
+                if (location.pathname !== '/sing-in') {
+
+                    setTimeout(() => {
+                        navigate('/sing-in')
+                    }, 1000);
+                }
             } else {
                 navigate('/goal-meeting');
             }
+            // Ваша функция обновления
         }, [token, navigate]);
 
-        return <WrappedComponent {...props} />;
+        return  <WrappedComponent {...props} />;
     }
 }
 

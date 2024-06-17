@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, {useContext, useEffect, useRef, useState} from "react";
 import DatingLocation from "../datingLocation/DatingLocation";
 import HeaderCt from "../header/HeaderCt";
 import HelpText from "../header/defaultHeadersComponents/helpText/HelpText";
@@ -19,13 +19,15 @@ import {useNavigate} from "react-router-dom";
 import {CREATE_TOKEN_URL, REFRESH_TOKEN_URL, VERIFY_TOKEN_URL} from "../../apiUrls";
 import classes from '../changePasswordForm/changePassword.module.css'
 import Notification from "../notifications/Notification";
+import {NotificationContext} from "../../contexts/context";
 
 
-export default function SingIn({notification, setNotification, ...props}) {
+export default function SingIn() {
     const [data, setData] = useState({
         'email': '',
         'password': ''
     })
+    const { setNotification } = useContext(NotificationContext);
     const navigate = useNavigate();
     const changePasswordRef = useRef(null);
 
@@ -35,9 +37,9 @@ export default function SingIn({notification, setNotification, ...props}) {
 
         if (!data.email || !data.password){
             setNotification({
-                'errorMessage': 'Заполните все поля',
-                'typeMessage': 'warning',
-                'hasError': true
+                'message': 'Заполните все поля',
+                'type': 'warning',
+                'has': true
             })
             return
         }
@@ -54,9 +56,9 @@ export default function SingIn({notification, setNotification, ...props}) {
                 localStorage.setItem('refreshToken', refreshToken);
                 if (localStorage.getItem('accessToken') && localStorage.getItem('refreshToken')){
                     setNotification({
-                        'errorMessage': 'Вы успешно авторизовались',
-                        'typeMessage': 'success',
-                        'hasError': true
+                        'message': 'Вы успешно авторизовались',
+                        'type': 'success',
+                        'has': true
                     })
                     setTimeout(() => {
                         navigate('/goal-meeting/')
@@ -68,16 +70,17 @@ export default function SingIn({notification, setNotification, ...props}) {
             if (!error.response) {
                 // Обработка ошибок, когда нет ответа от сервера
                 setNotification({
-                    'errorMessage': 'Ошибка сети',
-                    'typeMessage': 'error',
-                    'hasError': true
+                    'message': 'Ошибка сети',
+                    'type': 'error',
+                    'has': true
                 })
             } else if (error.response.status === 401){
                 setNotification({
-                    'errorMessage': 'Неверный логин или пароль',
-                    'typeMessage': 'error',
-                    'hasError': true
+                    'message': 'Неверный логин или пароль',
+                    'type': 'error',
+                    'has': true
                 })
+
             }
         });
     }
@@ -92,8 +95,6 @@ export default function SingIn({notification, setNotification, ...props}) {
     }
     return (
         <>
-            {notification.hasError && <Notification errorMessage={notification.errorMessage}
-                                           typeMessage={notification.typeMessage}/>}
             <ChangePasswordForm refEl={changePasswordRef}></ChangePasswordForm>
             <Banners leftBanner={banner_1} rightBanner={banner_2}/>
             <DatingLocation/>
@@ -116,9 +117,9 @@ export default function SingIn({notification, setNotification, ...props}) {
                                 password: prevState.password
                             }))
                             setNotification({
-                                'errorMessage': '',
-                                'typeMessage': '',
-                                'hasError': false
+                                'message': '',
+                                'type': '',
+                                'has': false
 
                             })
                         }}
@@ -135,9 +136,9 @@ export default function SingIn({notification, setNotification, ...props}) {
                                 password: event.target.value,
                             }))
                             setNotification({
-                                'errorMessage': '',
-                                'typeMessage': '',
-                                'hasError': false
+                                'message': '',
+                                'type': '',
+                                'has': false
                             })
                         }}
                         autoComplete='current-password'

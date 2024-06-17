@@ -8,12 +8,12 @@ import QuestionnaireList from "./components/questionnairesList/QuestionnaireList
 import PersonDetail from "./components/personDetail/PersonDetail";
 import Profile from "./components/profile/Profile";
 import withAuthCheck from "./HOCs/withAuthCheck";
-import NotificationNOC from "./HOCs/NotificationNOC";
 
 
-const QuestionnaireListWithAuthCheck = withAuthCheck(NotificationNOC(QuestionnaireList));
+
+const QuestionnaireListWithAuthCheck = withAuthCheck(QuestionnaireList);
 // Вместо QuestionnaireList используйте QuestionnaireListWithAuthCheck
-const SingInWithAuthCheck = withAuthCheck(NotificationNOC(SingIn));
+const SingInWithAuthCheck = withAuthCheck(SingIn);
 // Используйте QuestionnaireListWithAuthCheck вместо QuestionnaireList
 
 const AppRouter = () => {

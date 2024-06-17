@@ -1,5 +1,5 @@
 import DatingLocation from "../datingLocation/DatingLocation";
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import { useParams } from "react-router-dom";
 import Footer from "../footer/Footer";
 import HeaderCt from "../header/HeaderCt";
@@ -12,13 +12,14 @@ import CategoryName from "./components/categotyName/CategoryName";
 import QuestionnairesUL from "./components/questionnairesUL/QuestionnairesUL";
 import axios from "axios";
 import {GOAL_MEETING_URL, REFRESH_TOKEN_URL} from '../../apiUrls'
-import {usePreviousLocation} from "../../HOCs/auth";
 import Notification from "../notifications/Notification";
+import {NotificationContext} from "../../contexts/context";
 
 
-function QuestionnaireList({notification, setNotification, ...props}) {
+function QuestionnaireList() {
     const { goalMeetingSlug } = useParams();
     const [data, setData] = useState([]);
+    const { setNotification } = useContext(NotificationContext);
 
 
     useEffect(() => {
@@ -47,8 +48,6 @@ function QuestionnaireList({notification, setNotification, ...props}) {
     }, [goalMeetingSlug]);
     return (
         <>
-            {notification.hasError && <Notification typeMessage={notification.typeMessage}
-                                           errorMessage={notification.errorMessage}/> }
             <DatingLocation/>
             <HeaderCt>
                 <NavBarHeader/>
@@ -71,11 +70,7 @@ function QuestionnaireList({notification, setNotification, ...props}) {
                 }
             </QuestionnairesCt>
             <Footer/>
-            {setNotification({
-                'errorMessage': '',
-                'typeMessage': '',
-                'hasError': false
-            })}
+
         </>
     )
 }
