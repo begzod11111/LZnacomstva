@@ -1,10 +1,12 @@
 import classes from './notifications.module.css'
 import {IoIosCheckmarkCircle, IoIosInformationCircle, IoIosWarning} from "react-icons/io";
-import {useContext, useEffect} from "react";
+import {useContext, useEffect, useRef} from "react";
 import {NotificationContext} from "../../contexts/context";
+import { IoCloseSharp } from "react-icons/io5";
 
 const Notification = () => {
     const { notification, setNotification } = useContext(NotificationContext);
+    const notificationCtPef = useRef(null);
     const notificationTypes = {
         'error': {
             'icon': <IoIosWarning />,
@@ -22,26 +24,32 @@ const Notification = () => {
             'header': 'Внимание',
         }
     }
-
-    useEffect(() => {
+    // useEffect(() => {
+    //
+    // }, [notification.has]);
+    const close = (event) => {
+        const el = notificationCtPef.current;
+        el.classList.add(classes.close);
         setTimeout(() => {
-            setNotification({
-                'message': '',
-                'type': '',
-                'has': false
-            })
-        }, 4150);
-    }, [notification.has]);
+            setNotification({'has': false})
+        }, 700)
+    }
+
 
     const myNotification = notificationTypes[notification.type] || notificationTypes['success'];
     return (
         notification.has &&
-        <div className={`${classes.notificationCt} ${myNotification['className']}`}>
+        <div ref={notificationCtPef}
+            className={`${classes.notificationCt} ${myNotification['className']}`}>
             {myNotification['icon']}
             <div>
                 <h3>{myNotification['header']}</h3>
                 <p>{notification.message}</p>
             </div>
+            <button
+                type='button'
+                onClick={close}
+            ><IoCloseSharp/></button>
         </div>
     )
 }

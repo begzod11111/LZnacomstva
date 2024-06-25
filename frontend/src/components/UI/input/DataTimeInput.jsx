@@ -4,7 +4,7 @@ import SelectInput from "./SelectInput";
 
 
 
-function DataTimeInput({collBackFunc, defaultValue}) {
+function DataTimeInput({collBackFunc, defaultValue, refs}) {
     const [date, setDate] = useState(!defaultValue ? {
             day: 0,
             month: 0,
@@ -29,12 +29,16 @@ function DataTimeInput({collBackFunc, defaultValue}) {
         {id: 11, russianName: 'Ноябрь', englishName: 'November'},
         {id: 12, russianName: 'Декабрь', englishName: 'December'},
     ];
-    const dayRef = useRef(null);
-    const yearRef = useRef(null);
+
+
+
 
     useEffect(() => {
-        let classesDay = dayRef.current.classList;
-        let classesYear = yearRef.current.classList;
+        if (date.day === 0 && date.month === 0 && date.year === 0){
+            return
+        }
+        let classesDay = refs.day.current.classList;
+        let classesYear = refs.year.current.classList;
         let isDayCorrect = false;
         let isYearCorrect = false;
 
@@ -47,7 +51,11 @@ function DataTimeInput({collBackFunc, defaultValue}) {
                 classesDay.add(classes.not_correct);
             }
         }
-
+        if (date.month !== 'Months'){
+            refs.select.current.classList.remove(classes.not_correct);
+        } else {
+            refs.select.current.classList.add(classes.not_correct);
+        }
         if (date.year){
             let currentYear = new Date().getFullYear();
             let age = currentYear - date.year;
@@ -59,13 +67,15 @@ function DataTimeInput({collBackFunc, defaultValue}) {
                 classesYear.add(classes.not_correct);
             }
         }
-        if (isDayCorrect && isYearCorrect && date.month){
+        if (isDayCorrect && isYearCorrect && date.month !== 0 && date.month !== 'Months'){
             let selectedDate = new Date(`${date.year}-${date.month}-${date.day}`);
             collBackFunc(selectedDate);
+        } else {
+            collBackFunc(null);
         }
     }, [date]);
 
-    const handleDateChange = (value, key='month', e) => {
+    const handleDateChange = (value, key) => {
         setDate((prevState) => ({
             ...prevState,
             [key]: value
@@ -74,19 +84,20 @@ function DataTimeInput({collBackFunc, defaultValue}) {
 
     return (
         <label className={classes.dataTimeInputLabel}>
-            <input ref={dayRef}
+            <input ref={refs.day}
                    onChange={(e) => handleDateChange(Number(e.target.value),'day', e)}
                    type="text"
                    placeholder="День"
                    defaultValue={defaultValue ? date.day : ''}
             />
             <SelectInput
+                ref={refs.select}
                 onSelect={handleDateChange}
                 defaultValue={defaultValue ? date.month : 'Months'}
                 optionsData={months}
             />
             <input
-                ref={yearRef}
+                ref={refs.year}
                 onChange={(e) => handleDateChange(Number(e.target.value),'year', e)}
                 type="text"
                 placeholder="Год"

@@ -16,7 +16,11 @@
     box-shadow: 0 20px 30px 0 rgba(179, 34, 31, 0.20);
     transition: background-color 100ms ease;
 }
-
+.mainBt__disabled {
+    background: #D3D3D3;
+    color: #A9A9A9;
+    cursor: not-allowed;
+}
 .mainBt::before {
     content: '';
     display: flex;
@@ -41,7 +45,13 @@
     background: #F43048;
     box-shadow: 0 20px 30px 0 rgba(179, 34, 31, 0.20);
 }
-
+.mainBt__disabled:hover::before {
+    opacity: 0;
+}
+.mainBt__disabled:active {
+    background: #D3D3D3;
+    box-shadow: 0 20px 30px 0 rgba(179, 34, 31, 0.20);
+}
 .linkBt {
     height: 3vw;
     cursor: pointer;

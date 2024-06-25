@@ -2,14 +2,14 @@ import React, {useEffect, useRef, useState} from "react";
 import classes from './mainInput.module.css'
 import classNames from 'classnames';
 
-function SelectInput({onSelect, optionsData, defaultValue, ...props}) {
+const SelectInput = React.forwardRef(({onSelect, optionsData, defaultValue}, ref) => {
     const [isOpen, setIsOpen] = useState(false);
     const optionsDataArray = optionsData ? optionsData : []
     const [text, setText] = useState(defaultValue)
     const selectRef = useRef(null);
     const clickElement = (e) => {
         const value = e.target.dataset.value
-        onSelect(value)
+        onSelect(value, 'month')
         setIsOpen(false)
         setText(value)
     }
@@ -41,6 +41,7 @@ function SelectInput({onSelect, optionsData, defaultValue, ...props}) {
         <div className={classes.select__ct} ref={selectRef}>
             <button
                 type='button'
+                ref={ref}
                 className={`${classes.select__bt} ${isOpen ? classes.open : ''}`}
                 onClick={(e) => {
                     e.stopPropagation();
@@ -61,6 +62,8 @@ function SelectInput({onSelect, optionsData, defaultValue, ...props}) {
             }
         </div>
     )
-}
+});
 
 export default SelectInput
+
+

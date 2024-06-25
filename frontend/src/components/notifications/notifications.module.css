@@ -4,8 +4,15 @@
     0% {
         top: -100%; /* начальное положение контейнера за пределами экрана */
     }
-    20%, 80% {
+
+    100% {
         top: 5%; /* положение контейнера во время паузы */
+    }
+}
+
+@keyframes slideOut {
+    0% {
+        top: 5%; /* начальное положение контейнера во время паузы */
     }
     100% {
         top: -100%; /* конечное положение контейнера за пределами экрана */
@@ -17,30 +24,46 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    animation: slide 3s forwards;
     top: -100%;
     left: 50%;
     transform: translateX(-50%);
     font-family: 'Raleway', sans-serif;
     color: white;
     border-radius: 10px;
-    padding: 1vw 2vw;
+    padding: .5vw 0;
     position: absolute;
+    animation: slide .8s forwards;
+}
+
+.close {
+    animation: slideOut 1s forwards;
 }
 .error {
     background-color: #f44336;
     font-weight: 500;
 }
 .notificationCt svg {
-    margin-right: 1vw;
+    margin: 1vw;
     font-size: 2vw;
 }
 .notificationCt h3 {
-    font-size: 1.5vw;
+    font-size: 2.5vh;
     font-weight: bold;
 }
 .notificationCt p {
-    font-size: 1.2vw;
+    font-size: 2vh;
+}
+.notificationCt div {
+    display: flex;
+    flex-direction: column;
+}
+.notificationCt button {
+    width: 20%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
 }
 .success {
     background-color: #4CAF50;

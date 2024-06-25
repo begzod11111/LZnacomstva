@@ -3,7 +3,7 @@ import MaleIcon from '../../../img/male-icon.svg'
 import FemaleIcon from '../../../img/female-icon.svg'
 import './checkboxGender.css'
 
-const CheckBoxsGender = ({collBackFunc, defaultValue, ...props}) => {
+const CheckBoxGender = ({collBackFunc, defaultValue, ...props}) => {
     const [gender, setGender] = useState(defaultValue ? defaultValue : 1);
 
 
@@ -26,4 +26,4 @@ const CheckBoxsGender = ({collBackFunc, defaultValue, ...props}) => {
     )
 }
 
-export default CheckBoxsGender
+export default CheckBoxGender

@@ -1,7 +1,7 @@
 import classes from './BasicInformationCt.module.css'
 import MainInput from "../../../UI/input/MainInput";
 import DataTimeInput from "../../../UI/input/DataTimeInput";
-import CheckBoxsGender from "../../../UI/checkboxGender/checkboxGender";
+import CheckBoxGender from "../../../UI/checkboxGender/checkboxGender";
 import TextareaInput from "../../../UI/input/TextareaInput";
 import SelectInput from "../../../UI/input/SelectInput";
 import MainBt from "../../../UI/button/mainBt";
@@ -36,7 +36,7 @@ function BasicInformationCt({profileData, colorChoices, ...props}) {
                 <span>Дата рождения</span>
                 <DataTimeInput defaultValue={passDateTimeToObject(date_of_birth)} collBackFunc={foo}/>
                 <span>Пол</span>
-                <CheckBoxsGender defaultValue={profileData['gender']}/>
+                <CheckBoxGender defaultValue={profileData['gender']}/>
                 <p>Личная информация</p>
                 <span>Рост</span>
                 <MainInput defaultValue={profile['height']}/>

@@ -1,9 +1,11 @@
 import React from 'react'
 import classes from './mainInput.module.css'
 
-function MainInput({defaultValue, icon, placeholder, ...props}) {
+const MainInput = React.forwardRef(({defaultValue, icon, placeholder, ...props}, ref) => {
     return (
-        <label className={classes.mainInputLabel}>
+        <label
+            ref={ref}
+            className={classes.mainInputLabel}>
             <i>{icon}</i>
             {
                 defaultValue  ?
@@ -13,6 +15,6 @@ function MainInput({defaultValue, icon, placeholder, ...props}) {
             }
         </label>
     )
-}
+})
 
 export default MainInput;
