@@ -79,7 +79,7 @@ function SingUp() {
     }
 
     const GetQuestionnaire = useCallback(async () => {
-        if (!formData.first_name && !formData.last_name && !formData.email && !formData.password && dateOfBirth === null){
+        if (!formData.first_name || !formData.last_name || !formData.email || !formData.password || dateOfBirth === null){
             setNotification({
                 'message': 'Заполните все поля',
                 'type': 'warning',

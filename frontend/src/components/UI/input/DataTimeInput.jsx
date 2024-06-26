@@ -71,7 +71,13 @@ function DataTimeInput({collBackFunc, defaultValue, refs}) {
             let selectedDate = new Date(`${date.year}-${date.month}-${date.day}`);
             collBackFunc(selectedDate);
         } else {
-            collBackFunc(null);
+            if (date.day === 0){
+                classesDay.add(classes.not_correct);
+            } if (date.year === 0){
+                classesYear.add(classes.not_correct);
+            } if (date.month === 0 || date.month === 'Months'){
+                refs.select.current.classList.add(classes.not_correct);
+            }
         }
     }, [date]);
 
