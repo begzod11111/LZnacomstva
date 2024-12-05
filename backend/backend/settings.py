@@ -50,7 +50,6 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    'allauth.account.middleware.AccountMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     "corsheaders.middleware.CorsMiddleware",
@@ -81,7 +80,6 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'backend.wsgi.application'
 
 # rest framework
 
@@ -143,10 +141,10 @@ AUTHENTICATION_BACKENDS = [
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'LZnacomstva',
+        'NAME': 'mydatabase',
         'USER': 'postgres',
-        'PASSWORD': 'begzodbey0426',
-        'HOST': '127.0.0.1',
+        'PASSWORD': 'begzod0426',
+        'HOST': 'db',
         'PORT': '5432',
     }
 }

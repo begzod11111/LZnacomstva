@@ -2,7 +2,7 @@ from django.db import models
 from django.urls import reverse
 from django.utils.functional import cached_property
 from imagekit.models import ProcessedImageField
-from slugify import slugify
+from django.utils.text import slugify
 
 
 class Country(models.Model):
@@ -17,7 +17,7 @@ class Country(models.Model):
 		return self.name
 
 	def save(self, *args, **kwargs):
-		self.slug = slugify(self.name)
+		self.slug = slugify(self.name, allow_unicode=True)
 		super().save(*args, **kwargs)
 
 	def get_absolute_url(self):
