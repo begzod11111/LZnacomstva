@@ -1,0 +1,22 @@
+{
+  "name": "backend-nodejs",
+  "version": "1.0.0",
+  "description": "backend in node js",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/begzod11111/LZnacomstva.git"
+  },
+  "author": "begzod",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/begzod11111/LZnacomstva/issues"
+  },
+  "homepage": "https://github.com/begzod11111/LZnacomstva#readme",
+  "dependencies": {
+    "express": "^4.21.2"
+  }
+}
