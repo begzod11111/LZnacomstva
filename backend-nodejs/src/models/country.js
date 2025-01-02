@@ -1,46 +1,50 @@
-'use strict';
-const { Model, DataTypes } = require('sequelize');
-const slugify = require('slugify');
+import mongoose from 'mongoose';
+import slugify from 'slugify';
 
-module.exports = (sequelize) => {
-  class Country extends Model {
-    static associate(models) {
-      // define association here
+const countrySchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true,
+    unique: true,
+    validate: {
+      validator: function(v) {
+        return v && v.trim().length > 0;
+      },
+      message: 'Name cannot be empty'
     }
-
-    getAbsoluteUrl() {
-      return `${process.env.BASE_URL}/countries/${this.slug}`;
+  },
+  slug: {
+    type: String,
+    default: function() {
+      return slugify(this.name, { lower: true });
+    }
+  },
+  flag: {
+    type: String,
+    required: true,
+    validate: {
+      validator: function(v) {
+        return /^https?:\/\/.+\..+/.test(v);
+      },
+      message: 'Flag must be a valid URL'
     }
   }
-  Country.init({
-    name: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      unique: true,
-      validate: {
-        notEmpty: true,
-      }
-    },
-    slug: {
-      type: DataTypes.STRING,
-      allowNull: true,
-      primaryKey: true,
-      unique: true
-    },
-    flag: {
-      type: DataTypes.STRING,
-    }
-  }, {
-    sequelize,
-    modelName: 'Country',
-    hooks: {
-      beforeSave: (country, options) => {
-        if (!country.slug) {
-          country.slug = slugify(country.name, { lower: true, strict: true });
-        }
-      }
-    }
-  });
+});
 
-  return Country;
+countrySchema.pre('save', function(next) {
+  if (!this.slug) {
+    this.slug = slugify(this.name, { lower: true });
+  }
+  next();
+});
+
+countrySchema.statics.associate = function(models) {
+  this.hasMany(models.User, {
+    foreignKey: 'countryId',
+    as: 'users'
+  });
 };
+
+const Country = mongoose.model('Country', countrySchema);
+
+export default Country;

@@ -1,32 +1,19 @@
-const app = require('express')();
+import express from 'express';
+import routes from './src/routers/index.js'
+import User from "./src/models/user.js";
+
+import mongoose from 'mongoose';
+const app = express();
+
 
 const host = '127.0.0.1';
 const port = 7000;
 
-const { Client } = require('pg');
-const { Sequelize } = require("sequelize");
 
-const sequelize = new Sequelize('lznacomstva_nodejs', 'admin', '123', {
-    host: 'localhost',
-    dialect: 'postgres',
-    define: {
-        freeTableName: true,
-    },
-});
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use('/api', routes);
 
-(async () => {
-    try {
-        await sequelize.authenticate();
-        console.log('Соединение с БД было успешно установлено');
-    } catch (e) {
-        console.log('Невозможно выполнить подключение к БД: ', e);
-    }
-})();
-
-app.get('/home', (req, res) => {
-    res.status(200).type('text/plain');
-    res.send('Home page');
-});
 
 app.listen(port, host, function () {
     console.log(`Server listens http://${host}:${port}`);

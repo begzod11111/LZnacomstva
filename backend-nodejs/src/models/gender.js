@@ -1,33 +1,30 @@
-'use strict';
-const {
-  Model,
-  DataTypes
-} = require('sequelize');
-module.exports = (sequelize) => {
-  class Gender extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
-    static associate(models) {
-      // define association here
-    }
+import mongoose from 'mongoose';
+import slugify from 'slugify';
+
+const genderSchema = new mongoose.Schema({
+  slug: {
+    type: String,
+  },
+  name: {
+    type: String,
+    required: true,
+    unique: true
   }
-  Gender.init({
-    id: {
-      allowNull: false,
-      autoIncrement: true,
-      type: DataTypes.INTEGER
-    },
-    name: {
-      allowNull: false,
-      type: DataTypes.STRING,
-        defaultValue: 'male'
-    },
-  }, {
-    sequelize,
-    modelName: 'Gender',
-  });
-  return Gender;
-};
+});
+
+genderSchema.pre('save', function(next) {
+  if (this.isNew || this.isModified('name')) {
+    this.slug = slugify(this.name, { lower: true });
+  }
+  next();
+});
+
+genderSchema.virtual('users', {
+  ref: 'User',
+  localField: '_id',
+  foreignField: 'genderId'
+});
+
+const Gender = mongoose.model('Gender', genderSchema);
+
+export default Gender;

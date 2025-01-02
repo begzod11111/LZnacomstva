@@ -1,37 +1,34 @@
-'use strict';
-const {
-  Model,
-  DataTypes
-} = require('sequelize');
-module.exports = (sequelize) => {
-  class Image extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
-    static associate(models) {
-      // define association here
+import mongoose from 'mongoose';
+
+const imageSchema = new mongoose.Schema({
+  isMain: {
+    type: Boolean,
+    default: false
+  },
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true
+  },
+  url: {
+    type: String,
+    required: true,
+    validate: {
+      validator: function(v) {
+        return /^(ftp|http|https):\/\/[^ "]+$/.test(v);
+      },
+      message: props => `${props.value} is not a valid URL!`
     }
   }
-  Image.init({
-    id: {
-      allowNull: false,
-      autoIncrement: true,
-      primaryKey: true,
-      type: DataTypes.INTEGER
-    },
-    isMain: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: false
-    },
-    url: {
-      type: DataTypes.STRING,
-      allowNull: false
-    },
-  }, {
-    sequelize,
-    modelName: 'Image',
-  });
-  return Image;
-};
+});
+
+imageSchema.virtual('user', {
+  ref: 'User',
+  localField: 'userId',
+  foreignField: '_id',
+  justOne: true
+});
+
+const Image = mongoose.model('Image', imageSchema);
+
+export default Image;

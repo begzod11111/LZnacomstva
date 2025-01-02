@@ -1,0 +1,23 @@
+{
+  "development": {
+    "username": "admin",
+    "password": "123",
+    "database": "lznacomstva_nodejs",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  },
+  "test": {
+    "username": "admin",
+    "password": "123",
+    "database": "lznacomstva_nodejs_test",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  },
+  "production": {
+    "username": "admin",
+    "password": "123",
+    "database": "lznacomstva_nodejs_prod",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  }
+}

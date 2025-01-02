@@ -1,42 +1,101 @@
-'use strict';
-const {
-  Model,
-  DataTypes
-} = require('sequelize');``
-module.exports = (sequelize) => {
-  class User extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
-    static associate(models) {
-      // define association here
-    }
+import mongoose from 'mongoose';
+import Gender from "./gender.js";
+
+const userSchema = new mongoose.Schema({
+  email: {
+    type: String,
+    required: true,
+    unique: true
+  },
+  goalMeetingId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'GoalMeeting',
+    required: false
+  },
+  genderId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Gender',
+    required: false
+  },
+  countryId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Country',
+    required: false
+  },
+  password: {
+    type: String,
+    required: true
+  },
+  firstName: {
+    type: String,
+    required: true
+  },
+  lastName: {
+    type: String,
+    required: true
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now
+  },
+  age: {
+    type: Number,
+    required: false
+  },
+  dateOfBirth: {
+    type: Date,
+    required: true
+  },
+  eyeColor: {
+    type: String,
+    enum: ['Not Answer', 'Blue', 'Black', 'White'],
+    default: 'Not Answer',
+    required: true
+  },
+  hairColor: {
+    type: String,
+    enum: ['Not Answer', 'Blue', 'Black', 'White'],
+    default: 'Not Answer',
+    required: true
+  },
+  height: {
+    type: Number,
+    required: false
+  },
+  weight: {
+    type: Number,
+    required: false
+  },
+  aboutMe: {
+    type: String,
+    required: false
   }
-  User.init({
-      id: {
-        type: DataTypes.UUID,
-        defaultValue: DataTypes.UUIDV4,
-        allowNull: false,
-        primaryKey: true
-      },
-      firstName: {
-        type: DataTypes.STRING,
-        allowNull: false
-      },
-      lastName: {
-        type: DataTypes.STRING,
-        allowNull: false
-      },
-      email: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        unique: true
-      }
-  }, {
-    sequelize,
-    modelName: 'User',
-  });
-  return User;
+});
+
+userSchema.methods.getFullName = function() {
+  return `${this.firstName} ${this.lastName}`;
 };
+
+userSchema.methods.getAge = function() {
+  if (this.dateOfBirth) {
+    const nowDate = new Date();
+    const age = nowDate - new Date(this.dateOfBirth);
+    return Math.floor(age / (1000 * 60 * 60 * 24 * 365));
+  }
+  return null;
+};
+
+userSchema.pre('save', async function(next) {
+  if (this.dateOfBirth) this.age = this.getAge();
+  try {
+    if (!this.genderId) {
+      const genderId = await Gender.findOne({name: 'male'});
+      this.genderId = genderId._id;
+    }
+  } catch (e) {return next(e)}
+  next();
+})
+
+const User = mongoose.model('User', userSchema);
+
+export default User;
