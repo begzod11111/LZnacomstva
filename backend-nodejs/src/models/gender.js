@@ -9,7 +9,7 @@ const genderSchema = new mongoose.Schema({
     type: String,
     required: true,
     unique: true
-  }
+  },
 });
 
 genderSchema.pre('save', function(next) {

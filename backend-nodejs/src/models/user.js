@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import Gender from "./gender.js";
+import Image from "./image.js";
 
 const userSchema = new mongoose.Schema({
   email: {
@@ -46,6 +47,10 @@ const userSchema = new mongoose.Schema({
     type: Date,
     required: true
   },
+  isAdmin: {
+    type: Boolean,
+    default: false
+  },
   eyeColor: {
     type: String,
     enum: ['Not Answer', 'Blue', 'Black', 'White'],
@@ -69,12 +74,24 @@ const userSchema = new mongoose.Schema({
   aboutMe: {
     type: String,
     required: false
-  }
+  },
+  // images: [{
+  //   type: mongoose.Schema.Types.ObjectId,
+  //   ref: 'Image',
+  // }]
 });
+
+userSchema.virtual('images', {
+  ref: Image,
+  localField: '_id',
+  foreignField: 'userId'
+});
+
 
 userSchema.methods.getFullName = function() {
   return `${this.firstName} ${this.lastName}`;
 };
+
 
 userSchema.methods.getAge = function() {
   if (this.dateOfBirth) {
@@ -87,12 +104,6 @@ userSchema.methods.getAge = function() {
 
 userSchema.pre('save', async function(next) {
   if (this.dateOfBirth) this.age = this.getAge();
-  try {
-    if (!this.genderId) {
-      const genderId = await Gender.findOne({name: 'male'});
-      this.genderId = genderId._id;
-    }
-  } catch (e) {return next(e)}
   next();
 })
 
