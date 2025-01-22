@@ -4,10 +4,6 @@ import { models } from '../config/database.js';
 import GenderServes from "../serves/genderServes.js";
 
 router.route(`/(:slug)?`)
-    .all((req, res, next) => {
-        console.log('Someone made a request to', req.path);
-        next();
-    })
     .get(async (req, res) => {
         const genderServes = new GenderServes(req);
         if (req.params.slug) {
