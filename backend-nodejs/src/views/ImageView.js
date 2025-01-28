@@ -31,12 +31,14 @@ export default class ImageView {
     }
 
     static async create(req, res) {
-         try {
-             const result = await ImageServes.create({...req.body, userId: req.user.id});
-             if (result.error) {
-                 res.status(400).json({message: 'Error creating image', error: result.error});
-             } else {
-                 res.status(201).json({message: 'Image created', image: result.image});}
+
+        try {
+            const result = await ImageServes.create({...req.body, userId: req.user._id});
+            if (result.error) {
+                res.status(400).json({message: 'Error creating image', error: result.error});
+            } else {
+                res.status(201).json({message: 'Image created', image: result.image});
+            }
         } catch (e) { return { error: e.message }}
     }
 

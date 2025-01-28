@@ -74,11 +74,7 @@ const userSchema = new mongoose.Schema({
   aboutMe: {
     type: String,
     required: false
-  },
-  // images: [{
-  //   type: mongoose.Schema.Types.ObjectId,
-  //   ref: 'Image',
-  // }]
+  }
 });
 
 userSchema.virtual('images', {
@@ -92,7 +88,6 @@ userSchema.methods.getFullName = function() {
   return `${this.firstName} ${this.lastName}`;
 };
 
-
 userSchema.methods.getAge = function() {
   if (this.dateOfBirth) {
     const nowDate = new Date();
@@ -104,6 +99,12 @@ userSchema.methods.getAge = function() {
 
 userSchema.pre('save', async function(next) {
   if (this.dateOfBirth) this.age = this.getAge();
+  try {
+    if (!this.genderId) {
+      const genderId = await Gender.findOne({name: 'male'});
+      this.genderId = genderId._id;
+    }
+  } catch (e) {return next(e)}
   next();
 })
 

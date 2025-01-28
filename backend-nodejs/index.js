@@ -21,9 +21,7 @@ app.use(authenticateToken);
 app.use('/api', routes);
 app.use('/admin', adminRouters)
 
-app.post('/test/:id', authenticateUser, (req, res) => {
-    res.json({message: 'Test', data: req.params});
-});
+
 app.listen(port, host, function () {
     console.log(`Server listens http://${host}:${port}`);
 });

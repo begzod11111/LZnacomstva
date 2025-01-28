@@ -22,6 +22,4 @@ router.use('/genders', genderRouter);
 router.use('/users', userRouter);
 router.use('/countries', countryRouter);
 
-
-
 export default router;

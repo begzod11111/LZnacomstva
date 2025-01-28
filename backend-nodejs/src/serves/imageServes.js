@@ -26,7 +26,6 @@ export default class ImageServes {
 
     static async create(data) {
         try {
-            console.log(data);
             const doc = new Image(data)
             const image = await doc.save();
             return {image, message: 'image in created', error: null};

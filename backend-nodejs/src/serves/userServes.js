@@ -70,7 +70,6 @@ export default class UserServes {
     }
   }
 
-
   static async update(userId, data) {
     try {
       const user = await User.findByIdAndUpdate(userId, data, {
