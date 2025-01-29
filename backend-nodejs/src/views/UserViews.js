@@ -27,10 +27,16 @@ export default class UserViews {
         }
     }
     static async getAll(req, res) {
+        if (req.query) {
+            console.log(req.query)
+            const result = await userServes.getUsersWithQuery(req.query);
+            if (result.error) {
+                return res.status(400).json({message: 'Error getting users', error: result.error});
+            } else return res.status(200).json({users: result.users});}
         const result = await userServes.getUsersWithPhotos();
         if (result.error) {
             res.status(400).json({message: 'Error getting users', error: result.error});
-        } else res.status(200).json({users: result.users});
+        } else res.status(200).json({users: result});
     }
 
     static async getById(req, res) {
