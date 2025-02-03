@@ -1,4 +1,3 @@
-import mongoose from "mongoose";
 import Country from "../models/country.js";
 
 export default class CountryServes {
@@ -16,8 +15,7 @@ export default class CountryServes {
 
     static getAll = async () => {
         try {
-            const result = await Country.find(undefined, undefined, undefined);
-            return result;
+            return await Country.find(undefined, undefined, undefined);
         } catch (err) {
             return { error: err.message };
         }

@@ -23,11 +23,11 @@ function QuestionnaireList() {
 
 
     useEffect(() => {
-        let urlAPI = `http://127.0.0.1:8000/api/v1/goal-meeting/`
+        let urlAPI = `http://127.0.0.1:8000/api/goal-meeting/`
         if (goalMeetingSlug){
             urlAPI =`${GOAL_MEETING_URL}${goalMeetingSlug}`;
         }
-        axios.defaults.headers.common['Authorization'] = `JWT ${localStorage.getItem('accessToken')}`;
+        axios.defaults.headers.common['Authorization'] = `Token ${localStorage.getItem('accessToken')}`;
         axios.get(urlAPI)
         .then(function (response) {
             if (response.data.length){

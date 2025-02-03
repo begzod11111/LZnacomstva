@@ -3,6 +3,7 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import {secretKey} from '../config/database.js';
 import Gender from "../models/gender.js";
+import Country from "../models/country.js";
 
 export default class UserServes {
 
@@ -23,22 +24,13 @@ export default class UserServes {
         });
     }
 
-    static createToken(user) {
-        const payload = {
-            id: user._id,
-            email: user.email,
-            isAdmin: user.isAdmin,
-        }
-        return jwt.sign({payload}, secretKey, {expiresIn: '24h'});
-    }
 
     static async create(data) {
         try {
             data.password = await bcrypt.hash(data.password, 10)
             const doc = await UserServes.createDoc(data);
             const user = await doc.save()
-            const token = UserServes.createToken(user);
-            return {message: 'User created', user, token, error: null};
+            return {message: 'User created', user, error: null};
         } catch (e) {
             return {error: e.message};
         }
@@ -46,15 +38,15 @@ export default class UserServes {
 
     static async getUsersWithQuery(query) {
         try {
+            const filter = {};
             if (query.gender) {
-                query.gender = (await Gender.findOne({name: query.gender}).select('_id').exec())._id;
+                filter.genderId = (await Gender.findOne({name: query.gender}).select('_id').exec())._id;
+            }
+            if (query.country){
+                filter.countryId = (await Country.findOne({name: query.country}).select('_id').exec())._id;
             }
 
-            const users = await User.find({
-                genderId: query.gender,
-            }).populate('images').select(
-                'email firstName lastName dateOfBirth genderId isAdmin eyeColor hairColor'
-            ).exec();
+            const users = await User.find(filter).populate('images').exec();
             return {users: users.map(e => {
                 const images = e.images;
                 return {...e._doc, images};
@@ -104,19 +96,5 @@ export default class UserServes {
     } catch (e) {return { error: e.message }}
   }
 
-  static async login(data) {
-    try {
-      const user = await User.findOne({email: data.email});
-      if (!user) {
-          return { error: 'User not found' };
-      }
-      const match = await bcrypt.compare(data.password, user.password);
-      if (!match) {
-          return { error: 'Invalid params' };
-      }
-      return { token: UserServes.createToken(user), error: null };
-    } catch (e) {
-      return { error: e.message };
-    }
-  }
+
 }

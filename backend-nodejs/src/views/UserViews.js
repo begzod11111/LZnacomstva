@@ -1,8 +1,9 @@
 import userServes from '../serves/userServes.js';
+import JwtServes from "../serves/jwtServes.js";
 
 export default class UserViews {
     static async login(req, res) {
-        const result = await userServes.login(req.body);
+        const result = await JwtServes.create(req.body);
         if (result.error) {
             res.status(400).json({message: 'Error logging in', error: result.error});
         } else {
@@ -14,7 +15,8 @@ export default class UserViews {
         if (result.error) {
             res.status(400).json({message: 'Error creating user', error: result.error});
         } else {
-            res.status(201).json({message: 'User created', user: result.user});
+            const token = await JwtServes.getToken(result.user);
+            res.status(201).json({...result, token});
         }
     }
     static async remove(req, res) {
@@ -27,16 +29,10 @@ export default class UserViews {
         }
     }
     static async getAll(req, res) {
-        if (req.query) {
-            console.log(req.query)
-            const result = await userServes.getUsersWithQuery(req.query);
-            if (result.error) {
-                return res.status(400).json({message: 'Error getting users', error: result.error});
-            } else return res.status(200).json({users: result.users});}
-        const result = await userServes.getUsersWithPhotos();
+        const result = await userServes.getUsersWithQuery(req.query);
         if (result.error) {
             res.status(400).json({message: 'Error getting users', error: result.error});
-        } else res.status(200).json({users: result});
+        } else res.status(200).json(result);
     }
 
     static async getById(req, res) {

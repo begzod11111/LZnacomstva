@@ -47,6 +47,9 @@ export default class ImageServes {
     static async delete(id) {
         try {
             const image = await Image.findByIdAndDelete(id);
+            if (!image) {
+                return {error: 'image not found'};
+            }
             return {message: 'image is deleted', image, error: null};
         } catch (e) {return {error: e.message}}
 

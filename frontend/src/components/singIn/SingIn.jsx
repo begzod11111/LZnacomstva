@@ -35,7 +35,7 @@ export default function SingIn() {
     const passwordRef = useRef(null);
 
     function sendForm(){
-        if (!data.email && !data.password) {
+        if (!data.email || !data.password) {
             emailRef.current.classList.add(classesBt.not_correct)
             passwordRef.current.classList.add(classesBt.not_correct)
             setNotification({
@@ -47,16 +47,14 @@ export default function SingIn() {
         }
         axios({
             method: "post",
-            url: CREATE_TOKEN_URL,
+            url: "http://127.0.0.1:7000/auth/sing-in/",
             data: data
         })
         .then(function (response) {
-            const refreshToken = response.data['refresh']
-            const accessToken = response.data['access']
-            if (accessToken && refreshToken){
+            const accessToken = response.data['token']
+            if (accessToken){
                 localStorage.setItem('accessToken', accessToken);
-                localStorage.setItem('refreshToken', refreshToken);
-                if (localStorage.getItem('accessToken') && localStorage.getItem('refreshToken')){
+                if (localStorage.getItem('accessToken')){
                     setNotification({
                         'message': 'Вы успешно авторизовались',
                         'type': 'success',
@@ -68,6 +66,7 @@ export default function SingIn() {
         })
         .catch(function (error) {
             if (!error.response) {
+                console.log(error)
                 // Обработка ошибок, когда нет ответа от сервера
                 setNotification({
                     'message': 'Ошибка сети',

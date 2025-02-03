@@ -1,7 +1,8 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {useLocation, useNavigate} from 'react-router-dom';
-import { getToken } from './auth';
+import { verifyToken } from './auth';
 import {NotificationContext} from "../contexts/context";
+import axios from "axios";
 
 function withAuthCheck(WrappedComponent) {
     return function(props) {
@@ -13,11 +14,10 @@ function withAuthCheck(WrappedComponent) {
 
         useEffect(() => {
             const fetchToken = async () => {
-                const fetchedToken = await getToken();
+                const fetchedToken = await verifyToken(localStorage.getItem('accessToken'));
                 setToken(fetchedToken);
             };
             fetchToken().then(
-
                 error => console.log()// Функция, которая будет вызвана, если промис завершится с ошибкой
             );
         }, []);

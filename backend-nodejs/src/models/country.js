@@ -29,10 +29,13 @@ const countrySchema = new mongoose.Schema({
       message: 'Flag must be a valid URL'
     }
   },
-  users: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User'
-  }]
+});
+
+countrySchema.virtual('users', {
+    ref: 'User',
+    localField: '_id',
+    foreignField: 'countryId',
+    justOne: false
 });
 
 countrySchema.pre('save', function(next) {

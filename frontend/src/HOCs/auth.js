@@ -4,7 +4,7 @@ import {REFRESH_TOKEN_URL, VERIFY_TOKEN_URL} from "../apiUrls";
 import {useLocation} from "react-router-dom";
 import {useEffect, useState} from "react";
 
-async function verifyToken(token) {
+export async function verifyToken(token) {
     try {
         const response = await axios.post(VERIFY_TOKEN_URL, {
             token: token
@@ -20,7 +20,7 @@ async function verifyToken(token) {
 async function getRefreshToken(refreshToken) {
 
     try {
-        const response = await axios.post(REFRESH_TOKEN_URL, {
+        const response = await axios.post(VERIFY_TOKEN_URL, {
             refresh: refreshToken
         });
 
@@ -34,23 +34,8 @@ async function getRefreshToken(refreshToken) {
 }
 
 export async function getToken() {
-    const refreshToken = localStorage.getItem('refreshToken');
     const accessToken = localStorage.getItem('accessToken');
-    if (!refreshToken && !accessToken) {
+    if (!accessToken) {
         return false;
-    }
-    const isTokenValid = await verifyToken(accessToken);
-    if (isTokenValid) {
-        return accessToken;
-    } else {
-        const newAccessToken = await getRefreshToken(refreshToken);
-        if (newAccessToken) {
-            localStorage.setItem('accessToken', newAccessToken);
-            return newAccessToken;
-        } else {
-            localStorage.removeItem('accessToken')
-            localStorage.removeItem('refreshToken')
-            return false;
-        }
-    }
+    } else return accessToken;
 }

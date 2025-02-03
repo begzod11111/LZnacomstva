@@ -24,23 +24,23 @@ import classesBt from '../UI/input/mainInput.module.css'
 
 function SingUp() {
     const [formData, setFormData] = useState({
-        first_name: '',
-        last_name: '',
+        firstName: '',
+        lastName: '',
         email: '',
         password: '',
     })
-    const [refsDate, setRefsDate] = useState({
+    const [refsDate] = useState({
         day: useRef(null),
         year: useRef(null),
         select: useRef(null),
     });
     const [dateOfBirth, setDateOfBirth] = useState(null)
     const navigate = useNavigate();
-    const [gender, setGender] = useState(1);
+    const [genderId, setGenderId] = useState(1);
     const { setNotification } = useContext(NotificationContext);
-    const [refsInputs, setRefsInputs] = useState({
-        first_name: useRef(null),
-        last_name: useRef(null),
+    const [refsInputs] = useState({
+        firstName: useRef(null),
+        lastName: useRef(null),
         email: useRef(null),
         password: useRef(null),
     })
@@ -59,14 +59,14 @@ function SingUp() {
     }, []);
 
     const getGender = useCallback((newGender) => {
-        setGender(newGender);
+        setGenderId(newGender);
     }, []);
 
     const inCorrectCheckInputs = () => {
-        if (!formData.first_name){
-            refsInputs.first_name.current.classList.add(classesBt.not_correct);
-        } if (!formData.last_name){
-            refsInputs.last_name.current.classList.add(classesBt.not_correct);
+        if (!formData.firstName){
+            refsInputs.firstName.current.classList.add(classesBt.not_correct);
+        } if (!formData.lastName){
+            refsInputs.lastName.current.classList.add(classesBt.not_correct);
         } if (!formData.email){
             refsInputs.email.current.classList.add(classesBt.not_correct);
         } if (!formData.password){
@@ -79,7 +79,7 @@ function SingUp() {
     }
 
     const GetQuestionnaire = useCallback(async () => {
-        if (!formData.first_name || !formData.last_name || !formData.email || !formData.password || dateOfBirth === null){
+        if (!formData.firstName || !formData.lastName || !formData.email || !formData.password || dateOfBirth === null){
             setNotification({
                 'message': 'Заполните все поля',
                 'type': 'warning',
@@ -88,17 +88,20 @@ function SingUp() {
             inCorrectCheckInputs();
             return
         }
+        console.log({
+            ...formData,
+            dateOfBirth,
+            genderId
+        })
         let status;
+
         try {
-            let dateStr = dateOfBirth.toISOString()['split']('T')[0];
             const response = await axios.post(
                 AUTH_USERS_URL,
                 {
                     ...formData,
-                    profile: {
-                        date_of_birth: dateStr,
-                    },
-                    gender: gender
+                    dateOfBirth,
+                    genderId
                 }
             );
             status = response?.['status'];
@@ -127,8 +130,8 @@ function SingUp() {
                 });
             }
         }
-    }, [formData, dateOfBirth, navigate, gender]);
 
+    }, [formData, dateOfBirth, navigate, genderId]);
 
     return (
         <>
@@ -142,17 +145,17 @@ function SingUp() {
                 hText='Создай новый аккаунт'
                 pText='Присоединяйся к сообществу из 518 млн человек!'>
                 <MainInput
-                    ref={refsInputs.first_name}
+                    ref={refsInputs.firstName}
                     icon={<FaUser/>}
                     placeholder='Ваше имя'
-                    name='first_name'
-                    onChange={event => formDateChange('first_name', event.target.value)}/>
+                    name='firstName'
+                    onChange={event => formDateChange('firstName', event.target.value)}/>
                 <MainInput
-                    ref={refsInputs.last_name}
+                    ref={refsInputs.lastName}
                     icon={<FaUser/>}
                     placeholder='Ваше фамилия'
-                    name='last_name'
-                    onChange={event => formDateChange('last_name', event.target.value)}/>
+                    name='lastName'
+                    onChange={event => formDateChange('lastName', event.target.value)}/>
                 <DataTimeInput refs={refsDate} collBackFunc={getDateOfBirth} />
                 <CheckBoxGender collBackFunc={getGender}/>
                 <MainInput

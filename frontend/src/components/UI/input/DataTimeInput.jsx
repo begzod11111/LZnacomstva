@@ -68,7 +68,7 @@ function DataTimeInput({collBackFunc, defaultValue, refs}) {
             }
         }
         if (isDayCorrect && isYearCorrect && date.month !== 0 && date.month !== 'Months'){
-            let selectedDate = new Date(`${date.year}-${date.month}-${date.day}`);
+            let selectedDate = new Date(`${date.year}-${date.month}-${date.day}`).toISOString().split('.')[0] + 'Z';
             collBackFunc(selectedDate);
         } else {
             if (date.day === 0){

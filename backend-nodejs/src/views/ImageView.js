@@ -1,4 +1,7 @@
 import ImageServes from "../serves/imageServes.js";
+import {details} from "../config/constants.js";
+import path from "path";
+
 
 
 export default class ImageView {
@@ -13,7 +16,6 @@ export default class ImageView {
     static async delete(req, res) {
         try {
             const result = await ImageServes.delete(req.params.id);
-            console.log(result)
             if (result.error) {
                 res.status(400).json({message: 'Error deleting image', error: result.error});
             } else res.status(200).json({message: 'Image deleted', image: result.image});
@@ -31,13 +33,16 @@ export default class ImageView {
     }
 
     static async create(req, res) {
-
         try {
-            const result = await ImageServes.create({...req.body, userId: req.user._id});
+
+            const result = await ImageServes.create({
+                url: details.siteUrl + '/' + req.file.path.split('\\').slice(1).join('/'),
+                userId: req.user.id
+            });
             if (result.error) {
                 res.status(400).json({message: 'Error creating image', error: result.error});
             } else {
-                res.status(201).json({message: 'Image created', image: result.image});
+                res.status(201).json({message: 'Image created', image: result.image, file: req.file});
             }
         } catch (e) { return { error: e.message }}
     }
