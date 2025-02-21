@@ -11,7 +11,7 @@ router.route(`/`)
         if (result.error) {
             res.status(400).json({message: 'Error getting goal meetings', error: result.error.message});
         } else {
-            res.status(200).json({message: 'Goal meetings', goalMeetings: result.result});
+            res.status(200).json(result.goalMeetings);
         }
     })
     .post(async (req, res) => {
@@ -30,14 +30,22 @@ router.route(`/`)
             res.status(200).json({message: 'Goal meeting updated', goalMeeting: result.doc});
         }
     }, authenticateAdmin)
+
+router.route(`/:slug`)
+    .get(async (req, res) => {
+        const result = await goalMeetingServes.get(req.params.slug);
+        if (result.error) {
+            res.status(400).json({message: 'Error getting goal meeting', error: result.error.message});
+        } else {
+            res.status(200).json({data: result.doc});
+        }
+    })
     .delete(async (req, res) => {
-        const result = await goalMeetingServes.delete(req.body.id);
+        const result = await goalMeetingServes.delete(req.params.slug);
         if (result.error) {
             res.status(400).json({message: 'Error deleting goal meeting', error: result.error.message});
         } else {
             res.status(200).json({message: 'Goal meeting deleted'});
         }
     }, authenticateAdmin);
-
-
 export default router;

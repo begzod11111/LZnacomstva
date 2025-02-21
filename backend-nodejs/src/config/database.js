@@ -1,4 +1,3 @@
-import { Sequelize, DataTypes } from 'sequelize';
 import user from '../models/user.js';
 import gender from "../models/gender.js";
 import GoalMeeting from "../models/goalmeeting.js";
@@ -13,19 +12,27 @@ import {fileURLToPath} from "url";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
+const images = (req, file, cb) => {
+
+}
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        const userDir = `uploads/avatars/${req.user.id}`;
+        let dir = ''
+        if (req.body.name) {
+            dir = `uploads/countries/${req.body.name}`;
+        } else dir = `uploads/avatars/${req.user.id}`;
 
         // Проверка существования директории и создание, если она не существует
-        if (!fs.existsSync(userDir)) {
-            fs.mkdirSync(userDir, { recursive: true });
+        if (!fs.existsSync(dir)) {
+            fs.mkdirSync(dir, { recursive: true });
         }
 
-        cb(null, userDir); // Папка для загрузки файлов
+        cb(null, dir); // Папка для загрузки файлов
     },
     filename: (req, file, cb) => {
-        cb(null, Date.now() + path.extname(file.originalname)); // Добавление временной метки к имени файла
+        if (req.body.name) {
+            cb(null, req.body.name + path.extname(file.originalname));
+        } else cb(null, Date.now() + path.extname(file.originalname));
     }
 });
 
@@ -45,6 +52,8 @@ export const upload = multer({ storage: storage });
       console.error(err);
   });
 })();
+
+
 
 export const secretKey = 'begzod0426'
 export const models = {

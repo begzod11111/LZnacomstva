@@ -1,5 +1,8 @@
 import {models} from "../config/database.js";
 import Image from "../models/image.js";
+import fs from "fs";
+import path from "path";
+import {__dirname} from "../../uploads/path.js";
 
 export default class ImageServes {
     constructor(req) {
@@ -12,6 +15,18 @@ export default class ImageServes {
             return {image, error: null};
         } catch (error) {
             return {error: error.message};
+        }
+    }
+
+    static getImageFile = async (id) => {
+        try {
+            const image = await Image.findById(id).select('file');
+            if (!image) {
+                return {error: 'image not found'};
+            }
+            return {image, error: null};
+        } catch (e) {
+            return {error: e.message};
         }
     }
 
@@ -53,5 +68,12 @@ export default class ImageServes {
             return {message: 'image is deleted', image, error: null};
         } catch (e) {return {error: e.message}}
 
+    }
+
+    static async clear() {
+        try {
+            const images = await models.image.deleteMany();
+            return {message: 'images are deleted', images, error: null};
+        } catch (e) {return {error: e.message}}
     }
 }

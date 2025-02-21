@@ -19,6 +19,10 @@ const countrySchema = new mongoose.Schema({
       return slugify(this.name, { lower: true });
     }
   },
+  file: {
+    type: Object,
+    required: true
+  },
   flag: {
     type: String,
     required: true,

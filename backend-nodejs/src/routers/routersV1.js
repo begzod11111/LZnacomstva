@@ -1,0 +1,54 @@
+import express from 'express';
+import userRouter from './userRouter.js'
+import genderRouter from './genderRouter.js'
+import countryRouter from "./countryRouter.js";
+import goalMeetingRouter from "./goalMeetingRouter.js";
+import authRouter from "./jwtRouter.js";
+import authenticateToken from "../middlewares/authenticateToken.js";
+import authenticateUser from "../middlewares/authenticateUser.js";
+import imageRouter from "./imageRouter.js";
+import authenticateImage from "../middlewares/authenticateImage.js";
+import {models} from "../config/database.js";
+
+const routerV1 = express.Router();
+
+
+routerV1.route('/main')
+    .get(async (req, res) => {
+        try {
+            const docs = await models.GoalMeeting.find().select(
+                '-__v'
+            ).populate({
+                path: 'users',
+                select: 'firstName age goalMeetingId genderId images',
+                populate: [
+                    {
+                        path: 'images',
+                        select: 'url -userId',
+                        match: {isMain: true},
+                    },
+                    {
+                        path: 'countryId',
+                        select: 'flag -_id'
+                    }
+                ]
+            }).exec() || null // Ожидаем выполнения запроса
+
+            if (!docs) return {error: {message: 'Goal meeting not found'}}; // Если документ не найден, возвращаем ошибку
+            const result = await Promise.all(docs.map(async (item) => {
+                const users = await Promise.all(item.users.map(async (user) => {
+                    const image = user.images;
+                    const flagPhoto = user.countryId.flag;
+                    delete user._doc.countryId;
+                    return {...user._doc, photo: image[0].url, flag: flagPhoto};
+
+                }));
+                return {...item._doc, users};
+            }));
+            return res.status(200).json({error: null, result});
+        } catch (e) {
+            return res.status(400).json({error: e});
+        }
+    });
+
+export default routerV1;

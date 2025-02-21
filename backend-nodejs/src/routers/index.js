@@ -9,6 +9,7 @@ import authenticateToken from "../middlewares/authenticateToken.js";
 import authenticateUser from "../middlewares/authenticateUser.js";
 import imageRouter from "./imageRouter.js";
 import authenticateImage from "../middlewares/authenticateImage.js";
+import routerV1 from "./routersV1.js";
 
 const router = express.Router();
 
@@ -20,5 +21,6 @@ router.use('/genders', genderRouter);
 router.use('/users', userRouter);
 router.use('/countries', countryRouter);
 router.use('/goal-meetings', goalMeetingRouter);
+router.use('/v1', routerV1);
 
 export default router;

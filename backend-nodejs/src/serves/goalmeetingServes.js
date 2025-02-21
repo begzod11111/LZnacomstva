@@ -1,4 +1,6 @@
 import {models} from "../config/database.js";
+import image from "../models/image.js";
+
 
 export default  class goalMeetingServes {
     static async create(name) {
@@ -13,9 +15,10 @@ export default  class goalMeetingServes {
         }
     }
 
-    static async get(id) {
+    static async get(slug) {
         try {
-            const doc = await models.GoalMeeting.findById(id);
+            const doc = await models.GoalMeeting.findOne({slug}).populate('users').exec() || null; // Ожидаем выполнения запроса
+            if (!doc) return {error: {message: 'Goal meeting not found'}}; // Если документ не найден, возвращаем ошибку
             return {error: null, doc};
         } catch (e) {
             return {error: e};
@@ -24,16 +27,16 @@ export default  class goalMeetingServes {
 
     static async getAll() {
         try {
-            const doc = await models.GoalMeeting.find().populate('users');
-            const result = doc.map(item => {
-                const users = item.users;
-                return {users, ...item._doc};
-            })
-            return {error: null, result};
+            const docs = await models.GoalMeeting.find() || null;
+
+            if (!docs) return {error: {message: 'Goal meeting not found'}}; // Если документ не найден, возвращаем ошибку
+
+            return {error: null, goalMeetings: docs};
         } catch (e) {
             return {error: e};
         }
     }
+
 
     static async update(id, name) {
         try {
@@ -45,6 +48,11 @@ export default  class goalMeetingServes {
     }
 
     static async delete(req, res) {
-        res.send('deleteGoalMeeting');
+        try {
+            const doc = await models.GoalMeeting.findOneAndDelete({slug: req.params.slug});
+            return {error: null, doc};
+        } catch (e) {
+            return {error: e};
+        }
     }
 }

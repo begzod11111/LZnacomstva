@@ -23,18 +23,14 @@ function QuestionnaireList() {
 
 
     useEffect(() => {
-        let urlAPI = `http://127.0.0.1:8000/api/goal-meeting/`
+        let urlAPI = `http://127.0.0.1:7000/api/goal-meetings/`
         if (goalMeetingSlug){
             urlAPI =`${GOAL_MEETING_URL}${goalMeetingSlug}`;
         }
         axios.defaults.headers.common['Authorization'] = `Token ${localStorage.getItem('accessToken')}`;
         axios.get(urlAPI)
         .then(function (response) {
-            if (response.data.length){
-                setData(response.data)
-            } else {
-                setData([response.data])
-            }
+            console.log(response.data)
         })
         .catch(function (error) {
 
@@ -58,7 +54,7 @@ function QuestionnaireList() {
             <QuestionnairesCt>
                 {
                     data.map(cat =>
-                        cat['accounts'].length
+                        cat['users'].length
                             ?
                         <React.Fragment key={cat.id}>
                             <CategoryName category={cat.name} url={cat['slug']} />

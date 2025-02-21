@@ -6,25 +6,30 @@ import authenticateUser from "../middlewares/authenticateUser.js";
 import authenticateImage from "../middlewares/authenticateImage.js";
 const router = express.Router();
 import {upload} from "../config/database.js";
-import path from "path";
+import {__dirname} from "../../uploads/path.js";
+import path, {dirname} from "path";
+
 import { fileURLToPath } from 'url';
+
+router.route('/')
+    .get(ImageView.getAll)
+    .post(upload.single('file'), ImageView.create)
+    .delete(async (req, res) => {
+        const images = await ImageServes.clear();
+        res.status(200).json({message: 'images deleted'});
+    });
+
 
 router.route('/:id')
     .get(ImageView.get)
     .delete(ImageView.delete)
-    .patch(ImageView.update)
+    .patch(upload.single('file'), ImageView.update)
 
-router.route('/')
-    .get(ImageView.getAll)
-    .post(upload.single('file'), ImageView.create);
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 router.get('/photo/:filename', (req, res) => {
     const filename = req.params.filename;
-    const filepath = path.join(__dirname, 'uploads', filename);
-
+    const filepath = path.join(__dirname, `avatars/${req.user.id}`, filename);
     res.sendFile(filepath, (err) => {
         if (err) {
             res.status(404).send('Файл не найден');
