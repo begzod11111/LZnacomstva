@@ -80,7 +80,7 @@ const userSchema = new mongoose.Schema({
 userSchema.virtual('images', {
   ref: Image,
   localField: '_id',
-  foreignField: 'userId'
+  foreignField: '_referenceId'
 });
 
 

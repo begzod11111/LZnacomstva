@@ -35,6 +35,13 @@ const countrySchema = new mongoose.Schema({
   },
 });
 
+countrySchema.virtual('image', {
+  ref: 'Image',
+  localField: '_id',
+  foreignField: '_referenceId',
+  justOne: true
+});
+
 countrySchema.virtual('users', {
     ref: 'User',
     localField: '_id',

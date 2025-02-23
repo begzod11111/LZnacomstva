@@ -8,14 +8,14 @@ import authRouter from "./jwtRouter.js";
 import authenticateToken from "../middlewares/authenticateToken.js";
 import authenticateUser from "../middlewares/authenticateUser.js";
 import imageRouter from "./imageRouter.js";
-import authenticateImage from "../middlewares/authenticateImage.js";
+import imageMiddleware from "../middlewares/imageMiddlewares.js";
 import routerV1 from "./routersV1.js";
 
 const router = express.Router();
 
 
 router.use('/users/:id', authenticateUser);
-router.use('/images/:id', authenticateImage);
+router.use('/images/:id', imageMiddleware);
 router.use('/images', imageRouter);
 router.use('/genders', genderRouter);
 router.use('/users', userRouter);

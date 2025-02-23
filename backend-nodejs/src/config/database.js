@@ -8,19 +8,23 @@ import multer from "multer";
 import path, {dirname} from "path";
 import fs from "fs";
 import {fileURLToPath} from "url";
+import Busboy from "busboy";
 
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-const images = (req, file, cb) => {
 
-}
+// src/config/database.js
+
 const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        let dir = ''
-        if (req.body.name) {
-            dir = `uploads/countries/${req.body.name}`;
-        } else dir = `uploads/avatars/${req.user.id}`;
+    destination: async (req, file, cb) => {
+        let dir = '';
+        if (req.body.referenceModel) {
+            dir = `uploads/${req.body.referenceModel}/${req.body.name || req.user.id}`;
+        } else {
+            dir = `uploads/avatars/${req.user.id}`;
+        }
+        console.log(req.body)
 
         // Проверка существования директории и создание, если она не существует
         if (!fs.existsSync(dir)) {
@@ -32,11 +36,15 @@ const storage = multer.diskStorage({
     filename: (req, file, cb) => {
         if (req.body.name) {
             cb(null, req.body.name + path.extname(file.originalname));
-        } else cb(null, Date.now() + path.extname(file.originalname));
+        } else {
+            cb(null, Date.now() + path.extname(file.originalname));
+        }
     }
 });
 
+
 export const upload = multer({ storage: storage });
+
 
 (async () => {
     await mongoose.connect('mongodb+srv://begzod:begzod0426@begzod.5alev.mongodb.net/?retryWrites=true&w=majority&appName=begzod',

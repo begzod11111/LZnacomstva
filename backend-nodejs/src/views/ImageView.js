@@ -4,6 +4,7 @@ import fs from "fs/promises";
 import {__dirname} from "../../uploads/path.js";
 import {clearDir, getAvatarPath, getPath} from "../config/constants.js";
 import {DirAvatar} from "../config/constants.js";
+import mongoose from "mongoose";
 
 
 
@@ -49,20 +50,24 @@ export default class ImageView {
     }
 
     static async create(req, res) {
-        try {
-            const result = await ImageServes.create({
-                file: req.file,
-                url: getPath(req.file.path),
-                userId: req.user.id
-            });
-            if (result.error) {
-                res.status(400).json({message: 'Error creating image', error: result.error});
-            } else {
-                res.status(201).json({message: 'Image created', image: result.image, file: req.file});
-            }
-        } catch (e) {
-            res.status(400).json({message: 'Error creating image', error: e.message});
-        }
+
+        res.status(200).json({message: 'Image created', file: req.body});
+        // const data = {
+        //     file: req.fields.file,
+        //     url: getPath(req.fields.file.path),
+        //     _referenceModel: req.fields.referenceModel,
+        //     _referenceId: req.fields.referenceId,
+        // }
+        // try {
+        //     const result = await ImageServes.create(data);
+        //     if (result.error) {
+        //         res.status(400).json({message: 'Error creating image', error: result.error});
+        //     } else {
+        //         res.status(201).json({message: 'Image created', image: result.image, file: req.file});
+        //     }
+        // } catch (e) {
+        //     res.status(400).json({message: 'Error creating image', error: e.message});
+        // }
     }
 
     static async update(req, res) {

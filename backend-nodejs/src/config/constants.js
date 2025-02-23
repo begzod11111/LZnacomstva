@@ -36,7 +36,6 @@ class Dir {
             console.error(err);
         }
     }
-
     async getFile (filename){
         try {
             return await fs.readFile(path.join(this.path, filename));
@@ -55,6 +54,9 @@ class Dir {
     getAvatarPath(userId) {
         return path.join(__dirname, 'avatars', userId.toString());
     }
+    getCountryPath(countryName){
+        return this.path = path.join(__dirname, 'countries', countryName);
+    }
 }
 
 export class DirAvatar extends Dir {
@@ -66,7 +68,7 @@ export class DirAvatar extends Dir {
 export class DirCountry extends Dir {
     constructor(countryName) {
         super();
-        this.path = path.join(__dirname, 'countries', countryName);
+        this.path = this.getCountryPath(countryName);
     }
 }
 
@@ -77,6 +79,12 @@ export function getAvatarPath (id){
 export function getPath (path){
     return siteUrl + '/' + path.split('\\').slice(1).join('/')
 }
+
+export function getUploadPath (category, id){
+    return path.join('uploads', category, id.toString())
+}
+
+export const referenceModelsArray = ["User", "Chat", "Country", "Message"];
 
 export const details = {
     host,

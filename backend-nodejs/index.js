@@ -1,15 +1,15 @@
 import express from 'express';
 import routes from './src/routers/index.js'
-import User from "./src/models/user.js";
 import cors from 'cors';
-import mongoose from 'mongoose';
-import authenticateUser from "./src/middlewares/authenticateUser.js";
 import authenticateToken from "./src/middlewares/authenticateToken.js";
 import adminRouters from "./src/routers/adminRouters.js";
 import authRouter from "./src/routers/jwtRouter.js";
 import {details} from "./src/config/constants.js";
 import {fileURLToPath} from "url";
 import { dirname } from 'path';
+import bodyParser from 'body-parser';
+import multer from "multer";
+import fs from "fs";
 
 
 
@@ -26,14 +26,20 @@ export const __filename = fileURLToPath(import.meta.url);
 
 export const __dirname = dirname(__filename);
 
+// app.use(formidable());
+// app.use(formDataMiddleware);
 app.use(express.static(`${__dirname}/uploads`));
+
 app.use(cors(corsOptions));
-app.use(express.json());
+
 app.use(express.urlencoded({ extended: true }));
-app.use('/auth', authRouter)
+app.use(express.json());
+
+
+app.use('/auth', authRouter);
 app.use(authenticateToken);
 app.use('/api', routes);
-app.use('/admin', adminRouters)
+app.use('/admin', adminRouters);
 
 
 

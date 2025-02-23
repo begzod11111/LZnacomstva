@@ -1,19 +1,20 @@
 import express from "express";
-import { models } from "../config/database.js";
+import {models, upload} from "../config/database.js";
 import ImageServes from "../serves/imageServes.js";
 import ImageView from "../views/ImageView.js";
 import authenticateUser from "../middlewares/authenticateUser.js";
-import authenticateImage from "../middlewares/authenticateImage.js";
-const router = express.Router();
-import {upload} from "../config/database.js";
+import imageMiddleware  from "../middlewares/imageMiddlewares.js";
 import {__dirname} from "../../uploads/path.js";
 import path, {dirname} from "path";
-
 import { fileURLToPath } from 'url';
+import {getUploadDirMiddleware} from "../middlewares/imageMiddlewares.js";
+import formDataMiddleware from "../middlewares/formDataMiddleware.js";
+
+const router = express.Router();
 
 router.route('/')
     .get(ImageView.getAll)
-    .post(upload.single('file'), ImageView.create)
+    .post(getUploadDirMiddleware, upload.single('file'), imageMiddleware, ImageView.create)
     .delete(async (req, res) => {
         const images = await ImageServes.clear();
         res.status(200).json({message: 'images deleted'});
