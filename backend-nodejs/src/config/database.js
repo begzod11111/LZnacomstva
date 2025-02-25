@@ -14,17 +14,10 @@ import Busboy from "busboy";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-// src/config/database.js
-
 const storage = multer.diskStorage({
     destination: async (req, file, cb) => {
-        let dir = '';
-        if (req.body.referenceModel) {
-            dir = `uploads/${req.body.referenceModel}/${req.body.name || req.user.id}`;
-        } else {
-            dir = `uploads/avatars/${req.user.id}`;
-        }
-        console.log(req.body)
+        let {referenceModel, referenceId} = req.body;
+        const dir = `uploads/${referenceModel}/${referenceId}`;
 
         // Проверка существования директории и создание, если она не существует
         if (!fs.existsSync(dir)) {
@@ -34,11 +27,7 @@ const storage = multer.diskStorage({
         cb(null, dir); // Папка для загрузки файлов
     },
     filename: (req, file, cb) => {
-        if (req.body.name) {
-            cb(null, req.body.name + path.extname(file.originalname));
-        } else {
-            cb(null, Date.now() + path.extname(file.originalname));
-        }
+        cb(null, Date.now() + path.extname(file.originalname)); // Имя файла
     }
 });
 

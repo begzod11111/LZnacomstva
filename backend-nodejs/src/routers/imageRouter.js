@@ -8,13 +8,13 @@ import {__dirname} from "../../uploads/path.js";
 import path, {dirname} from "path";
 import { fileURLToPath } from 'url';
 import {getUploadDirMiddleware} from "../middlewares/imageMiddlewares.js";
-import formDataMiddleware from "../middlewares/formDataMiddleware.js";
+import formDataMiddleware, {processRequestData} from "../middlewares/formDataMiddleware.js";
 
 const router = express.Router();
 
 router.route('/')
     .get(ImageView.getAll)
-    .post(getUploadDirMiddleware, upload.single('file'), imageMiddleware, ImageView.create)
+    .post(upload.single('file'), imageMiddleware, ImageView.create)
     .delete(async (req, res) => {
         const images = await ImageServes.clear();
         res.status(200).json({message: 'images deleted'});

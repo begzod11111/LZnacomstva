@@ -20,7 +20,18 @@ export default class CountryServes {
     }
     static getAll = async () => {
         try {
-            return await models.country.find(undefined, undefined, undefined);
+            const res = await models.country.find(undefined, undefined, undefined).populate({
+                path: 'image',
+                select: 'url _id',
+            })
+            return res.map((country) => {
+                return {
+                    id: country._id,
+                    name: country.name,
+                    slug: country.slug,
+                    image: country.image,
+                }
+            });
         } catch (err) {
             return { error: err.message };
         }

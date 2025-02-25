@@ -1,14 +1,12 @@
 import express from 'express';
 import CountryServes from '../serves/countryServes.js';
-import {DirCountry, getPath} from "../config/constants.js";
+import {Dir, DirCountry, getPath} from "../config/constants.js";
 import path from "path";
 
 export default class CountryView {
     static async createCountry(req, res) {
         const data = {
             name: req.body.name,
-            flag: getPath(req.file.path),
-            file: req.file
         }
         const country = await CountryServes.create(data);
         res.status(201).json(country);
@@ -25,15 +23,11 @@ export default class CountryView {
 
     static async updateCountry(req, res) {
         const oldFile = req.oldFileName;
-        if (req.file) {
-            req.body.flag = getPath(req.file.path);
-            req.body.file = req.file;
-        }
-        const country = await CountryServes.update(req.params.id, req.body);
+        const country = await CountryServes.update(req.params.id, req.body.name);
         if (country.error) {
             return res.status(400).json({message: 'Error updating country', error: country.error});
         }
-        const dir = new DirCountry(country.res.name);
+        const dir = new Dir('Country', country.res._id);
         await dir.deleteFile(oldFile);
 
 
@@ -47,9 +41,9 @@ export default class CountryView {
         if (country.error) {
             return res.status(400).json({message: 'Error deleting country', error: country.error});
         }
-        const dir = new DirCountry(country.doc.name);
+        const dir = new Dir('Country', country.doc._id);
         await dir.delete();
-        res.status(200).json({message: 'Country deleted', country: country.country});
+        res.status(200).json({message: 'Country deleted', country: country.doc});
     }
 }
 

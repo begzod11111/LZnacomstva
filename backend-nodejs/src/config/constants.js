@@ -16,9 +16,11 @@ export async function clearDir (pathDir){
     return false
 }
 
-class Dir {
-    constructor() {
-        this.path = '';
+export class Dir {
+    constructor(referenceModel, referenceId) {
+        this.referenceModel = referenceModel;
+        this.referenceId = referenceId;
+        this.path = this.getPath();
     }
     async getFiles (){
         return await fs.readdir(this.path);
@@ -51,20 +53,11 @@ class Dir {
         }
         return false
     }
-    getAvatarPath(userId) {
-        return path.join(__dirname, 'avatars', userId.toString());
-    }
-    getCountryPath(countryName){
-        return this.path = path.join(__dirname, 'countries', countryName);
+    getPath() {
+        return path.join(__dirname, this.referenceModel, this.referenceId.toString());
     }
 }
 
-export class DirAvatar extends Dir {
-    constructor(userId) {
-        super();
-        this.path = this.getAvatarPath(userId);
-    }
-}
 export class DirCountry extends Dir {
     constructor(countryName) {
         super();

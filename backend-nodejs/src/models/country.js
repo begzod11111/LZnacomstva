@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import slugify from 'slugify';
+import {models} from "../config/database.js";
 
 const countrySchema = new mongoose.Schema({
   name: {
@@ -17,20 +18,6 @@ const countrySchema = new mongoose.Schema({
     type: String,
     default: function() {
       return slugify(this.name, { lower: true });
-    }
-  },
-  file: {
-    type: Object,
-    required: true
-  },
-  flag: {
-    type: String,
-    required: true,
-    validate: {
-      validator: function(v) {
-        return /^https?:\/\/.+\..+/.test(v);
-      },
-      message: 'Flag must be a valid URL'
     }
   },
 });
@@ -55,7 +42,10 @@ countrySchema.pre('save', function(next) {
   }
   next();
 });
-
+countrySchema.pre('findOneAndDelete', async function(next) {
+  const image = await models.image.findOne({ _referenceId: this._conditions._id });
+  next();
+});
 countrySchema.statics.associate = function(models) {
   this.hasMany(models.User, {
     foreignKey: 'countryId',
