@@ -36,6 +36,8 @@ countrySchema.virtual('users', {
     justOne: false
 });
 
+
+
 countrySchema.pre('save', function(next) {
   if (!this.slug) {
     this.slug = slugify(this.name, { lower: true });

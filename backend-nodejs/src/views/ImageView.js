@@ -25,7 +25,6 @@ export default class ImageView {
 
             const filename = result.image.file.filename;
             const dir = new Dir(result.image._referenceModel, result.image._referenceId.toString());
-            console.log(dir.path);
             await dir.deleteFile(filename);
             await dir.deleteDirIfEmpty();
 

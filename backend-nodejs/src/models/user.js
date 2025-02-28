@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 import Gender from "./gender.js";
 import Image from "./image.js";
 
+
 const userSchema = new mongoose.Schema({
   email: {
     type: String,
@@ -83,7 +84,13 @@ userSchema.virtual('images', {
   foreignField: '_referenceId'
 });
 
-
+userSchema.pre('findOneAndDelete', async function () {
+  try {
+    await Image.deleteMany({ _referenceId: this._conditions._id });
+  } catch (e) {
+    console.error(e);
+  }
+})
 userSchema.methods.getFullName = function() {
   return `${this.firstName} ${this.lastName}`;
 };
