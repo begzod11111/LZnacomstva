@@ -6,7 +6,7 @@ import {upload} from "../config/database.js";
 const countryRouter = express.Router();
 //
 countryRouter.route("/")
-    .post(upload.single('file'), CountryView.createCountry)
+    .post(CountryView.createCountry)
     .get(CountryView.getAllCountries);
 
 countryRouter.route("/:id")

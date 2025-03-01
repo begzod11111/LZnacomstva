@@ -23,7 +23,7 @@ function QuestionnaireList() {
 
 
     useEffect(() => {
-        let urlAPI = `http://127.0.0.1:7000/api/goal-meetings/`
+        let urlAPI = `http://127.0.0.1:7000/api/v1//`
         if (goalMeetingSlug){
             urlAPI =`${GOAL_MEETING_URL}${goalMeetingSlug}`;
         }

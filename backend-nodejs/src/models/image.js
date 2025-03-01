@@ -22,7 +22,7 @@ const imageSchema = new mongoose.Schema({
   },
   url: {
     type: String,
-    required: true,
+    required: false,
     validate: {
       validator: function(v) {
         return /^(ftp|http|https):\/\/[^ "]+$/.test(v);
@@ -52,8 +52,12 @@ imageSchema.virtual('reference', {
   justOne: true
 });
 
-
-
+imageSchema.pre('save', function(next) {
+    if (!this.url) {
+        this.url = getPath(this.file.path);
+    }
+    next();
+})
 
 const Image = mongoose.model('Image', imageSchema);
 
