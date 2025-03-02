@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import {getPath} from "../config/constants.js";
+import {Dir, getPath} from "../config/constants.js";
 import {referenceModelsArray} from "../config/constants.js";
 
 const imageSchema = new mongoose.Schema({
@@ -57,6 +57,16 @@ imageSchema.pre('save', function(next) {
         this.url = getPath(this.file.path);
     }
     next();
+})
+
+imageSchema.pre('deleteMany', async function(next) {
+    const { _referenceId, _referenceModel } = this.getFilter();
+    if (!_referenceId || !_referenceModel) {
+        next(new Error('No reference id or model provided'));
+    }
+    const dir = new Dir(_referenceModel, _referenceId);
+    await dir.delete()
+    next()
 })
 
 const Image = mongoose.model('Image', imageSchema);

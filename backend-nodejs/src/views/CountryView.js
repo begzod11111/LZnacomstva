@@ -1,6 +1,6 @@
 import express from 'express';
 import CountryServes from '../serves/countryServes.js';
-import {Dir, DirCountry, getPath} from "../config/constants.js";
+import {Dir, getPath} from "../config/constants.js";
 import path from "path";
 
 export default class CountryView {
@@ -22,15 +22,10 @@ export default class CountryView {
     }
 
     static async updateCountry(req, res) {
-        const oldFile = req.oldFileName;
         const country = await CountryServes.update(req.params.id, req.body.name);
         if (country.error) {
             return res.status(400).json({message: 'Error updating country', error: country.error});
         }
-        const dir = new Dir('Country', country.res._id);
-        await dir.deleteFile(oldFile);
-
-
         res.status(200).json({
             message: 'Country updated',
             country: country.res

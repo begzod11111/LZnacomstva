@@ -48,8 +48,8 @@ export default class UserServes {
 
             const users = await User.find(filter).populate('images').exec();
             return {users: users.map(e => {
-                const images = e.images;
-                return {...e._doc, images};
+                const i = e.get_avatar();
+                return {...e._doc};
             }), error: null};
 
         } catch (e) {

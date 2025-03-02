@@ -1,6 +1,5 @@
 import express from "express";
 import CountryView from "../views/CountryView.js";
-import {countryFileMiddleware} from "../middlewares/countryMiddleware.js";
 import {upload} from "../config/database.js";
 
 const countryRouter = express.Router();
@@ -11,11 +10,7 @@ countryRouter.route("/")
 
 countryRouter.route("/:id")
     .get(CountryView.getCountry)
-    .patch(
-        countryFileMiddleware,
-        upload.single('file'),
-        CountryView.updateCountry
-    )
+    .patch(CountryView.updateCountry)
     .delete(CountryView.deleteCountry);
 
 

@@ -10,6 +10,7 @@ import { dirname } from 'path';
 import bodyParser from 'body-parser';
 import multer from "multer";
 import fs from "fs";
+import {models} from "./src/config/database.js";
 
 
 
@@ -37,10 +38,11 @@ app.use(express.json());
 
 
 app.use('/auth', authRouter);
+
+
 app.use(authenticateToken);
 app.use('/api', routes);
 app.use('/admin', adminRouters);
-
 
 
 

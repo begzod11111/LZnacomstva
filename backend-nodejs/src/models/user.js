@@ -86,7 +86,7 @@ userSchema.virtual('images', {
 
 userSchema.pre('findOneAndDelete', async function () {
   try {
-    await Image.deleteMany({ _referenceId: this._conditions._id });
+    await Image.deleteMany({ _referenceId: this._conditions._id, _referenceModel: this.model.modelName });
   } catch (e) {
     console.error(e);
   }
@@ -94,6 +94,10 @@ userSchema.pre('findOneAndDelete', async function () {
 userSchema.methods.getFullName = function() {
   return `${this.firstName} ${this.lastName}`;
 };
+
+userSchema.methods.get_avatar =  function() {
+    console.log(this.images.find(e => e.isMain));
+}
 
 userSchema.methods.getAge = function() {
   if (this.dateOfBirth) {

@@ -20,6 +20,7 @@ export default class UserViews {
         }
     }
     static async remove(req, res) {
+
         if (!req.params.id) return res.status(400).json({message: 'No user id provided'});
         const result = await userServes.remove(req.params.id);
         if (result.error) {

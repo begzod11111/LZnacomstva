@@ -25,8 +25,17 @@ export class Dir {
     async getFiles (){
         return await fs.readdir(this.path);
     }
-    async delete (){
-        await fs.rmdir(this.path);
+    async delete() {
+        try {
+            await fs.access(this.path);
+            await fs.rm(this.path, { recursive: true });
+        } catch (err) {
+            if (err.code === 'ENOENT') {
+                console.error(`Directory does not exist: ${this.path}`);
+            } else {
+                console.error(`Error removing directory: ${err.message}`);
+            }
+        }
     }
     async create (){
         await fs.mkdir(this.path);
@@ -58,12 +67,6 @@ export class Dir {
     }
 }
 
-export class DirCountry extends Dir {
-    constructor(countryName) {
-        super();
-        this.path = this.getCountryPath(countryName);
-    }
-}
 
 export function getAvatarPath (id){
     return path.join(__dirname, 'avatars', id.toString())

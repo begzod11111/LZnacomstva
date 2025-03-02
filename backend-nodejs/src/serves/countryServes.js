@@ -11,13 +11,6 @@ export default class CountryServes {
             return { error: err.message };
         }
     }
-    static async getFile(id) {
-        const country = await models.country.findById(id).select('file');
-        if (!country) {
-            return { error: 'Country not found' };
-        }
-        return country.file;
-    }
     static getAll = async () => {
         try {
             const res = await models.country.find(undefined, undefined, undefined).populate({
@@ -29,7 +22,7 @@ export default class CountryServes {
                     id: country._id,
                     name: country.name,
                     slug: country.slug,
-                    image: country.image,
+                    image: country.get_url_media(),
                 }
             });
         } catch (err) {

@@ -41,14 +41,8 @@ routerV1.route('/main')
 
             if (!docs) return {error: {message: 'Goal meeting not found'}}; // Если документ не найден, возвращаем ошибку
             if (docs.length === 0) return res.status(200).json({error: {message: 'Goal meeting not found'}}); // Если документ не найден, возвращаем ошибку
-            docs.map(async (item) => {
+            docs.map((item) => {
                 const users = item.users;
-                users.map(async (user) => {
-                    const image = user.images;
-                    const flagPhoto = user.countryId;
-                    delete user._doc.countryId;
-                    return {...user._doc, photo: image[0].url, flag: flagPhoto};
-                });
                 console.log(item._doc, users);
                 return {...item._doc, users};
             })
