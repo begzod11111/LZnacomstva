@@ -1,5 +1,5 @@
 import DatingLocation from "../datingLocation/DatingLocation";
-import React, {useContext, useEffect, useState} from "react";
+import React, {useContext, useEffect} from "react";
 import { useParams } from "react-router-dom";
 import Footer from "../footer/Footer";
 import HeaderCt from "../header/HeaderCt";
@@ -11,64 +11,79 @@ import QuestionnairesCt from "./components/questionnairesCt/QuestionnairesCt";
 import CategoryName from "./components/categotyName/CategoryName";
 import QuestionnairesUL from "./components/questionnairesUL/QuestionnairesUL";
 import axios from "axios";
-import {GOAL_MEETING_URL, REFRESH_TOKEN_URL} from '../../apiUrls'
+import { GOAL_MEETING_URL } from '../../apiUrls';
 import Notification from "../notifications/Notification";
-import {NotificationContext} from "../../contexts/context";
-
+import { NotificationContext } from "../../contexts/context";
+import Loader from "../loader/loader";
+import { useQuery } from "react-query";
 
 function QuestionnaireList() {
     const { goalMeetingSlug } = useParams();
-    const [data, setData] = useState([]);
     const { setNotification } = useContext(NotificationContext);
 
+    const fetchGoalMeetingData = async (goalMeetingSlug) => {
+        let urlAPI = `http://127.0.0.1:7000/api/v1/main/`;
+        if (goalMeetingSlug) {
+            urlAPI = `${GOAL_MEETING_URL}${goalMeetingSlug}`;
+        }
+        const response = await axios.get(
+            urlAPI,
+            {
+                headers: {
+                    Authorization: `Token ${localStorage.getItem('accessToken')}`
+                }
+            }
+        );
+        return response.data;
+    };
+
+    const { data, error, isLoading } = useQuery(['goalMeeting', goalMeetingSlug], () => fetchGoalMeetingData(goalMeetingSlug));
 
     useEffect(() => {
-        let urlAPI = `http://127.0.0.1:7000/api/v1//`
-        if (goalMeetingSlug){
-            urlAPI =`${GOAL_MEETING_URL}${goalMeetingSlug}`;
-        }
-        axios.defaults.headers.common['Authorization'] = `Token ${localStorage.getItem('accessToken')}`;
-        axios.get(urlAPI)
-        .then(function (response) {
-            console.log(response.data)
-        })
-        .catch(function (error) {
-
-            // Вместо простого вывода ошибки в консоль, вы можете установить состояние ошибки
+        if (error) {
             setNotification({
-                'errorMessage': 'Ошибка загрузки данных',
-                'typeMessage': 'error',
-                'hasError': true
-            })
-        });
-    }, [goalMeetingSlug]);
+                'message': error.message,
+                'type': 'error',
+                'has': true
+            });
+        }
+        return () => {}
+    }, []);
+    if (isLoading) {
+        return <Loader />;
+    }
+
+    if (error) {
+        return <div></div>;
+    }
+
     return (
         <>
-            <DatingLocation/>
+            <DatingLocation />
             <HeaderCt>
-                <NavBarHeader/>
-                <CountryList/>
-                <IconsHeader messages='122'/>
-                <UserAvaCt/>
+                <NavBarHeader />
+                <CountryList />
+                <IconsHeader messages='122' />
+                <UserAvaCt />
             </HeaderCt>
             <QuestionnairesCt>
                 {
-                    data.map(cat =>
-                        cat['users'].length
-                            ?
-                        <React.Fragment key={cat.id}>
-                            <CategoryName category={cat.name} url={cat['slug']} />
-                            <QuestionnairesUL accounts={cat['accounts']} />
-                        </React.Fragment>
-                            :
-                        <div key={cat.id}></div>
+                    data.result.map(cat =>
+                    cat['users'].length
+                        ? (
+                            <React.Fragment key={cat._id}>
+                                <CategoryName category={cat.name} url={cat.slug} />
+                                <QuestionnairesUL users={cat.users} />
+                            </React.Fragment>
+                        )
+                        : <div key={cat._id}></div>
                     )
+
                 }
             </QuestionnairesCt>
-            <Footer/>
-
+            <Footer />
         </>
-    )
+    );
 }
 
-export default QuestionnaireList
+export default QuestionnaireList;

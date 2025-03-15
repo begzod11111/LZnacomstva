@@ -51,9 +51,11 @@ export default function SingIn() {
             data: data
         })
         .then(function (response) {
-            const accessToken = response.data['token']
+            const accessToken = response.data.token
+            const payload = response.data.payload
             if (accessToken){
                 localStorage.setItem('accessToken', accessToken);
+                localStorage.setItem('payload', JSON.stringify(payload));
                 if (localStorage.getItem('accessToken')){
                     setNotification({
                         'message': 'Вы успешно авторизовались',

@@ -1,7 +1,7 @@
 import classes from './notifications.module.css'
-import {IoIosCheckmarkCircle, IoIosInformationCircle, IoIosWarning} from "react-icons/io";
-import {useContext, useEffect, useRef} from "react";
-import {NotificationContext} from "../../contexts/context";
+import { IoIosCheckmarkCircle, IoIosInformationCircle, IoIosWarning } from "react-icons/io";
+import { useContext, useEffect, useRef } from "react";
+import { NotificationContext } from "../../contexts/context";
 import { IoCloseSharp } from "react-icons/io5";
 
 const Notification = () => {
@@ -19,22 +19,23 @@ const Notification = () => {
             'header': 'Успешно'
         },
         'warning': {
-            'icon': <IoIosInformationCircle/>,
+            'icon': <IoIosInformationCircle />,
             'className': classes.warning,
             'header': 'Внимание',
         }
     }
-    // useEffect(() => {
-    //
-    // }, [notification.has]);
+
     const close = (event) => {
         const el = notificationCtPef.current;
         el.classList.add(classes.close);
         setTimeout(() => {
-            setNotification({'has': false})
-        }, 700)
+            setNotification({
+                'message': '',
+                'type': '',
+                'has': false
+            });
+        }, 700);
     }
-
 
     const myNotification = notificationTypes[notification.type] || notificationTypes['success'];
     return (
@@ -49,7 +50,7 @@ const Notification = () => {
             <button
                 type='button'
                 onClick={close}
-            ><IoCloseSharp/></button>
+            ><IoCloseSharp /></button>
         </div>
     )
 }

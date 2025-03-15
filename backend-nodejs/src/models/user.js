@@ -1,6 +1,8 @@
 import mongoose from 'mongoose';
 import Gender from "./gender.js";
 import Image from "./image.js";
+import {getDefaultAvatarPath} from "../config/constants.js";
+import gender from "./gender.js";
 
 
 const userSchema = new mongoose.Schema({
@@ -66,15 +68,18 @@ const userSchema = new mongoose.Schema({
   },
   height: {
     type: Number,
-    required: false
+    required: false,
+    default: 0
   },
   weight: {
     type: Number,
-    required: false
+    required: false,
+    default: 0,
   },
   aboutMe: {
     type: String,
-    required: false
+    required: false,
+    default: 'Not Answer'
   }
 });
 
@@ -84,6 +89,27 @@ userSchema.virtual('images', {
   foreignField: '_referenceId'
 });
 
+userSchema.virtual('gender', {
+  ref: 'Gender',
+  localField: 'genderId',
+  foreignField: '_id',
+  justOne: true
+})
+
+userSchema.virtual('country', {
+  ref: 'Country',
+  localField: 'countryId',
+  foreignField: '_id',
+  justOne: true
+})
+
+userSchema.virtual('goalMeeting', {
+    ref: 'GoalMeeting',
+    localField: 'goalMeetingId',
+    foreignField: '_id',
+    justOne: true
+})
+
 userSchema.pre('findOneAndDelete', async function () {
   try {
     await Image.deleteMany({ _referenceId: this._conditions._id, _referenceModel: this.model.modelName });
@@ -91,12 +117,37 @@ userSchema.pre('findOneAndDelete', async function () {
     console.error(e);
   }
 })
+userSchema.methods.getImages = function() {
+  if (this.images.length === 0) {
+    return [
+      {
+        url: getDefaultAvatarPath(),
+        isMain: true,
+        _id: 'default'
+      }
+    ];
+  } else return this.images;
+}
 userSchema.methods.getFullName = function() {
   return `${this.firstName} ${this.lastName}`;
 };
 
 userSchema.methods.get_avatar =  function() {
-    console.log(this.images.find(e => e.isMain));
+  if (this.images.length > 0) {
+    return this.images[0].url;
+  } else {
+    return getDefaultAvatarPath();
+  }
+}
+
+userSchema.methods.getFullName = function() {
+    return `${this.firstName} ${this.lastName}`;
+}
+
+userSchema.methods.get_gender =  function() {
+  if (gender) {
+    return this.genderId;
+  }
 }
 
 userSchema.methods.getAge = function() {

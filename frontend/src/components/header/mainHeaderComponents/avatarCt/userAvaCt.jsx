@@ -9,11 +9,12 @@ import Profile from "../../../profile/Profile";
 function UserAvaCt(props) {
     const [fullname, setFullname] = useState("")
     const [image, setImage] = useState("")
+    const payload = JSON.parse(localStorage.getItem('payload'))
 
     return (
         <Link to='/home/' className={classes.userAvaCt}>
-            <UserAvatar src={image}/>
-            <span>{fullname}</span>
+            <UserAvatar src={payload.ava}/>
+            <span>{payload.fullName}</span>
         </Link>
     )
 }

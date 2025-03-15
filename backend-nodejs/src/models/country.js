@@ -23,9 +23,6 @@ const countrySchema = new mongoose.Schema({
 
 });
 
-countrySchema.methods.get_url_media = function() {
-  return this.image ? this.image.url : null;
-}
 
 countrySchema.virtual('image', {
   ref: 'Image',
@@ -42,7 +39,6 @@ countrySchema.virtual('users', {
 });
 
 
-
 countrySchema.pre('save', function(next) {
   if (!this.slug) {
     this.slug = slugify(this.name, { lower: true });
@@ -51,7 +47,7 @@ countrySchema.pre('save', function(next) {
 });
 
 countrySchema.pre('findOneAndDelete', async function(next) {
-  const image = await models.image.findOne({ _referenceId: this._conditions._id });
+  const image = await models.Image.findOne({ _referenceId: this._conditions._id });
   next();
 });
 countrySchema.statics.associate = function(models) {

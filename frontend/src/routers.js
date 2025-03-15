@@ -10,11 +10,11 @@ import Profile from "./components/profile/Profile";
 import withAuthCheck from "./HOCs/withAuthCheck";
 
 
-
-const QuestionnaireListWithAuthCheck = withAuthCheck(QuestionnaireList);
+const QuestionnaireListWithAuthCheck = withAuthCheck(QuestionnaireList)
 // Вместо QuestionnaireList используйте QuestionnaireListWithAuthCheck
 const SingInWithAuthCheck = withAuthCheck(SingIn);
 // Используйте QuestionnaireListWithAuthCheck вместо QuestionnaireList
+
 
 const AppRouter = () => {
   return (
@@ -25,7 +25,7 @@ const AppRouter = () => {
         <Route path='/sing-in/' element={<SingInWithAuthCheck />}/>
         <Route path="/goal-meeting/" element={<QuestionnaireListWithAuthCheck />}/>
         <Route path="/goal-meeting/:goalMeetingSlug" element={<QuestionnaireList />}/>
-        <Route path="/profile/:profileSlug" element={<PersonDetail />}/>
+        <Route path="/profile/:userId" element={<PersonDetail />}/>
         <Route path='/home/' element={<Profile />}/>
       </Routes>
     </BrowserRouter>

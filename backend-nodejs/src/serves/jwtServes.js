@@ -1,13 +1,18 @@
-import User from "../models/user.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import {secretKey} from "../config/database.js";
+import {models} from "../config/database.js";
 
 
 export default class JwtServes {
   static async create(data) {
     try {
-      const user = await User.findOne({email: data.email});
+      const user = await models.User.findOne({email: data.email}).select(
+        'password firstName email lastName isAdmin _id'
+      ).populate({
+        path: 'images',
+        select: 'url userId',
+      })
       if (!user) {
           return { error: 'User not found' };
       }
@@ -15,7 +20,10 @@ export default class JwtServes {
       if (!match) {
           return { error: 'Invalid params' };
       }
-      return { token: JwtServes.getToken(user), error: null };
+      const token = JwtServes.getToken(user);
+      const decoded = jwt.verify(token, secretKey);
+      delete user._doc.password;
+      return { token, payload: {...decoded.payload, ava: user.get_avatar(),fullName: user.getFullName()}, error: null, };
     } catch (e) {
       return { error: e.message };
     }
@@ -25,9 +33,14 @@ export default class JwtServes {
     const token = req.body.token;
     try {
       const decoded = jwt.verify(token, secretKey);
-      return res.status(200).json({ invalidToken: false, message: 'Token is valid.' });
+      console.log(decoded)
+      return res.status(200).json({
+        tokenValid: true,
+        message: 'Token is valid.',
+        payload: decoded.payload
+      });
     } catch (e) {
-      return res.status(400).json({ invalidToken: true, message: 'Token is invalid.' });
+      return res.status(400).json({ tokenValid: false, message: 'Token is invalid.' });
     }
   }
 
@@ -37,6 +50,6 @@ export default class JwtServes {
         email: user.email,
         isAdmin: user.isAdmin,
     }
-    return jwt.sign({payload}, secretKey, {expiresIn: '24h'});
+    return jwt.sign({payload}, secretKey, {expiresIn: '99h'});
   }
 }

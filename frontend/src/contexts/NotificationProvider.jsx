@@ -9,9 +9,6 @@ export const NotificationProvider = ({ children }) => {
     'has': false
   });
 
-  useEffect(() => {
-    // Здесь вы можете добавить логику обновления уведомлений
-  }, []);
 
   return (
     <NotificationContext.Provider value={{ notification, setNotification }}>

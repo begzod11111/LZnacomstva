@@ -17,6 +17,8 @@ export async function verifyToken(token) {
 
 }
 
+
+
 async function getRefreshToken(refreshToken) {
 
     try {
@@ -39,3 +41,6 @@ export async function getToken() {
         return false;
     } else return accessToken;
 }
+
+
+

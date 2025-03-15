@@ -3,11 +3,16 @@ import ReactDOM from 'react-dom/client';
 import './css/style.css';
 import AppRouter from "./routers";
 import {NotificationProvider} from "./contexts/NotificationProvider";
-const root = ReactDOM.createRoot(document.getElementById('main-container'));
+import {QueryClient, QueryClientProvider} from "react-query";
 
+
+const root = ReactDOM.createRoot(document.getElementById('main-container'));
+const queryClient = new QueryClient();
 
 root.render(
-    <NotificationProvider>
-        <AppRouter/>
-    </NotificationProvider>
+    <QueryClientProvider client={queryClient}>
+        <NotificationProvider>
+            <AppRouter/>
+        </NotificationProvider>
+    </QueryClientProvider>
 );

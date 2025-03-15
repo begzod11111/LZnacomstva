@@ -25,7 +25,7 @@ routerV1.route('/main')
                 '-__v'
             ).populate({
                 path: 'users',
-                select: 'firstName age goalMeetingId genderId images',
+                select: 'firstName lastName age goalMeetingId genderId images countryId',
                 populate: [
                     {
                         path: 'images',
@@ -33,33 +33,77 @@ routerV1.route('/main')
                         match: {isMain: true},
                     },
                     {
-                        path: 'countryId',
-                        select: 'flag _id'
+                        path: 'gender',
+                        select: '_id name',
+                    },
+                    {
+                        path: 'country',
+                        select: '_id name',
+                        populate: {
+                            path: "image",
+                            select: 'url',
+                        }
                     }
                 ]
             }).exec() || null // Ожидаем выполнения запроса
 
             if (!docs) return {error: {message: 'Goal meeting not found'}}; // Если документ не найден, возвращаем ошибку
             if (docs.length === 0) return res.status(200).json({error: {message: 'Goal meeting not found'}}); // Если документ не найден, возвращаем ошибку
-            docs.map((item) => {
-                const users = item.users;
-                console.log(item._doc, users);
+            const result = await Promise.all(docs.map(async (item) => {
+                const users = await Promise.all(item.users.map(async (user) => {
+                    return {
+                        ...user._doc,
+                        photo: user.get_avatar(),
+                        country: {...user.country._doc, flagUrl: user.country.image.url || null},
+                        gender: user.gender.name
+                    };
+                }));
                 return {...item._doc, users};
-            })
-            // const result = await Promise.all(docs.map(async (item) => {
-            //     const users = await Promise.all(item.users.map(async (user) => {
-            //         const image = user.images;
-            //         const flagPhoto = user.countryId.flag;
-            //         delete user._doc.countryId;
-            //         return {...user._doc, photo: image[0].url, flag: flagPhoto};
-            //
-            //     }));
-            //     return {...item._doc, users};
-            // }));
-            return res.status(200).json({error: null, docs});
+            }));
+            return res.status(200).json({error: null, result});
         } catch (e) {
-            return res.status(400).json({error: e});
+            console.log(e)
+            return res.status(400).json({error: `Error: ${e.message} routesV1.js`});
         }
+    })
+routerV1.route('/users/:id')
+    .get(async (req, res) => {
+        const user = await models.User.findById(req.params.id).select(
+            'firstName age goalMeetingId createdAt eyeColor hairColor height weight aboutMe'
+        ).populate({
+            path: 'images',
+            select: 'url userId isMain',
+        }).populate({
+            path: "goalMeeting",
+            select: 'name slug',
+        })
+        if (!user) return res.status(404).json({error: 'User not found'});
+        console.log();
+        return res.status(200).json({error: null, user: {
+            ...user._doc,
+                images: user.getImages(),
+                goalMeeting: user.goalMeeting,
+            }});
     });
+routerV1.route('/profile/:id')
+    .get(authenticateUser, async (req, res) => {
+        const user = await models.User.findById(req.params.id).select(
+            '-__v -password'
+        ).populate({
+            path: 'images',
+            select: 'url userId isMain',
+        }).populate('goalMeeting').populate({
+            path: 'gender',
+            select: 'name',
+        }).populate('gender').exec();
+        if (!user) return res.status(404).json({error: 'User not found'});
+        return res.status(200).json({error: null, user: {
+                ...user._doc,
+                images: user.getImages(),
+                goalMeeting: user.goalMeeting,
+                gender: user.gender
+        }});
+    })
+
 
 export default routerV1;

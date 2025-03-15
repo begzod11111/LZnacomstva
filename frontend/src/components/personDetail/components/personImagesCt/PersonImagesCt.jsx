@@ -12,9 +12,9 @@ function PersonImagesCt({images, ...props}) {
                 <MainBt><FcLikePlaceholder className={classes.icon} /></MainBt>
 
                 {images.map(image =>
-                    <img className={image['is_main'] ? classes.mainPhoto : ''}
-                         src={image['image']}
-                         key={image['id']}
+                    <img className={image['isMain'] ? classes.mainPhoto : ''}
+                         src={image['url']}
+                         key={image['_id']}
                          alt=""
                     />
                 )}

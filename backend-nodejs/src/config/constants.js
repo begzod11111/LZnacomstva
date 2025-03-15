@@ -17,10 +17,16 @@ export async function clearDir (pathDir){
 }
 
 export class Dir {
-    constructor(referenceModel, referenceId) {
+    constructor(referenceModel=null, referenceId=null) {
         this.referenceModel = referenceModel;
         this.referenceId = referenceId;
         this.path = this.getPath();
+    }
+
+    async deleteDir(){
+        await fs.rmdir(path.join(__dirname)).then(res => {
+            console.log(res)
+        });
     }
     async getFiles (){
         return await fs.readdir(this.path);
@@ -63,10 +69,17 @@ export class Dir {
         return false
     }
     getPath() {
+        if (!this.referenceId) {
+            return path.join(__dirname, `${this.referenceModel}`);
+        }
         return path.join(__dirname, this.referenceModel, this.referenceId.toString());
     }
 }
 
+export function getDefaultAvatarPath (){
+    const filePath = path.join('uploads','uploads', 'default', 'default.png');
+    return getPath(filePath);
+}
 
 export function getAvatarPath (id){
     return path.join(__dirname, 'avatars', id.toString())

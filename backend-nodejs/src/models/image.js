@@ -32,7 +32,7 @@ const imageSchema = new mongoose.Schema({
   },
 });
 
-imageSchema.pre('findOneAndUpdate', function(next) {
+imageSchema.pre('findOneAndUpdate', async function(next) {
     try {
       const update = this.getUpdate()
       if (update.file) {
@@ -52,18 +52,47 @@ imageSchema.virtual('reference', {
   justOne: true
 });
 
-imageSchema.pre('save', function(next) {
+
+imageSchema.pre('save', async function(next) {
     if (!this.url) {
         this.url = getPath(this.file.path);
+    }
+    if (!this._referenceId || !referenceModelsArray.includes(this._referenceModel)) {
+        next(new Error('Reference model not found'));
+    } else {
+        const referenceModel = mongoose.model(this._referenceModel);
+        if (this._referenceModel === 'User') {
+            await referenceModel.findById(this._referenceId).select('_id').populate({
+                path: 'images',
+                select: '_id isMain',
+            }).exec()
+                .then(doc => {
+                    if (!doc) {
+                        next(new Error('Reference not found'));
+                    }
+                    if (doc.images.length === 5) {
+                        next(new Error('You can not upload more than 5 images'));
+                    } else if (doc.images.length === 0) {
+                        this.isMain = true
+                    }
+                    next();
+                })
+                .catch(e => {
+                    next(e);
+                });
+        } else if (this._referenceModel === 'Country') {
+            const country = await referenceModel.findById(this._referenceId)
+                .select('_id').populate({
+                    path: 'image',
+                    select: '_id',
+                }).exec();
+        }
     }
     next();
 })
 
 imageSchema.pre('deleteMany', async function(next) {
     const { _referenceId, _referenceModel } = this.getFilter();
-    if (!_referenceId || !_referenceModel) {
-        next(new Error('No reference id or model provided'));
-    }
     const dir = new Dir(_referenceModel, _referenceId);
     await dir.delete()
     next()

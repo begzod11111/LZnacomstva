@@ -1,4 +1,4 @@
-import Gender from "../models/gender.js";
+import {models} from "../config/database.js";
 
 export default class GenderServes {
   constructor(req) {
@@ -6,11 +6,11 @@ export default class GenderServes {
   }
   create = async () => {
     try {
-      const valid = await Gender.findOne({ name: this.req.body.name });
+      const valid = await models.Gender.findOne({ name: this.req.body.name });
       if (valid) {
         return { message: 'Экземпляр с таким именем уже сушествует' };
       }
-      const gender = new Gender({ name: this.req.body.name });
+      const gender = new models.Gender({ name: this.req.body.name });
       const result = await gender.save().then(
           (result) => {
             return result;
@@ -27,7 +27,7 @@ export default class GenderServes {
   }
   get = async () => {
     try {
-      const gender = await Gender.findOne({name: this.req.params.slug})
+      const gender = await models.Gender.findOne({name: this.req.params.slug})
       if (gender) {
         return gender
       } else {
@@ -45,6 +45,6 @@ export default class GenderServes {
   }
 
   static async getAll() {
-     return Gender.find(undefined, undefined, undefined);
+     return models.Gender.find(undefined, undefined, undefined);
   }
 }

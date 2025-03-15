@@ -27,6 +27,7 @@ export default class ImageView {
             const dir = new Dir(result.image._referenceModel, result.image._referenceId.toString());
             await dir.deleteFile(filename);
             await dir.deleteDirIfEmpty();
+            console.log(dir)
 
             res.status(200).json({ message: 'Image deleted', image: result.image });
         } catch (e) {
@@ -50,6 +51,7 @@ export default class ImageView {
             url: getPath(req.file.path),
             _referenceModel: req.body.referenceModel,
             _referenceId: req.body.referenceId,
+            isMain: req.body.isMain || false
         }
         try {
             const result = await ImageServes.create(data);
@@ -65,7 +67,6 @@ export default class ImageView {
 
     static async update(req, res) {
         try {
-
             req.body.file = req.file;
             const oldImageFileName = await ImageServes.getImageFile(req.params.id);
             const result = await ImageServes.update(req.params.id, req.body);

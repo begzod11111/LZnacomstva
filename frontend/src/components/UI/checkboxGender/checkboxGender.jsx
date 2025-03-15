@@ -4,7 +4,12 @@ import FemaleIcon from '../../../img/female-icon.svg'
 import './checkboxGender.css'
 
 const CheckBoxGender = ({collBackFunc, defaultValue, ...props}) => {
-    const [gender, setGender] = useState(defaultValue ? defaultValue : 1);
+    const getSate = (defaultValue) => {
+      if (!defaultValue) return 1;
+        return defaultValue.name === 'male' ? 1 : 2;
+    }
+    const [gender, setGender] = useState(getSate(defaultValue));
+
 
 
     const handleGenderChange = (newGender) => {

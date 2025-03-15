@@ -1,17 +1,13 @@
-import User from '../models/user.js';
 import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
-import {secretKey} from '../config/database.js';
-import Gender from "../models/gender.js";
-import Country from "../models/country.js";
+import {models} from "../config/database.js";
 
 export default class UserServes {
 
     static async createDoc(data) {
         let name = 'male';
         if (data.genderId === 2) name = 'female';
-        const genderId = await Gender.findOne({name: name});
-        return new User({
+        const genderId = await models.Gender.findOne({name: name});
+        return new models.User({
             email: data.email,
             password: data.password,
             firstName: data.firstName,
@@ -40,16 +36,19 @@ export default class UserServes {
         try {
             const filter = {};
             if (query.gender) {
-                filter.genderId = (await Gender.findOne({name: query.gender}).select('_id').exec())._id;
+                filter.genderId = (await models.Gender.findOne({name: query.gender}).select('_id').exec())._id;
             }
             if (query.country){
-                filter.countryId = (await Country.findOne({name: query.country}).select('_id').exec())._id;
+                filter.countryId = (await models.Country.findOne({name: query.country}).select('_id').exec())._id;
             }
-
-            const users = await User.find(filter).populate('images').exec();
+            const users = await models.User.find(filter).populate({
+              path: 'images',
+                select: 'url _id',
+              match: { isMain: true }// Фильтрация изображений, чтобы выбрать только те, у которых isMain: true
+            }).exec();
             return {users: users.map(e => {
                 const i = e.get_avatar();
-                return {...e._doc};
+                return {...e._doc, ava: i};
             }), error: null};
 
         } catch (e) {
@@ -59,21 +58,21 @@ export default class UserServes {
 
   static async remove(userId) {
     try {
-      const user = await User.findByIdAndDelete(userId);
+      const user = await models.User.findByIdAndDelete(userId);
       return { message: 'User removed', user, error: null };
     } catch (e) {return { error: e.message }}
   }
 
   static async get(userId) {
     try {
-      const user = await User.findById(userId).populate('images').exec();
+      const user = await models.User.findById(userId).populate('images').exec();
       const images = user.images;
       return { user: {...user._doc, images}, error: null};
     } catch (e) {return { error: e.message }}
   }
   static async getUsersWithPhotos() {
     try {
-      const users = await User.find().select(
+      const users = await models.User.find().select(
           'email firstName lastName dateOfBirth genderId isAdmin eyeColor hairColor'
       ).populate('images').exec();
 
@@ -88,7 +87,7 @@ export default class UserServes {
 
   static async update(userId, data) {
     try {
-      const user = await User.findByIdAndUpdate(userId, data, {
+      const user = await models.User.findByIdAndUpdate(userId, data, {
         new: true,
         runValidators: true
       });

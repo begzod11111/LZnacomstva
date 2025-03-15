@@ -9,39 +9,47 @@ import NavBarProfile from "./components/navBarProfile/NavBarProfile";
 import ProfileCt from "./components/profileCt/ProfileCt";
 import ImagesCtProfile from "./components/imagesCtProfile/ImagesCtProfile";
 import BasicInformationCt from "./components/basicInformationCt/BasicInformationCt";
-import React, {useCallback, useState, useEffect} from "react";
+import React, {useCallback, useState, useEffect, useContext} from "react";
 import axios from "axios";
-import {GET_PROFILE_URL, GET_COLOR_CHOICES} from "../../apiUrls";
+import loader from "../loader/loader";
+import Loader from "../loader/loader";
+import {useQuery} from "react-query";
+import notification from "../notifications/Notification";
+import {NotificationContext} from "../../contexts/context";
+
 
 function Profile() {
-    const [profileData, setProfileData] = useState(null);
-    const [colorChoices, setColorChoices] = useState(null);
+    const payload = localStorage.getItem('payload')
+    const userId = JSON.parse(payload).id
+    const {notification, setNotification } = useContext(NotificationContext);
 
+    const fetchProfile = async (userId) => {
+        const request = await axios.get(`http://127.0.0.1:7000/api/v1/profil/${userId}`, {
+            headers: { Authorization: `Token ${localStorage.getItem('accessToken')}` }
+        })
+        return request.data;
+    }
 
-
+    const { data, error, isLoading } = useQuery(['profile', userId], () => fetchProfile(userId));
     useEffect(() => {
-        // Запрос данных профиля при монтировании компонента
-        axios.get(GET_PROFILE_URL, {
-            headers: { Authorization: `Token ${localStorage.getItem('token')}` }
-        })
-        .then(response => {
-            setProfileData(response.data);
-        })
-        .catch(error => {
-            console.error('Error fetching profile data:', error);
-        });
-        // Запрос данных о цветах глаз и волос при монтировании компонента
-        axios.get(GET_COLOR_CHOICES, {
-            headers: { Authorization: `Token ${localStorage.getItem('token')}` }
-        })
-        .then(response => {
-            setColorChoices(response.data);
-        })
-        .catch(error => {
-            console.error('Error fetching color choices:', error);
-        });
-    }, []);
-
+        if (error) {
+            console.log(notification)
+            if (error.status === 404) {
+                setNotification({
+                    'message': 'Указанная страница не сушествует',
+                    'type': 'error',
+                    'has': true
+                });
+                return () => {}
+            }
+        }
+    }, [error]);
+    if (isLoading) {
+        return <Loader />;
+    }
+    if (error){
+        return <div></div>
+    }
     return (
         <>
             <DatingLocation/>
@@ -53,12 +61,15 @@ function Profile() {
             </HeaderCt>
             <ProfileCt>
                 <NavBarProfile/>
-                <ImagesCtProfile imagesArr={profileData}/>
-                <BasicInformationCt profileData={profileData} colorChoices={colorChoices} />
+                <ImagesCtProfile imagesArr={data.user} />
+                <BasicInformationCt profileData={data.user} />
             </ProfileCt>
             <Footer/>
         </>
     )
 }
 
-export default Profile
+
+
+export default Profile;
+

@@ -1,8 +1,8 @@
-import user from '../models/user.js';
-import gender from "../models/gender.js";
+import User from '../models/user.js';
+import Gender from "../models/gender.js";
 import GoalMeeting from "../models/goalmeeting.js";
-import image from "../models/image.js";
-import country from "../models/country.js";
+import Image from "../models/image.js";
+import Country from "../models/country.js";
 import mongoose from "mongoose";
 import multer from "multer";
 import path, {dirname} from "path";
@@ -17,6 +17,7 @@ const __dirname = dirname(__filename);
 const storage = multer.diskStorage({
     destination: async (req, file, cb) => {
         let {referenceModel, referenceId} = req.body;
+        console.log(referenceModel);
         const dir = `uploads/${referenceModel}/${referenceId}`;
 
         // Проверка существования директории и создание, если она не существует
@@ -33,6 +34,7 @@ const storage = multer.diskStorage({
 
 
 export const upload = multer({ storage: storage });
+
 
 
 (async () => {
@@ -54,10 +56,10 @@ export const upload = multer({ storage: storage });
 
 export const secretKey = 'begzod0426'
 export const models = {
-    user,
-    gender,
+    User,
+    Gender,
     GoalMeeting,
-    image,
-    country,
+    Image,
+    Country,
 };
 

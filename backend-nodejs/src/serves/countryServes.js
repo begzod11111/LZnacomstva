@@ -4,7 +4,7 @@ import {models} from "../config/database.js";
 export default class CountryServes {
     static create = async (date) => {
         try {
-            const doc = new models.country(date);
+            const doc = new models.Country(date);
             await doc.save();
             return { massage: "Country created successfully", country: doc, error: null };
         } catch (err) {
@@ -13,7 +13,7 @@ export default class CountryServes {
     }
     static getAll = async () => {
         try {
-            const res = await models.country.find(undefined, undefined, undefined).populate({
+            const res = await models.Country.find(undefined, undefined, undefined).populate({
                 path: 'image',
                 select: 'url _id',
             })
@@ -22,7 +22,7 @@ export default class CountryServes {
                     id: country._id,
                     name: country.name,
                     slug: country.slug,
-                    image: country.get_url_media(),
+                    image: country.image,
                 }
             });
         } catch (err) {
@@ -32,7 +32,7 @@ export default class CountryServes {
 
     static get = async (id) => {
         try {
-            const res = await models.country.findById(id);
+            const res = await models.Country.findById(id);
             return { massage: "Country found successfully", doc: res, error: null };
         } catch (err) {
             return { error: err.message };
@@ -42,7 +42,7 @@ export default class CountryServes {
 
     static getByName = async (name) => {
         try {
-            const res = await models.country.findOne({name});
+            const res = await models.Country.findOne({name});
             return { massage: "Country found successfully", doc: res, error: null };
         } catch (err) {
             return { error: err.message };
@@ -51,7 +51,7 @@ export default class CountryServes {
 
     static update = async (id, date) => {
         try {
-            const res = await models.country.findByIdAndUpdate(id, date, {new: true});
+            const res = await models.Country.findByIdAndUpdate(id, date, {new: true});
             return { massage: "Country updated successfully", res, error: null };
         } catch (err) {
             return { error: err.message };
@@ -61,7 +61,7 @@ export default class CountryServes {
 
     static delete = async (id) => {
         try {
-            const res = await models.country.findByIdAndDelete(id);
+            const res = await models.Country.findByIdAndDelete(id);
             if (!res) {
                 return { error: 'Country not found' };
             }

@@ -1,5 +1,4 @@
 import {models} from "../config/database.js";
-import image from "../models/image.js";
 
 
 export default  class goalMeetingServes {

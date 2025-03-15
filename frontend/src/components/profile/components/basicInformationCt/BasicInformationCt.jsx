@@ -5,36 +5,56 @@ import CheckBoxGender from "../../../UI/checkboxGender/checkboxGender";
 import TextareaInput from "../../../UI/input/TextareaInput";
 import SelectInput from "../../../UI/input/SelectInput";
 import MainBt from "../../../UI/button/mainBt";
+import {useRef, useState} from "react";
 
-function BasicInformationCt({profileData, colorChoices, ...props}) {
-    if (!profileData || !colorChoices) {
+function BasicInformationCt({profileData, ...props}) {
+    const [refsDate] = useState({
+        day: useRef(null),
+        year: useRef(null),
+        select: useRef(null),
+    });
+    if (!profileData) {
         return null;
+    }
+    const colorChoices = {
+        hair_colors: [
+            {englishName: 'blonde', russianName: 'Блонд', id: 1},
+            {englishName: 'brown', russianName: 'Шатен', id: 2},
+            {englishName: 'black', russianName: 'Черный', id: 3},
+            {englishName: 'red', russianName: 'Рыжий', id: 4},
+            {englishName: 'gray', russianName: 'Седой', id: 5},
+            {englishName: 'Not Answer', russianName: 'Нет ответа', id: 6},
+        ],
+        eye_colors: [
+            {englishName: 'blue', russianName: 'Голубой', id: 1},
+            {englishName: 'green', russianName: 'Зеленый', id: 2},
+            {englishName: 'brown', russianName: 'Карий', id: 3},
+            {englishName: 'gray', russianName: 'Серый', id: 4},
+            {englishName: 'Not Answer', russianName: 'Нет ответа', id: 5},
+        ]
     }
     const foo = (date) => {
       return null
     }
     function passDateTimeToObject(dataTime) {
-        let monthNumber = Number(dataTime[1])
-        let date = new Date(2000, monthNumber - 1, 1);
-
-    // Используем toLocaleString для получения названия месяца на английском
+        let date = new Date(dataTime);
         return {
-            day: Number(dataTime[2]),
+            day: Number(date.getDay()),
             month: date.toLocaleString('en', { month: 'long' }),
-            year: Number(dataTime[0])
+            year: Number(date.getFullYear()),
         };
     }
-    let profile = profileData['profile'];
-    let date_of_birth = profile['date_of_birth'].split('-');
+    let profile = profileData;
+    let date_of_birth = passDateTimeToObject(profile['dateOfBirth'])
     return (
         <div className={classes.basicInformationCt}>
                 <p>Основная информация</p>
                 <span>Имя</span>
-                <MainInput defaultValue={profileData['first_name']}/>
+                <MainInput defaultValue={profileData['firstName']}/>
                 <span>Фамилия</span>
-                <MainInput defaultValue={profileData['last_name']}/>
+                <MainInput defaultValue={profileData['lastName']}/>
                 <span>Дата рождения</span>
-                <DataTimeInput defaultValue={passDateTimeToObject(date_of_birth)} collBackFunc={foo}/>
+                <DataTimeInput defaultValue={date_of_birth} collBackFunc={foo} refs={refsDate}/>
                 <span>Пол</span>
                 <CheckBoxGender defaultValue={profileData['gender']}/>
                 <p>Личная информация</p>
@@ -43,13 +63,13 @@ function BasicInformationCt({profileData, colorChoices, ...props}) {
                 <span>Вес</span>
                 <MainInput defaultValue={profile['weight']}/>
                 <span>Цвет волос</span>
-                <SelectInput optionsData={colorChoices['hair_colors']} defaultValue={profile['hair_color']}/>
-                <span>Цвет глаз</span>
-                <SelectInput optionsData={colorChoices['eye_colors']} defaultValue={profile['eye_color']}/>
+                <SelectInput optionsData={colorChoices['hair_colors']} defaultValue={profile['hairColor']}/>
+                {/*<span>Цвет глаз</span>*/}
+                {/*<SelectInput optionsData={colorChoices['eye_colors']} defaultValue={profile['eyeColor']}/>*/}
                 <span>Цель знакомства</span>
                 <SelectInput/>
                 <span>О себе</span>
-                <TextareaInput placeholder={profile['about_me'] ? profile['about_me'] : 'Не указанно'}/>
+                <TextareaInput placeholder={profile['aboutMe'] ? profile['aboutMe'] : 'Не указанно'}/>
                 <p>Аккаунт</p>
                 <span>E-mail</span>
                 <MainInput defaultValue={profileData['email']}/>

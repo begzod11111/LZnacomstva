@@ -18,8 +18,8 @@ function ImagesCtProfile({imagesArr}) {
                 // Используем уникальный идентификатор изображения в качестве ключа, если он доступен
                 return <ImageInput
                     key={index}
-                    imeSrc={image?.image}
-                    className={image?.is_main ? classes.mainImage : ''} />;
+                    imeSrc={image?.url}
+                    className={image?.isMain ? classes.mainImage : ''} />;
             })}
 
         </div>

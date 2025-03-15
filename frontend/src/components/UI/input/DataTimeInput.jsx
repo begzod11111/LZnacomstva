@@ -2,17 +2,8 @@ import React, {useEffect, useRef, useState} from 'react'
 import classes from './mainInput.module.css'
 import SelectInput from "./SelectInput";
 
-
-
-function DataTimeInput({collBackFunc, defaultValue, refs}) {
-    const [date, setDate] = useState(!defaultValue ? {
-            day: 0,
-            month: 0,
-            year: 0,
-        }
-        :
-        defaultValue
-    );
+function DataTimeInput({collBackFunc, defaultValue = {day: 0, month: 0, year: 0}, refs}) {
+    const [date, setDate] = useState(defaultValue);
     const months = [
         {id: -1, russianName: 'Месяцы', englishName: 'Months'},
         {id: 0, russianName: 'Январь', englishName: 'January'},
@@ -30,12 +21,9 @@ function DataTimeInput({collBackFunc, defaultValue, refs}) {
         {id: 12, russianName: 'Декабрь', englishName: 'December'},
     ];
 
-
-
-
     useEffect(() => {
         if (date.day === 0 && date.month === 0 && date.year === 0){
-            return
+            return;
         }
         let classesDay = refs.day.current.classList;
         let classesYear = refs.year.current.classList;

@@ -12,10 +12,16 @@ function PersonDataCt({personData, name, dateJoined, ...props}) {
                     <MainBt>Нравиться</MainBt>
                 </div>
                 <p>Данные</p>
-                <ListData listData={personData}/>
+                <ListData listData={{
+                    'height': personData['height'],
+                    'weight': personData['weight'],
+                    'eyeСolor': personData['eyeColor'],
+                    'hairСolor': personData['hairColor'],
+                    'name': personData['goalMeeting']['name']
+                }}/>
                 <p>О себе</p>
                 <div className={classes.aboutMeCt}>
-                    {personData['about_me']? personData['about_me'] : 'Не указан'}
+                    {personData['aboutMe']? personData['aboutMe'] : 'Не указан'}
                 </div>
                 <span>На сайте с {dateJoined}</span>
             </div>

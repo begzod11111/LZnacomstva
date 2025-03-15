@@ -7,54 +7,69 @@ import NavBarHeader from "../header/mainHeaderComponents/navbar/navBarHeader";
 import CountryList from "../header/mainHeaderComponents/countrys/countryList";
 import IconsHeader from "../header/mainHeaderComponents/icons/iconsHeader";
 import UserAvaCt from "../header/mainHeaderComponents/avatarCt/userAvaCt";
-import React, {useEffect, useState} from "react";
 import Footer from "../footer/Footer";
 import PersonDataCt from "./components/personData/PersonDataCt";
 import axios from "axios";
+import Loader from "../loader/loader";
+import {useQuery} from "react-query";
+import {useContext, useEffect} from "react";
+import {NotificationContext} from "../../contexts/context";
 
 function PersonDetail() {
-    const [data, setData] = useState({});
-    const { profileSlug } = useParams();
-    useEffect(() => {
-        axios.get(
-            `http://127.0.0.1:8000/api/v1/accounts/${profileSlug}/`,
+    const { userId } = useParams();
+    const fetchUser = async (userId) => {
+        const response = await axios.get(
+            `http://127.0.0.1:7000/api/v1/users/${userId}/`,
             {
                 headers: {
-                    Authorization: `Token ${localStorage.getItem('token')}`
+                    Authorization: `Token ${localStorage.getItem('accessToken')}`
+                }
             }
+        );
+        return response.data;
+    };
+    const { data, error, isLoading } = useQuery(['user', userId], () => fetchUser(userId));
+    const {setNotification } = useContext(NotificationContext);
+    useEffect(() => {
+        if (error){
+            setNotification({
+                'message': error.message,
+                'type': 'error',
+                'has': true
+            });
         }
-        )
-        .then(function (response) {
-            setData(response.data)
+    }, [error]);
 
-        })
-        .catch(function (error) {
-            console.log(error);
-        });
-    }, []);
+    if (isLoading) {
+        return <Loader />;
+    }
+
+
+    if (error) {
+        return <div></div>;
+    }
+    const user = data.user;
     return (
         <>
-            <DatingLocation/>
+            <DatingLocation />
             <HeaderCt>
-                <NavBarHeader/>
-                <CountryList/>
-                <IconsHeader/>
-                <UserAvaCt/>
+                <NavBarHeader />
+                <CountryList />
+                <IconsHeader />
+                <UserAvaCt />
             </HeaderCt>
             <PersonProfileCt>
-                <PersonImagesCt images={data['images']} />
+                <PersonImagesCt images={user.images} />
                 <PersonDataCt
-                    personData={{
-                        ...data['goal_meeting'],
-                        ...data['profile']
-                    }}
-                    name={data['last_name']}
-                    dateJoined={data['date_joined']}
+                    personData={user}
+                    name={user.firstName}
+                    dateJoined={user.createdAt}
                 />
             </PersonProfileCt>
-            <Footer/>
+            <Footer />
         </>
-    )
+    );
 }
+
 
 export default PersonDetail

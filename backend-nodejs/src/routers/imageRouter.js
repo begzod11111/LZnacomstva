@@ -15,11 +15,13 @@ const router = express.Router();
 router.route('/')
     .get(ImageView.getAll)
     .post(upload.single('file'), imageMiddleware, ImageView.create)
+
+router.route('/clear/:referenceModel')
     .delete(async (req, res) => {
-        const images = await ImageServes.clear();
+        console.log(req.params.referenceModel)
+        const images = await ImageServes.clear(req.params.referenceModel);
         res.status(200).json({message: 'images deleted'});
     });
-
 
 router.route('/:id')
     .get(ImageView.get)

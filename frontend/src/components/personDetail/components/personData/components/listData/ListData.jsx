@@ -22,8 +22,8 @@ function ListData({listData, ...props}) {
     const fieldsName = {
         "height": "Рост",
         "weight": "Вес",
-        "eye_color": "Цвет волос",
-        "hair_color": "Цель глаз",
+        "eyeСolor": "Цвет волос",
+        "hairСolor": "Цель глаз",
         'name': 'Цель знакомства'
     }
     const fieldsValue = listData

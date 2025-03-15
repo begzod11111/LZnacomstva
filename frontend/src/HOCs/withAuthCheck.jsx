@@ -36,7 +36,7 @@ function withAuthCheck(WrappedComponent) {
                     navigate('/sing-in')
                 }
             } else {
-                if (location.pathname === '/sing-in') {
+                if (location.pathname === '/sing-in/' || location.pathname === '/') {
                     setNotification({
                         'message': 'Вы уже авторизованы',
                         'type': 'success',
