@@ -88,12 +88,6 @@ function SingUp() {
             inCorrectCheckInputs();
             return
         }
-        console.log({
-            ...formData,
-            dateOfBirth,
-            genderId
-        })
-        let status;
 
         try {
             const response = await axios.post(
@@ -104,24 +98,25 @@ function SingUp() {
                     genderId
                 }
             );
-            status = response?.['status'];
-            if (status === 201){
+            if (response.status === 201){
+                localStorage.setItem('accessToken', response?.data?.token);
+                localStorage.setItem('payload', JSON.stringify(response?.data?.payload));
                 setNotification({
                     'message': 'Аккаунт успешно создан',
                     'type': 'success',
                     'has': true
                 })
-                navigate("/sing-in");
+                navigate("/sing-in/");
             }
         } catch (error) {
-            console.log(error);
-            status = error?.response?.status;
-            if (status === 400){
-                setNotification({
-                    'message': 'Пользователь с таким email уже существует',
-                    'type': 'warning',
-                    'has': true
-                });
+            if (error.response.status === 400){
+                if (error.response.data.error === 'User with this email already exists') {
+                    setNotification({
+                        'message': 'Пользователь с таким email уже существует',
+                        'type': 'warning',
+                        'has': true
+                    });
+                }
             } else {
                 setNotification({
                     'message': 'Ошибка сервера',

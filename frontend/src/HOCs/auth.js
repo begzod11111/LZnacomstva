@@ -9,7 +9,7 @@ export async function verifyToken(token) {
         const response = await axios.post(VERIFY_TOKEN_URL, {
             token: token
         });
-        return response.status === 200;
+        return response.data?.tokenValid;
     } catch (error) {
         console.error('Failed to verify token', error);
         return false;

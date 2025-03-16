@@ -1,11 +1,16 @@
 import classes from "./navBarProfile.module.css"
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import { FaUser } from "react-icons/fa";
 import {IoBookmark, IoWalletSharp} from "react-icons/io5";
 import { MdLogout } from "react-icons/md";
 import classNames from "classnames";
+import {useContext} from "react";
+import {NotificationContext} from "../../../../contexts/context";
 
 function NavBarProfile() {
+     const {setNotification} = useContext(NotificationContext);
+     const navigate = useNavigate();
+
     return (
         <nav className={classes.navBarProfile}>
             <Link to="/" className={classNames(classes.navBarBt, classes.activeBt)}>
@@ -20,10 +25,18 @@ function NavBarProfile() {
                 <IoWalletSharp className={classes.navBarBtSVG}/>
                 <span>Личный счет</span>
             </Link>
-            <Link to="/" className={classes.navBarBt}>
+            <a className={classes.navBarBt} onClick={() => {
+                setNotification({
+                    'message': 'Вы вышли из аккаунта',
+                    'type': 'success',
+                    'has': true
+                })
+                localStorage.clear();
+
+            }}>
                 <MdLogout className={classes.navBarBtSVG}/>
                 <span>Выйти</span>
-            </Link>
+            </a>
         </nav>
     )
 }

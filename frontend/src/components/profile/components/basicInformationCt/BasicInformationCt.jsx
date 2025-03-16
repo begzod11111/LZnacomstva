@@ -5,7 +5,7 @@ import CheckBoxGender from "../../../UI/checkboxGender/checkboxGender";
 import TextareaInput from "../../../UI/input/TextareaInput";
 import SelectInput from "../../../UI/input/SelectInput";
 import MainBt from "../../../UI/button/mainBt";
-import {useRef, useState} from "react";
+import React, {useRef, useState} from "react";
 
 function BasicInformationCt({profileData, ...props}) {
     const [refsDate] = useState({
@@ -64,8 +64,8 @@ function BasicInformationCt({profileData, ...props}) {
                 <MainInput defaultValue={profile['weight']}/>
                 <span>Цвет волос</span>
                 <SelectInput optionsData={colorChoices['hair_colors']} defaultValue={profile['hairColor']}/>
-                {/*<span>Цвет глаз</span>*/}
-                {/*<SelectInput optionsData={colorChoices['eye_colors']} defaultValue={profile['eyeColor']}/>*/}
+                <span>Цвет глаз</span>
+                <SelectInput optionsData={colorChoices['eye_colors']} defaultValue={profile['eyeColor']}/>
                 <span>Цель знакомства</span>
                 <SelectInput/>
                 <span>О себе</span>
@@ -76,6 +76,7 @@ function BasicInformationCt({profileData, ...props}) {
                 <span>Пароль</span>
                 <MainInput defaultValue='********'/>
                 <MainBt>Сохранить</MainBt>
+
         </div>
     )
 }

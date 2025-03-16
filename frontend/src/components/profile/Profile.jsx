@@ -16,40 +16,47 @@ import Loader from "../loader/loader";
 import {useQuery} from "react-query";
 import notification from "../notifications/Notification";
 import {NotificationContext} from "../../contexts/context";
-
+import withAuthCheck from "../../HOCs/withAuthCheck";
+import getPayload from "../constants";
+import MainBt from "../UI/button/mainBt";
 
 function Profile() {
-    const payload = localStorage.getItem('payload')
-    const userId = JSON.parse(payload).id
-    const {notification, setNotification } = useContext(NotificationContext);
+    const {notification, setNotification} = useContext(NotificationContext);
 
-    const fetchProfile = async (userId) => {
-        const request = await axios.get(`http://127.0.0.1:7000/api/v1/profil/${userId}`, {
-            headers: { Authorization: `Token ${localStorage.getItem('accessToken')}` }
+    async function fetchProfile(userId) {
+        const request = await axios.get(`http://127.0.0.1:7000/api/v1/profile/${userId}`, {
+            headers: {Authorization: `Token ${localStorage.getItem('accessToken')}`}
         })
         return request.data;
     }
+    const payload = getPayload()
+    if (!payload) {
+        console.log('ddd')
 
-    const { data, error, isLoading } = useQuery(['profile', userId], () => fetchProfile(userId));
+    }
+    const userId = payload.id;
+    const {data, error, isLoading} = useQuery(['profile', userId], () => fetchProfile(userId));
+
+
+
     useEffect(() => {
         if (error) {
-            console.log(notification)
             if (error.status === 404) {
                 setNotification({
                     'message': 'Указанная страница не сушествует',
                     'type': 'error',
                     'has': true
                 });
-                return () => {}
             }
         }
-    }, [error]);
+    }, [error, notification]);
     if (isLoading) {
-        return <Loader />;
+        return <Loader/>;
     }
-    if (error){
+    if (error) {
         return <div></div>
     }
+
     return (
         <>
             <DatingLocation/>

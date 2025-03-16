@@ -1,33 +1,29 @@
 import {models} from "../config/database.js";
 
 export default class GenderServes {
-  constructor(req) {
-    this.req = req;
-  }
-  create = async () => {
+
+  static create = async (name) => {
     try {
-      const valid = await models.Gender.findOne({ name: this.req.body.name });
+      const valid = await models.Gender.findOne({ name });
       if (valid) {
         return { message: 'Экземпляр с таким именем уже сушествует' };
       }
-      const gender = new models.Gender({ name: this.req.body.name });
-      const result = await gender.save().then(
+      const gender = new models.Gender({ name });
+      return await gender.save().then(
           (result) => {
             return result;
           }).catch(
-            (err) => {
-              console.error(err);
-
-            });
-      return result;
+          (err) => {
+            console.error(err);
+          });
     } catch (err) {
       console.error(err);
       throw new Error('Error creating gender');
     }
   }
-  get = async () => {
+  static get = async (slug) => {
     try {
-      const gender = await models.Gender.findOne({name: this.req.params.slug})
+      const gender = await models.Gender.findOne({slug})
       if (gender) {
         return gender
       } else {
@@ -39,9 +35,34 @@ export default class GenderServes {
     }
   }
 
-  delete = async () => {
-    const gender = await this.get()
-    return gender.deleteOne();
+  static update = async (slug, name) => {
+    try {
+      const gender = await models.Gender.findOneAndUpdate({slug: slug}, {name: name}, {new: true});
+      return {
+        message: "Экземпляр успешно обновлен",
+        gender: gender,
+        error: null,
+      }
+    } catch (e) {
+        console.error(e);
+        return {message: 'Error updating', error: e};
+    }
+
+  }
+
+  static delete = async (slug) => {
+    try {
+      const gender = await models.Gender.findOneAndDelete({slug: slug});
+      return {
+        message: "Экземпляр успешно удален",
+        gender,
+        error: null,
+      }
+    } catch (e) {
+        console.error(e);
+        return {message: 'Error deleting', error: e};
+    }
+
   }
 
   static async getAll() {

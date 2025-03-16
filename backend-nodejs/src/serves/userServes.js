@@ -6,25 +6,37 @@ export default class UserServes {
     static async createDoc(data) {
         let name = 'male';
         if (data.genderId === 2) name = 'female';
-        const genderId = await models.Gender.findOne({name: name});
+        const gender = await models.Gender.findOne({name: name}).select('_id').exec();
         return new models.User({
             email: data.email,
             password: data.password,
             firstName: data.firstName,
             lastName: data.lastName,
-            genderId: genderId._id,
+            genderId: gender._id,
             dateOfBirth: data.dateOfBirth,
             isAdmin: data?.isAdmin,
             eyeColor: data?.eyeColor,
             hairColor: data?.hairColor,
         });
+
     }
 
+    static async verify(data) {
+        if (!data.email || !data.password || !data.firstName || !data.lastName || !data.dateOfBirth) {
+            return {error: 'Not all fields are filled', verified: false};
+        }
+        const user = await models.User.findOne({email: data.email}).exec();
+        if (user) {
+            return {error: 'User with this email already exists', verified: false};
+        }
+        return {error: null, verified: true};
+    }
 
     static async create(data) {
         try {
             data.password = await bcrypt.hash(data.password, 10)
             const doc = await UserServes.createDoc(data);
+            console.log(doc)
             const user = await doc.save()
             return {message: 'User created', user, error: null};
         } catch (e) {

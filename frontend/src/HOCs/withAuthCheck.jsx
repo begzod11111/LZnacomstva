@@ -6,16 +6,22 @@ import axios from "axios";
 
 function withAuthCheck(WrappedComponent) {
     return function(props) {
-        const [token, setToken] = useState(null);
+        const [tokenValid, setTokenValid] = useState(null);
         const navigate = useNavigate();
         const location = useLocation();
         const { setNotification } = useContext(NotificationContext);
 
 
         useEffect(() => {
+            const tokenToStore = localStorage.getItem('accessToken');
+            if (!tokenToStore) {
+                setTokenValid(false);
+                return;
+            }
             const fetchToken = async () => {
                 const fetchedToken = await verifyToken(localStorage.getItem('accessToken'));
-                setToken(fetchedToken);
+                if (fetchedToken === false) localStorage.clear();
+                setTokenValid(fetchedToken);
             };
             fetchToken().then(
                 error => console.log()// Функция, которая будет вызвана, если промис завершится с ошибкой
@@ -23,10 +29,10 @@ function withAuthCheck(WrappedComponent) {
         }, []);
 
         useEffect(() => {
-            if (token === null) {
-                return; // Если токен еще не был получен, ничего не делаем
+            if (tokenValid === null) {
+                return;
             }
-            if (!token) {
+            if (!tokenValid) {
                 if (location.pathname !== '/sing-in') {
                     setNotification({
                         'message': 'Вы не авторизованы',
@@ -36,7 +42,7 @@ function withAuthCheck(WrappedComponent) {
                     navigate('/sing-in')
                 }
             } else {
-                if (location.pathname === '/sing-in/' || location.pathname === '/') {
+                if (location.pathname === '/sing-in' || location.pathname === '/') {
                     setNotification({
                         'message': 'Вы уже авторизованы',
                         'type': 'success',
@@ -46,7 +52,7 @@ function withAuthCheck(WrappedComponent) {
                 }
             }
             // Ваша функция обновления
-        }, [token, navigate]);
+        }, [tokenValid, navigate]);
 
         return  <WrappedComponent {...props} />;
     }

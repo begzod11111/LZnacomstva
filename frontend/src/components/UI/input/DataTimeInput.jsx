@@ -82,12 +82,12 @@ function DataTimeInput({collBackFunc, defaultValue = {day: 0, month: 0, year: 0}
                    onChange={(e) => handleDateChange(Number(e.target.value),'day', e)}
                    type="text"
                    placeholder="День"
-                   defaultValue={defaultValue ? date.day : ''}
+                   defaultValue={defaultValue.day ? date.day : ''}
             />
             <SelectInput
                 ref={refs.select}
                 onSelect={handleDateChange}
-                defaultValue={defaultValue ? date.month : 'Months'}
+                defaultValue={defaultValue.month ? date.month : 'Months'}
                 optionsData={months}
             />
             <input
@@ -95,7 +95,7 @@ function DataTimeInput({collBackFunc, defaultValue = {day: 0, month: 0, year: 0}
                 onChange={(e) => handleDateChange(Number(e.target.value),'year', e)}
                 type="text"
                 placeholder="Год"
-                defaultValue={defaultValue ? date.year : ''}
+                defaultValue={defaultValue.year ? date.year : ''}
             />
         </label>
     )

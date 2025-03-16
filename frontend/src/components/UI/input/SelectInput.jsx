@@ -23,7 +23,6 @@ const SelectInput = React.forwardRef(({onSelect, optionsData, defaultValue}, ref
         })
         return russianName
     }
-
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (selectRef.current && !selectRef.current.contains(event.target)) {

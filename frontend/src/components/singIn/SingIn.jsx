@@ -34,6 +34,14 @@ export default function SingIn() {
     const emailRef = useRef(null);
     const passwordRef = useRef(null);
 
+    const handleKeyDown = (event) => {
+        if (event.key === 'Enter') {
+            console.log('Enter key pressed');
+            // Выполните нужное действие, например, отправку формы или обновление состояния
+            sendForm()
+        }
+    };
+
     function sendForm(){
         if (!data.email || !data.password) {
             emailRef.current.classList.add(classesBt.not_correct)
@@ -68,20 +76,18 @@ export default function SingIn() {
         })
         .catch(function (error) {
             if (!error.response) {
-                console.log(error)
                 // Обработка ошибок, когда нет ответа от сервера
                 setNotification({
                     'message': 'Ошибка сети',
                     'type': 'error',
                     'has': true
                 })
-            } else if (error.response.status === 401){
+            } else if (error.response.status === 401 || error.response.status === 400) {
                 setNotification({
                     'message': 'Неверный логин или пароль',
                     'type': 'error',
                     'has': true
                 })
-
             }
         });
     }
@@ -134,6 +140,7 @@ export default function SingIn() {
                         type='password'
                         name='password'
                         onChange={event => {onChanges('password', event)}}
+                        onKeyPress={handleKeyDown}
                         autoComplete='current-password'
                     />
                     <MainBt

@@ -16,7 +16,16 @@ export default class UserViews {
             });
         }
     }
+
     static async create(req, res) {
+        const verify = await userServes.verify(req.body);
+        console.log(verify);
+        if (verify.error) {
+            return res.status(400).json({
+                message: 'Error creating user',
+                error: verify.error
+            });
+        }
         const result = await userServes.create(req.body);
         if (result.error) {
             res.status(400).json({
@@ -24,8 +33,13 @@ export default class UserViews {
                 error: result.error
             });
         } else {
+            const payload = {
+                id: result.user._id,
+                email: result.user.email,
+                isAdmin: result.user.isAdmin
+            }
             const token = await JwtServes.getToken(result.user);
-            res.status(201).json({...result, token});
+            res.status(201).json({...result, token, payload});
         }
     }
     static async remove(req, res) {

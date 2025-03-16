@@ -2,13 +2,12 @@ import express from 'express';
 const router = express.Router();
 import { models } from '../config/database.js';
 import GenderServes from "../serves/genderServes.js";
+import {Model as genderServes} from "sequelize";
 
 router.route(`/(:slug)?`)
     .get(async (req, res) => {
-        const genderServes = new GenderServes(req);
         if (req.params.slug) {
-            const gender = await genderServes.get();
-            console.log(gender)
+            const gender = await GenderServes.get(req.params.slug);
             res.status(200).json(gender)
         }
         else {
@@ -18,20 +17,27 @@ router.route(`/(:slug)?`)
     })
     .post(async (req, res) => {
         try {
-            const genderServes = new GenderServes(req);
-            const gender = await genderServes.create();
+            const gender = await GenderServes.create(req.body.name);
             res.status(201).json(gender);
         } catch (err) {
             res.status(400).json({ message: 'Error creating gender', error: err.message });
         }
     })
-    .put((req, res) => {
-        res.status(200).send('PUT request to the homepage');
+    .patch(async (req, res) => {
+        if (req.params.slug) {
+            const result = await GenderServes.update(req.params.slug, req.body.name);
+            if (result.error) {
+                res.status(400).json({ message: 'Error updating', error: result.error });
+            }
+            res.status(200).send(result);
+        } else res.status(400).send('gender not found');
     })
     .delete(async (req, res) => {
-        const genderServes = new GenderServes(req);
-        const gender = await genderServes.delete();
-        res.status(200).send('DELETE request to the homepage');
+        const result = await GenderServes.delete(req.params.slug);
+        if (result.error){
+            res.status(400).json({message: 'Error deleting', error: result.error});
+        }
+        res.status(200).send(result);
     });
 
 export default router;

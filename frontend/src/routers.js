@@ -14,6 +14,7 @@ const QuestionnaireListWithAuthCheck = withAuthCheck(QuestionnaireList)
 // Вместо QuestionnaireList используйте QuestionnaireListWithAuthCheck
 const SingInWithAuthCheck = withAuthCheck(SingIn);
 // Используйте QuestionnaireListWithAuthCheck вместо QuestionnaireList
+const ProfileWithAuthCheck = withAuthCheck(Profile);
 
 
 const AppRouter = () => {
@@ -26,7 +27,7 @@ const AppRouter = () => {
         <Route path="/goal-meeting/" element={<QuestionnaireListWithAuthCheck />}/>
         <Route path="/goal-meeting/:goalMeetingSlug" element={<QuestionnaireList />}/>
         <Route path="/profile/:userId" element={<PersonDetail />}/>
-        <Route path='/home/' element={<Profile />}/>
+        <Route path='/home/' element={<ProfileWithAuthCheck />}/>
       </Routes>
     </BrowserRouter>
   );

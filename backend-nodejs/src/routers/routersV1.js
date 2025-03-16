@@ -78,7 +78,6 @@ routerV1.route('/users/:id')
             select: 'name slug',
         })
         if (!user) return res.status(404).json({error: 'User not found'});
-        console.log();
         return res.status(200).json({error: null, user: {
             ...user._doc,
                 images: user.getImages(),
