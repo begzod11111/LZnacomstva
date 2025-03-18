@@ -9,74 +9,79 @@ import NavBarProfile from "./components/navBarProfile/NavBarProfile";
 import ProfileCt from "./components/profileCt/ProfileCt";
 import ImagesCtProfile from "./components/imagesCtProfile/ImagesCtProfile";
 import BasicInformationCt from "./components/basicInformationCt/BasicInformationCt";
-import React, {useCallback, useState, useEffect, useContext} from "react";
+import React, {useEffect, useContext, useState, useRef} from "react";
 import axios from "axios";
-import loader from "../loader/loader";
 import Loader from "../loader/loader";
-import {useQuery} from "react-query";
-import notification from "../notifications/Notification";
-import {NotificationContext} from "../../contexts/context";
-import withAuthCheck from "../../HOCs/withAuthCheck";
-import getPayload from "../constants";
+import { useQuery } from "react-query";
+import { NotificationContext } from "../../contexts/context";
+import {useNavigate} from "react-router-dom";
 import MainBt from "../UI/button/mainBt";
 
 function Profile() {
-    const {notification, setNotification} = useContext(NotificationContext);
+    const payload = localStorage.getItem('payload');
+    const navigate = useNavigate();
+    const { setNotification } = useContext(NotificationContext);
+    const [hasNotified, setHasNotified] = useState(false);
 
-    async function fetchProfile(userId) {
+
+    const userId = JSON.parse(payload)?.id;
+
+    const fetchProfile = async (userId) => {
         const request = await axios.get(`http://127.0.0.1:7000/api/v1/profile/${userId}`, {
-            headers: {Authorization: `Token ${localStorage.getItem('accessToken')}`}
-        })
+            headers: { Authorization: `Token ${localStorage.getItem('accessToken')}` }
+        });
         return request.data;
+    };
+
+    const { data, error, isLoading } = useQuery(['profile', userId], () => fetchProfile(userId));
+
+    const sendData = () => {
+      console.log('sendData')
     }
-    const payload = getPayload()
-    if (!payload) {
-        console.log('ddd')
-
-    }
-    const userId = payload.id;
-    const {data, error, isLoading} = useQuery(['profile', userId], () => fetchProfile(userId));
-
-
 
     useEffect(() => {
-        if (error) {
-            if (error.status === 404) {
+        if (error && !hasNotified) {
+            if (error.response && error.response.status === 404) {
                 setNotification({
-                    'message': 'Указанная страница не сушествует',
+                    'message': 'Указанная страница не существует',
                     'type': 'error',
                     'has': true
                 });
+                setHasNotified(true);
             }
         }
-    }, [error, notification]);
+    }, [error, hasNotified, setNotification]);
+
     if (isLoading) {
-        return <Loader/>;
+        return <Loader />;
     }
+
     if (error) {
-        return <div></div>
+        navigate('/sing-in')
+        return <div></div>;
     }
+
+
 
     return (
         <>
-            <DatingLocation/>
+            <DatingLocation />
             <HeaderCt>
-                <NavBarHeader/>
-                <CountryList/>
-                <IconsHeader/>
+                <NavBarHeader />
+                <CountryList />
+                <IconsHeader />
                 <UserAvaCt />
             </HeaderCt>
             <ProfileCt>
-                <NavBarProfile/>
+                <NavBarProfile />
                 <ImagesCtProfile imagesArr={data.user} />
-                <BasicInformationCt profileData={data.user} />
+                <BasicInformationCt profileData={data.user}>
+                    <MainBt type={'button'} onClick={sendData}>Сохранить</MainBt>
+                    </BasicInformationCt>
             </ProfileCt>
-            <Footer/>
+            <Footer />
         </>
-    )
+    );
 }
 
-
-
 export default Profile;
-

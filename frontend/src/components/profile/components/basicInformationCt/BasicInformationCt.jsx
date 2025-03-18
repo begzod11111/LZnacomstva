@@ -4,15 +4,32 @@ import DataTimeInput from "../../../UI/input/DataTimeInput";
 import CheckBoxGender from "../../../UI/checkboxGender/checkboxGender";
 import TextareaInput from "../../../UI/input/TextareaInput";
 import SelectInput from "../../../UI/input/SelectInput";
-import MainBt from "../../../UI/button/mainBt";
-import React, {useRef, useState} from "react";
+import React, {useCallback, useRef, useState} from "react";
+import classesBt from "../../../UI/input/mainInput.module.css";
 
-function BasicInformationCt({profileData, ...props}) {
+function BasicInformationCt({profileData, children, collBackFunc, ...props}) {
     const [refsDate] = useState({
         day: useRef(null),
         year: useRef(null),
         select: useRef(null),
     });
+    const [formData, setFormData] = useState({
+        firstName: '',
+        lastName: '',
+        email: '',
+    })
+    const [refsInputs] = useState({
+        firstName: useRef(null),
+        lastName: useRef(null),
+        email: useRef(null),
+    })
+    const formDateChange = useCallback((key, value) => {
+        refsInputs[key].current.classList.remove(classesBt.not_correct);
+        setFormData((prevState) => ({
+            ...prevState,
+            [key]: value
+        }));
+    }, []);
     if (!profileData) {
         return null;
     }
@@ -33,9 +50,6 @@ function BasicInformationCt({profileData, ...props}) {
             {englishName: 'Not Answer', russianName: 'Нет ответа', id: 5},
         ]
     }
-    const foo = (date) => {
-      return null
-    }
     function passDateTimeToObject(dataTime) {
         let date = new Date(dataTime);
         return {
@@ -44,15 +58,28 @@ function BasicInformationCt({profileData, ...props}) {
             year: Number(date.getFullYear()),
         };
     }
+    function foo() {
+        return null
+    }
     let profile = profileData;
     let date_of_birth = passDateTimeToObject(profile['dateOfBirth'])
     return (
         <div className={classes.basicInformationCt}>
                 <p>Основная информация</p>
                 <span>Имя</span>
-                <MainInput defaultValue={profileData['firstName']}/>
+                <MainInput
+                    ref={refsInputs.firstName}
+                    defaultValue={profileData['firstName']}
+                    name={'firstName'}
+                    onChange={event => formDateChange('firstName', event.target.value)}/>
+                />
                 <span>Фамилия</span>
-                <MainInput defaultValue={profileData['lastName']}/>
+                <MainInput
+                    ref={refsInputs.lastName}
+                    name={'lastName'}
+                    onChange={event => formDateChange('lastName', event.target.value)}
+                    defaultValue={profileData['lastName']}
+                />
                 <span>Дата рождения</span>
                 <DataTimeInput defaultValue={date_of_birth} collBackFunc={foo} refs={refsDate}/>
                 <span>Пол</span>
@@ -72,11 +99,15 @@ function BasicInformationCt({profileData, ...props}) {
                 <TextareaInput placeholder={profile['aboutMe'] ? profile['aboutMe'] : 'Не указанно'}/>
                 <p>Аккаунт</p>
                 <span>E-mail</span>
-                <MainInput defaultValue={profileData['email']}/>
+                <MainInput
+                    ref={refsInputs.email}
+                    name={'email'}
+                    onChange={event => formDateChange('email', event.target.value)}
+                    defaultValue={profileData['email']}
+                />
                 <span>Пароль</span>
                 <MainInput defaultValue='********'/>
-                <MainBt>Сохранить</MainBt>
-
+            {children}
         </div>
     )
 }

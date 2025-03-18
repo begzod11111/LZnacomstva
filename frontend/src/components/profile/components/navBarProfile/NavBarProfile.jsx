@@ -32,6 +32,7 @@ function NavBarProfile() {
                     'has': true
                 })
                 localStorage.clear();
+                navigate('/sing-in')
 
             }}>
                 <MdLogout className={classes.navBarBtSVG}/>

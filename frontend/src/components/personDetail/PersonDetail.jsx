@@ -44,8 +44,12 @@ function PersonDetail() {
         return <Loader />;
     }
 
-
     if (error) {
+        setNotification({
+            'message': 'Ошибка загрузки данных',
+            'type': 'error',
+            'has': true
+        })
         return <div></div>;
     }
     const user = data.user;
