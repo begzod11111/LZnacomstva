@@ -1,5 +1,5 @@
 import MainBt from "../UI/button/mainBt";
-import MainInput from "../UI/input/MainInput";
+import MainInput from "../UI/input/MainInput/MainInput";
 import {MdEmail} from "react-icons/md";
 import React, {useEffect, useRef, useState} from "react";
 import classNames from "classnames";

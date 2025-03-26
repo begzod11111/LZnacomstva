@@ -56,13 +56,13 @@ const userSchema = new mongoose.Schema({
   },
   eyeColor: {
     type: String,
-    enum: ['Not Answer', 'Blue', 'Black', 'White'],
+    enum: ['Not Answer', 'blue', 'black', 'white', 'red', 'gray', 'blonde'],
     default: 'Not Answer',
     required: true
   },
   hairColor: {
     type: String,
-    enum: ['Not Answer', 'Blue', 'Black', 'White'],
+    enum: ['Not Answer', 'blue', 'black', 'white', 'gray', 'brown', 'green'],
     default: 'Not Answer',
     required: true
   },

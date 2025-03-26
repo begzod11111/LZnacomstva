@@ -1,0 +1,29 @@
+/* textareaInput.module.css */
+
+.textareaInput {
+    width: 60%;
+    max-width: 60%;
+    height: 30vh;
+    min-height: 20vh;
+    margin-top: 2vh;
+    padding: 10px;
+    border-radius: 30px;
+    background: #42204E;
+    color: #925FA4;
+    font-size: 1vw;
+    font-weight: 400;
+    line-height: 150%;
+    border: 2px solid transparent;
+    outline: none;
+    resize: none;
+    transition: border-color 0.3s ease;
+}
+
+.textareaInput:focus {
+    border-color: #925FA4;
+}
+
+.textareaInput::placeholder {
+    color: #8B5D9A;
+    opacity: 0.8;
+}

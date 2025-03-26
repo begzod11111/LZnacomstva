@@ -1,5 +1,5 @@
 import React from 'react'
-import classes from './mainInput.module.css'
+import classes from './MainInput.module.css'
 
 const MainInput = React.forwardRef(({defaultValue, icon, placeholder, ...props}, ref) => {
     return (

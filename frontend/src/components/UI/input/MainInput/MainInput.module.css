@@ -1,0 +1,48 @@
+
+.mainInputLabel {
+    height: 3vw;
+    display: flex;
+    align-items: center;
+    border-radius: 500px;
+    background: #42204E;
+    flex-shrink: 0;
+}
+
+.mainInputLabel i {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3vh;
+    color: #8B5D9A;
+    padding: 0.8vw;
+    flex-shrink: 0;
+}
+
+.mainInputLabel input {
+    flex: 1;
+    height: 100%;
+    color: #8B5D9A;
+    font-size: 1vw;
+    font-weight: 400;
+    line-height: 150%;
+    background: transparent;
+    border: none;
+    outline: none;
+    padding: 0 0.8vw;
+}
+
+.mainInputLabel input::placeholder {
+    color: #8B5D9A;
+    opacity: 0.8;
+}
+
+/* Стили для автозаполнения */
+.mainInputLabel input:-webkit-autofill,
+.mainInputLabel input:-webkit-autofill:hover,
+.mainInputLabel input:-webkit-autofill:focus,
+.mainInputLabel input:-webkit-autofill:active {
+    border-radius: 500px;
+    -webkit-text-fill-color: #8B5D9A;
+    -webkit-box-shadow: 0 0 0 1000px #42204E inset;
+    transition: background-color 5000s ease-in-out 0s;
+}

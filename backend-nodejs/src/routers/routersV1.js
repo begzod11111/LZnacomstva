@@ -8,6 +8,7 @@ import authenticateToken from "../middlewares/authenticateToken.js";
 import authenticateUser from "../middlewares/authenticateUser.js";
 import imageRouter from "./imageRouter.js";
 import {models} from "../config/database.js";
+import UserServes from "../serves/userServes.js";
 
 const routerV1 = express.Router();
 
@@ -34,6 +35,7 @@ routerV1.route('/main')
                     },
                     {
                         path: 'gender',
+
                         select: '_id name',
                     },
                     {
@@ -52,13 +54,13 @@ routerV1.route('/main')
             const result = await Promise.all(docs.map(async (item) => {
                 const users = await Promise.all(item.users.map(async (user) => {
                     return {
-                        ...user._doc,
+                        ...user?._doc,
                         photo: user.get_avatar(),
-                        country: {...user.country._doc, flagUrl: user.country.image.url || null},
+                        country: {...user.country?._doc, flagUrl: user.country?.image?.url || null},
                         gender: user.gender.name
                     };
                 }));
-                return {...item._doc, users};
+                return {...item?._doc, users};
             }));
             return res.status(200).json({error: null, result});
         } catch (e) {
@@ -91,7 +93,10 @@ routerV1.route('/profile/:id')
         ).populate({
             path: 'images',
             select: 'url userId isMain',
-        }).populate('goalMeeting').populate({
+        }).populate({
+            path: 'goalMeeting',
+            select: 'slug',
+        }).populate({
             path: 'gender',
             select: 'name',
         }).populate('gender').exec();
@@ -103,6 +108,26 @@ routerV1.route('/profile/:id')
                 gender: user.gender
         }});
     })
+    .patch(authenticateUser, async (req, res) => {
+        const result = await UserServes.update(req.params.id, req.body);
+        if (result.error) return res.status(400).json({error: result.error});
+        return res.status(200).json({error: null, message: 'User updated'});
+    });
 
+
+routerV1.route('/goalg-metings/')
+    .get(async (req, res) => {
+        const goalMeetings = await models.GoalMeeting.find().select(
+            '-__v'
+        )
+        const result = goalMeetings.map((item) => {
+            return {
+                englishName: item.slug,
+                russianName: item.name,
+                id: item._id.toString(),
+            }
+        });
+        return res.status(200).json({error: null, result});
+    })
 
 export default routerV1;

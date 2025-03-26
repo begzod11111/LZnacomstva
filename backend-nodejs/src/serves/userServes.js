@@ -1,5 +1,6 @@
 import bcrypt from 'bcrypt';
 import {models} from "../config/database.js";
+import goalmeeting from "../models/goalmeeting.js";
 
 export default class UserServes {
 
@@ -97,15 +98,55 @@ export default class UserServes {
     }
   }
 
-  static async update(userId, data) {
+static async update(userId, data) {
     try {
-      const user = await models.User.findByIdAndUpdate(userId, data, {
-        new: true,
-        runValidators: true
-      });
-      return {message: 'User updated', user};
-    } catch (e) {return { error: e.message }}
-  }
+        // Создаем объект для обновления
+        const updateData = { ...data };
+
+        // Параллельная обработка genderId и goalMeetingId
+        await Promise.all([
+            data.genderId &&
+                models.Gender.findOne({ name: data.genderId })
+                    .select('_id')
+                    .lean()
+                    .then(gender => {
+                        if (!gender) throw new Error('Gender not found');
+                        updateData.genderId = gender._id;
+                    }),
+
+            data.goalMeetingId &&
+                models.GoalMeeting.findOne({ slug: data.goalMeetingId })
+                    .select('_id')
+                    .lean()
+                    .then(goal => {
+                        if (!goal) throw new Error('Goal meeting not found');
+                        updateData.goalMeetingId = goal._id;
+                    })
+        ]);
+
+        const user = await models.User.findByIdAndUpdate(
+            userId,
+            updateData,
+            {
+                new: true,
+                runValidators: true,
+                context: 'query' // Добавляет контекст для валидаторов
+            }
+        ).lean();
+
+        if (!user) {
+            throw new Error('User not found');
+        }
+
+        return { message: 'User updated', user };
+    } catch (error) {
+        // Более информативная обработка ошибок
+        return {
+            error: error.message,
+            status: error.name === 'ValidationError' ? 400 : 500
+        };
+    }
+}
 
 
 }

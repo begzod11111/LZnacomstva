@@ -6,20 +6,20 @@ import HeaderCt from "../header/HeaderCt";
 import HelpText from "../header/defaultHeadersComponents/helpText/HelpText";
 import LinkBt from "../UI/button/linkBt";
 import FormCt from "../form/FormCt";
-import MainInput from "../UI/input/MainInput";
+import MainInput from "../UI/input/MainInput/MainInput";
 import {MdEmail} from "react-icons/md";
 import {RiLockPasswordFill} from "react-icons/ri";
 import MainBt from "../UI/button/mainBt";
 import Footer from "../footer/Footer";
 import React, {useCallback, useContext, useEffect, useRef, useState} from "react";
 import {FaUser} from "react-icons/fa";
-import DataTimeInput from "../UI/input/DataTimeInput";
+import DataTimeInput from "../UI/input/DataTimeInput/DataTimeInput";
 import CheckBoxGender from "../UI/checkboxGender/checkboxGender";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
 import {AUTH_USERS_URL} from '../../apiUrls'
 import {NotificationContext} from "../../contexts/context";
-import classesBt from '../UI/input/mainInput.module.css'
+import classesBt from '../UI/input/MainInput/MainInput.module.css'
 
 
 function SingUp() {

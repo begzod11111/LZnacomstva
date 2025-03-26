@@ -7,7 +7,7 @@ import Banners from "../UI/banner/Banners";
 import banner_1 from "../../img/banner_1.svg";
 import banner_2 from "../../img/banner_2.svg";
 import FormCt from "../form/FormCt";
-import MainInput from "../UI/input/MainInput";
+import MainInput from "../UI/input/MainInput/MainInput";
 import {MdEmail} from "react-icons/md";
 import {RiLockPasswordFill} from "react-icons/ri";
 import MainBt from "../UI/button/mainBt";
@@ -18,7 +18,7 @@ import axios from "axios";
 import {useNavigate} from "react-router-dom";
 import {CREATE_TOKEN_URL, REFRESH_TOKEN_URL, VERIFY_TOKEN_URL} from "../../apiUrls";
 import classesChange from '../changePasswordForm/changePassword.module.css'
-import classesBt from '../UI/input/mainInput.module.css'
+import classesBt from '../UI/input/MainInput/MainInput.module.css'
 import Notification from "../notifications/Notification";
 import {NotificationContext} from "../../contexts/context";
 
@@ -41,6 +41,7 @@ export default function SingIn() {
             sendForm()
         }
     };
+
 
     function sendForm(){
         if (!data.email || !data.password) {

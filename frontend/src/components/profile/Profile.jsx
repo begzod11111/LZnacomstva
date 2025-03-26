@@ -1,3 +1,8 @@
+import React, { useEffect, useContext, useState, useCallback } from "react";
+import axios from "axios";
+import { useQuery } from "react-query";
+import { useNavigate } from "react-router-dom";
+import { NotificationContext } from "../../contexts/context";
 import DatingLocation from "../datingLocation/DatingLocation";
 import HeaderCt from "../header/HeaderCt";
 import NavBarHeader from "../header/mainHeaderComponents/navbar/navBarHeader";
@@ -9,58 +14,136 @@ import NavBarProfile from "./components/navBarProfile/NavBarProfile";
 import ProfileCt from "./components/profileCt/ProfileCt";
 import ImagesCtProfile from "./components/imagesCtProfile/ImagesCtProfile";
 import BasicInformationCt from "./components/basicInformationCt/BasicInformationCt";
-import React, {useEffect, useContext, useState, useRef} from "react";
-import axios from "axios";
 import Loader from "../loader/loader";
-import { useQuery } from "react-query";
-import { NotificationContext } from "../../contexts/context";
-import {useNavigate} from "react-router-dom";
 import MainBt from "../UI/button/mainBt";
 
 function Profile() {
-    const payload = localStorage.getItem('payload');
+    const payload = localStorage.getItem("payload");
+    const userId = JSON.parse(payload)?.id;
     const navigate = useNavigate();
     const { setNotification } = useContext(NotificationContext);
+    const [formData, setFormData] = useState(null);
     const [hasNotified, setHasNotified] = useState(false);
+    const [files, setFiles] = useState({});
+    const referenceId = JSON.parse(localStorage.getItem("payload"))?.id;
+    const referenceModel = "User";
 
-
-    const userId = JSON.parse(payload)?.id;
-
-    const fetchProfile = async (userId) => {
-        const request = await axios.get(`http://127.0.0.1:7000/api/v1/profile/${userId}`, {
-            headers: { Authorization: `Token ${localStorage.getItem('accessToken')}` }
+    // Функция для получения данных профиля
+    const fetchProfile = useCallback(async () => {
+        const response = await axios.get(`http://127.0.0.1:7000/api/v1/profile/${userId}`, {
+            headers: { Authorization: `Token ${localStorage.getItem("accessToken")}` },
         });
-        return request.data;
-    };
+        return response.data;
+    }, [userId]);
 
-    const { data, error, isLoading } = useQuery(['profile', userId], () => fetchProfile(userId));
+    // Использование react-query для получения данных
+    const { data, error, isLoading } = useQuery(["profile", userId], fetchProfile, {
+        enabled: !!userId, // Запрос выполняется только если userId существует
+    });
 
-    const sendData = () => {
-      console.log('sendData')
-    }
+    // Функция для отправки данных
+    const sendDataFunc = useCallback(async () => {
+        if (!formData) return;
+        const requests = [];
+        if (formData.images) {
+            const requests = formData.images.map(async (item) => {
+                // Заполняем formData
+                const formData = new FormData();
+                formData.append('file', item.file);
+                formData.append('referenceModel', referenceModel);
+                formData.append('referenceId', referenceId);
+                if (item.isMain !== undefined) {
+                    formData.append('isMain', item.isMain);
+                }
+                // Определяем URL и метод в зависимости от isNew
+                const detail = item.isNew
+                    ?  {
+                        method: 'POST',
+                        url: 'http://127.0.0.1:7000/api/images'
+                    }
+                    : {
+                        method: 'PATCH',
+                        url: `http://127.0.0.1:7000/api/images/${item.id}`
+                    }
 
-    useEffect(() => {
-        if (error && !hasNotified) {
-            if (error.response && error.response.status === 404) {
+                // Отправляем запрос
+                const response = await axios({
+                    method: detail.method,
+                    url: detail.url,
+                    data: formData,
+                    headers: { Authorization: `Token ${localStorage.getItem("accessToken")}` },
+                })
+                return response.data;
+
+                 // Возвращаем результат
+            });
+            try {
+                const results = await Promise.all(requests);
+                console.log('Все результаты:', results);
                 setNotification({
-                    'message': 'Указанная страница не существует',
-                    'type': 'error',
-                    'has': true
-                });
-                setHasNotified(true);
+                    message: "Данные успешно обновлены",
+                    type: "success",
+                    has: true,
+                })
+                return results;
+            } catch (error) {
+                console.error('Ошибка при загрузке:', error);
+                throw error;
             }
         }
-    }, [error, hasNotified, setNotification]);
 
+
+        // try {
+        //     const response = await axios.patch(
+        //         `http://127.0.0.1:7000/api/v1/profile/${userId}`,
+        //         formData,
+        //         {
+        //             headers: { Authorization: `Token ${localStorage.getItem("accessToken")}` },
+        //         }
+        //     );
+        //
+        //     if (response.status === 200) {
+        //         setNotification({
+        //             message: "Данные успешно обновлены",
+        //             type: "success",
+        //             has: true,
+        //         });
+        //     }
+        // } catch (err) {
+        //     console.error("Ошибка при обновлении данных:", err);
+        //     setNotification({
+        //         message: "Произошла ошибка при обновлении данных",
+        //         type: "error",
+        //         has: true,
+        //     });
+        // }
+    }, [userId, setNotification, formData]);
+
+    // Обработка ошибок
+    useEffect(() => {
+        if (error && !hasNotified) {
+            if (error.response?.status === 404) {
+                setNotification({
+                    message: "Указанная страница не существует",
+                    type: "error",
+                    has: true,
+                });
+                setHasNotified(true);
+            } else {
+                navigate("/sign-in");
+            }
+        }
+    }, [error, hasNotified, setNotification, navigate]);
+
+    // Лоадер при загрузке
     if (isLoading) {
         return <Loader />;
     }
 
+    // Если ошибка, перенаправляем на страницу входа
     if (error) {
-        navigate('/sing-in')
-        return <div></div>;
+        return null;
     }
-
 
 
     return (
@@ -74,10 +157,10 @@ function Profile() {
             </HeaderCt>
             <ProfileCt>
                 <NavBarProfile />
-                <ImagesCtProfile imagesArr={data.user} />
-                <BasicInformationCt profileData={data.user}>
-                    <MainBt type={'button'} onClick={sendData}>Сохранить</MainBt>
-                    </BasicInformationCt>
+                <ImagesCtProfile imagesArr={data?.user} setFormData={setFormData} />
+                <BasicInformationCt setFormData={setFormData} profileData={data?.user}>
+                    <MainBt type="button" onClick={sendDataFunc}>Сохранить</MainBt>
+                </BasicInformationCt>
             </ProfileCt>
             <Footer />
         </>

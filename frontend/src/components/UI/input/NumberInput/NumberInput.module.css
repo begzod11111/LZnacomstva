@@ -1,0 +1,141 @@
+/* NumberInput.module.css */
+.numberInputLabel {
+    height: 3vw;
+    display: flex;
+    align-items: center;
+    border-radius: 500px;
+    background: #42204E;
+    flex-shrink: 0;
+    transition: border 0.3s ease;
+    padding: 0 0.8vw;
+    position: relative;
+}
+
+.numberInputLabel .icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3vh;
+    color: #8B5D9A;
+    padding: 0 0.4vw;
+    flex-shrink: 0;
+}
+
+.numberInput {
+    flex: 1;
+    height: 100%;
+    color: #8B5D9A;
+    font-size: 1vw;
+    font-weight: 400;
+    line-height: 150%;
+    background: transparent;
+    border: none;
+    outline: none;
+    padding: 0 0.8vw;
+    transition: color 0.3s ease;
+}
+
+.numberInput::placeholder {
+    color: #8B5D9A;
+    opacity: 0.8;
+    font-size: 1vw;
+    font-weight: 400;
+}
+
+.numberInput:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Контейнер для кнопок */
+.buttonContainer {
+    flex-direction: column;
+}
+
+.incrementButton,
+.decrementButton {
+    height: 50%;
+    width: 1.5vw;
+    background: #8B5D9A;
+    color: #42204E;
+    border: none;
+    font-size: 1vw;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease, opacity 0.3s ease;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.incrementButton {
+    border-top-right-radius: 500px;
+    border-bottom-right-radius: 0;
+}
+
+.decrementButton {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 500px;
+}
+
+.incrementButton:hover,
+.decrementButton:hover {
+    background: #925FA4;
+}
+
+.incrementButton:disabled,
+.decrementButton:disabled {
+    background: #5a3a66;
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Состояния */
+.numberInputLabel.invalid {
+    border: 1px solid #ff4d4d;
+}
+
+.numberInputLabel.disabled {
+    background: #3a1c45;
+    cursor: not-allowed;
+}
+
+/* Автозаполнение */
+.numberInput:-webkit-autofill,
+.numberInput:-webkit-autofill:hover,
+.numberInput:-webkit-autofill:focus,
+.numberInput:-webkit-autofill:active {
+    border-radius: 500px;
+    -webkit-text-fill-color: #8B5D9A;
+    -webkit-box-shadow: 0 0 0 1000px #42204E inset;
+    transition: background-color 5000s ease-in-out 0s;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .numberInputLabel {
+        height: 10vw;
+        padding: 0 2vw;
+    }
+
+    .numberInputLabel .icon {
+        font-size: 5vw;
+        padding: 0 1vw;
+    }
+
+    .numberInput {
+        font-size: 3vw;
+        padding: 0 2vw;
+    }
+
+    .numberInput::placeholder {
+        font-size: 3vw;
+    }
+
+    .incrementButton,
+    .decrementButton {
+        width: 4vw;
+        font-size: 3vw;
+    }
+}

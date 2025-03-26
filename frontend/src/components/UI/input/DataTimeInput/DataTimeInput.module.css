@@ -1,0 +1,56 @@
+/* dataTimeInput.module.css */
+
+.dataTimeInputLabel {
+    height: 3vw;
+    width: 60%;
+    display: flex;
+    align-items: center;
+    position: relative;
+    color: #8B5D9A;
+}
+
+.dataTimeInputLabel input {
+    width: calc(30% - 10px);
+    height: 100%;
+    padding: 0 10px;
+    border-radius: 500px;
+    text-align: center;
+    background: #42204E;
+    color: #8B5D9A;
+    font-weight: 400;
+    line-height: 150%;
+    outline: none;
+}
+
+.dataTimeInputLabel input::placeholder {
+    color: #8B5D9A;
+    opacity: 0.8;
+}
+
+.dataTimeInputLabel > div {
+    width: 40%;
+    height: 100%;
+    border-radius: 50%;
+    margin: 0 5px;
+}
+
+.dataTimeInputLabel > div > button {
+    margin: 0;
+}
+
+/* Стили для автозаполнения */
+.dataTimeInputLabel input:-webkit-autofill,
+.dataTimeInputLabel input:-webkit-autofill:hover,
+.dataTimeInputLabel input:-webkit-autofill:focus,
+.dataTimeInputLabel input:-webkit-autofill:active {
+    border-radius: 500px;
+    -webkit-text-fill-color: #8B5D9A;
+    -webkit-box-shadow: 0 0 0 1000px #42204E inset;
+    transition: background-color 5000s ease-in-out 0s;
+}
+
+/* Стили для ошибки валидации */
+.not_correct {
+    border: 1px solid red;
+}
+
