@@ -18,153 +18,153 @@ import Loader from "../loader/loader";
 import MainBt from "../UI/button/mainBt";
 
 function Profile() {
-    const payload = localStorage.getItem("payload");
-    const userId = JSON.parse(payload)?.id;
-    const navigate = useNavigate();
-    const { setNotification } = useContext(NotificationContext);
-    const [formData, setFormData] = useState(null);
-    const [hasNotified, setHasNotified] = useState(false);
-    const [files, setFiles] = useState({});
-    const referenceId = JSON.parse(localStorage.getItem("payload"))?.id;
-    const referenceModel = "User";
+  const payload = JSON.parse(localStorage.getItem("payload") || "{}");
+  const userId = payload?.id;
+  const referenceId = userId;
+  const referenceModel = "User";
+  const navigate = useNavigate();
+  const { setNotification } = useContext(NotificationContext);
+  const [formData, setFormData] = useState(null);
+  const [images, setImages] = useState([]);
+  const [hasNotified, setHasNotified] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false); // Для состояния загрузки
 
-    // Функция для получения данных профиля
-    const fetchProfile = useCallback(async () => {
-        const response = await axios.get(`http://127.0.0.1:7000/api/v1/profile/${userId}`, {
-            headers: { Authorization: `Token ${localStorage.getItem("accessToken")}` },
+  // Заголовки авторизации
+  const authHeader = { Authorization: `Token ${localStorage.getItem("accessToken")}` };
+
+  // Функция для получения данных профиля
+  const fetchProfile = useCallback(async () => {
+    const response = await axios.get(`http://127.0.0.1:7000/api/v1/profile/${userId}`, {
+      headers: authHeader,
+    });
+    return response.data;
+  }, [userId, authHeader]);
+
+  const { data, error, isLoading } = useQuery(["profile", userId], fetchProfile, {
+    enabled: !!userId,
+  });
+
+  const refreshLocalStore = (ava='', fullname='') => {
+    const payload = JSON.parse(localStorage.getItem('payload'))
+    payload.ava = ava || payload.ava
+    payload.fullName = fullname || payload.fullName
+    localStorage.setItem('payload', JSON.stringify(payload));
+  }
+
+  // Функция для отправки изображений
+  const uploadImages = useCallback(
+    async (images) => {
+      if (!images || images.length === 0) return [];
+
+      const requests = images.map(async (item) => {
+        const imageFormData = new FormData();
+        imageFormData.append("referenceModel", referenceModel);
+        imageFormData.append("referenceId", referenceId);
+        imageFormData.append("file", item.file);
+        if (item.isMain !== undefined) {
+          imageFormData.append("isMain", item.isMain);
+        }
+        if (item.id === 'default') item.isNew = true;
+        const detail = item.isNew
+          ? { method: "POST", url: "http://127.0.0.1:7000/api/images" }
+          : { method: "PATCH", url: `http://127.0.0.1:7000/api/images/${item.id}` };
+
+        const response = await axios({
+          method: detail.method,
+          url: detail.url,
+          data: imageFormData,
+          headers: authHeader,
         });
         return response.data;
-    }, [userId]);
+      });
 
-    // Использование react-query для получения данных
-    const { data, error, isLoading } = useQuery(["profile", userId], fetchProfile, {
-        enabled: !!userId, // Запрос выполняется только если userId существует
-    });
+      return Promise.all(requests);
+    },
+    [referenceModel, referenceId, authHeader]
+  );
 
-    // Функция для отправки данных
-    const sendDataFunc = useCallback(async () => {
-        if (!formData) return;
-        const requests = [];
-        if (formData.images) {
-            const requests = formData.images.map(async (item) => {
-                // Заполняем formData
-                const formData = new FormData();
-                formData.append('file', item.file);
-                formData.append('referenceModel', referenceModel);
-                formData.append('referenceId', referenceId);
-                if (item.isMain !== undefined) {
-                    formData.append('isMain', item.isMain);
-                }
-                // Определяем URL и метод в зависимости от isNew
-                const detail = item.isNew
-                    ?  {
-                        method: 'POST',
-                        url: 'http://127.0.0.1:7000/api/images'
-                    }
-                    : {
-                        method: 'PATCH',
-                        url: `http://127.0.0.1:7000/api/images/${item.id}`
-                    }
+  // Функция для обновления профиля
+  const updateProfile = useCallback(
+    async (profileData) => {
+      const response = await axios.patch(
+        `http://127.0.0.1:7000/api/v1/profile/${userId}`,
+        profileData,
+        { headers: authHeader }
+      );
+      return response.data;
+    },
+    [userId, authHeader]
+  );
 
-                // Отправляем запрос
-                const response = await axios({
-                    method: detail.method,
-                    url: detail.url,
-                    data: formData,
-                    headers: { Authorization: `Token ${localStorage.getItem("accessToken")}` },
-                })
-                return response.data;
+  // Основная функция отправки данных
+  const sendDataFunc = useCallback(async () => {
 
-                 // Возвращаем результат
-            });
-            try {
-                const results = await Promise.all(requests);
-                console.log('Все результаты:', results);
-                setNotification({
-                    message: "Данные успешно обновлены",
-                    type: "success",
-                    has: true,
-                })
-                return results;
-            } catch (error) {
-                console.error('Ошибка при загрузке:', error);
-                throw error;
-            }
-        }
+    setIsSubmitting(true);
+    try {
+      const imageResults = await uploadImages(images);
+      const profileResult = await updateProfile(formData);
 
+      console.log("Изображения:", imageResults);
+      console.log("Профиль:", profileResult);
 
-        // try {
-        //     const response = await axios.patch(
-        //         `http://127.0.0.1:7000/api/v1/profile/${userId}`,
-        //         formData,
-        //         {
-        //             headers: { Authorization: `Token ${localStorage.getItem("accessToken")}` },
-        //         }
-        //     );
-        //
-        //     if (response.status === 200) {
-        //         setNotification({
-        //             message: "Данные успешно обновлены",
-        //             type: "success",
-        //             has: true,
-        //         });
-        //     }
-        // } catch (err) {
-        //     console.error("Ошибка при обновлении данных:", err);
-        //     setNotification({
-        //         message: "Произошла ошибка при обновлении данных",
-        //         type: "error",
-        //         has: true,
-        //     });
-        // }
-    }, [userId, setNotification, formData]);
-
-    // Обработка ошибок
-    useEffect(() => {
-        if (error && !hasNotified) {
-            if (error.response?.status === 404) {
-                setNotification({
-                    message: "Указанная страница не существует",
-                    type: "error",
-                    has: true,
-                });
-                setHasNotified(true);
-            } else {
-                navigate("/sign-in");
-            }
-        }
-    }, [error, hasNotified, setNotification, navigate]);
-
-    // Лоадер при загрузке
-    if (isLoading) {
-        return <Loader />;
+      refreshLocalStore(imageResults[0]?.image?.url, profileResult?.fullName);
+      setNotification({
+        message: "Данные успешно обновлены",
+        type: "success",
+        has: true,
+      });
+    } catch (error) {
+      console.error("Ошибка при обновлении данных:", error.response?.data || error.message);
+      setNotification({
+        message: "Произошла ошибка при обновлении данных",
+        type: "error",
+        has: true,
+      });
+    } finally {
+      setIsSubmitting(false);
     }
+  }, [formData, uploadImages, updateProfile, setNotification]);
 
-    // Если ошибка, перенаправляем на страницу входа
-    if (error) {
-        return null;
+  // Обработка ошибок загрузки профиля
+  useEffect(() => {
+    if (error && !hasNotified) {
+      if (error.response?.status === 404) {
+        setNotification({
+          message: "Указанная страница не существует",
+          type: "error",
+          has: true,
+        });
+      } else {
+        navigate("/sign-in");
+      }
+      setHasNotified(true);
     }
+  }, [error, hasNotified, setNotification, navigate]);
 
+  if (isLoading) return <Loader />;
+  if (error) return null;
 
-    return (
-        <>
-            <DatingLocation />
-            <HeaderCt>
-                <NavBarHeader />
-                <CountryList />
-                <IconsHeader />
-                <UserAvaCt />
-            </HeaderCt>
-            <ProfileCt>
-                <NavBarProfile />
-                <ImagesCtProfile imagesArr={data?.user} setFormData={setFormData} />
-                <BasicInformationCt setFormData={setFormData} profileData={data?.user}>
-                    <MainBt type="button" onClick={sendDataFunc}>Сохранить</MainBt>
-                </BasicInformationCt>
-            </ProfileCt>
-            <Footer />
-        </>
-    );
+  return (
+    <>
+      <DatingLocation />
+      <HeaderCt>
+        <NavBarHeader />
+        <CountryList />
+        <IconsHeader />
+        <UserAvaCt />
+      </HeaderCt>
+      <ProfileCt>
+        <NavBarProfile />
+        <ImagesCtProfile imagesArr={data?.user} setFormData={setImages} />
+        <BasicInformationCt setFormData={setFormData} profileData={data?.user}>
+          <MainBt type="button" onClick={sendDataFunc} disabled={isSubmitting}>
+            {isSubmitting ? "Сохранение..." : "Сохранить"}
+          </MainBt>
+        </BasicInformationCt>
+      </ProfileCt>
+      <Footer />
+    </>
+  );
 }
 
 export default Profile;

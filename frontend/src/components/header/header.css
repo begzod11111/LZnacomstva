@@ -1,23 +1,73 @@
-@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@300;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500&display=swap');
 
+/* Основной заголовок */
 header {
     z-index: 2;
     font-family: 'Rubik', sans-serif;
     position: relative;
-    background: transparent;
     display: flex;
     width: 100%;
-    height: 10%;
-    padding: 0 15%;
-    margin: 0.4vw 0;
+    height: clamp(8%, 10%, 12%); /* Адаптивная высота */
+    padding: 0 clamp(10%, 15%, 20%); /* Адаптивные отступы по бокам */
+    margin: clamp(0.25rem, 0.4vw, 0.5rem) 0; /* Адаптивный отступ сверху/снизу */
     align-items: center;
+    background: transparent;
+    box-shadow: 0 0.25rem 1rem rgba(0, 0, 0, 0.05); /* Легкая тень */
+    transition: background 0.3s ease-out; /* Плавное изменение фона */
 }
+
+/* Вариант с фоном */
 .main-header {
-    background: #2D1436;
+    background: linear-gradient(135deg, #2d1436 0%, #3a1b47 100%); /* Градиентный фон */
 }
+
+/* Ссылка в заголовке */
 header > a {
     position: absolute;
-    right: 15%;
-    width: 11%;
-    height: 60%;
+    right: clamp(10%, 15%, 20%); /* Адаптивное позиционирование */
+    width: clamp(8%, 11%, 14%); /* Адаптивная ширина */
+    height: clamp(50%, 60%, 70%); /* Адаптивная высота */
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Центрирование содержимого */
+    border-radius: 0.75rem; /* Скругленные углы */
+    text-decoration: none; /* Убираем подчеркивание */
+    transition: all 0.3s ease-out;
+    box-shadow: 0 0.125rem 0.5rem rgba(0, 0, 0, 0.1);
+}
+
+
+/* Активное состояние ссылки */
+header > a:active {
+    transform: translateY(1px);
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.1);
+}
+
+/* Адаптивность для мобильных устройств */
+@media (max-width: 768px) {
+    header {
+        height: clamp(6%, 8%, 10%);
+        padding: 0 clamp(5%, 10%, 15%);
+        margin: 0.25rem 0;
+    }
+
+    header > a {
+        right: clamp(5%, 10%, 15%);
+        width: clamp(10%, 12%, 15%);
+        height: clamp(40%, 50%, 60%);
+        border-radius: 0.5rem;
+    }
+}
+
+/* Дополнительный эффект для основного заголовка */
+.main-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 0.125rem;
+    background: linear-gradient(to right, transparent, #ee0979, transparent);
+    opacity: 0.3;
+    z-index: -1;
 }

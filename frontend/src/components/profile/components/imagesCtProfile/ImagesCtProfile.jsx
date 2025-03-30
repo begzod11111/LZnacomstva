@@ -8,10 +8,7 @@ function ImagesCtProfile({ imagesArr, setFormData }) {
 
     // Обновляем formData при изменении files
     useEffect(() => {
-        setFormData(prev => ({
-            ...prev,
-            images: files
-        }));
+        setFormData(files);
 
     }, [files, setFormData]);
 
@@ -34,15 +31,8 @@ function ImagesCtProfile({ imagesArr, setFormData }) {
                         className={image?.isMain ? classes.mainImage : ''}
                         callBack={(file) => {
                             if (file) {
-                                let result = {};
-                                if (images[index]) {
-                                    result['isNew'] = false;
-                                    result['id'] = images[index]._id;
-                                } else {
-                                    result['isNew'] = true;
-                                }
-                                result['file'] = file.file;
-                                setFiles(prev => [...prev.slice(0, index), result, ...prev.slice(index + 1)]);
+                                file.id = images[index]?._id || 'default';
+                                setFiles(prev => [...prev.slice(0, index), file, ...prev.slice(index + 1)]);
                             }
                         }}
                     />

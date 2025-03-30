@@ -8,6 +8,7 @@ import QuestionnaireList from "./components/questionnairesList/QuestionnaireList
 import PersonDetail from "./components/personDetail/PersonDetail";
 import Profile from "./components/profile/Profile";
 import withAuthCheck from "./HOCs/withAuthCheck";
+import ListChats from "./components/ListChats/ListChats";
 
 
 const QuestionnaireListWithAuthCheck = withAuthCheck(QuestionnaireList)
@@ -28,6 +29,7 @@ const AppRouter = () => {
         <Route path="/goal-meeting/:goalMeetingSlug" element={<QuestionnaireList />}/>
         <Route path="/profile/:userId" element={<PersonDetail />}/>
         <Route path='/home/' element={<ProfileWithAuthCheck />}/>
+        <Route path='/chats/' element={<ListChats />}/>
       </Routes>
     </BrowserRouter>
   );

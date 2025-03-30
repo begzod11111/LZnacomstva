@@ -1,23 +1,37 @@
 .datingLocation {
-    padding: 10px;
+    padding: 0.625rem; /* 10px переведено в rem */
     display: flex;
-    font-size: 1vw;
     align-items: center;
     justify-content: center;
+    font-size: clamp(0.75rem, 1vw, 1.25rem); /* Адаптивный размер шрифта */
+    gap: 0.625rem; /* Добавлен промежуток между элементами */
 }
+
 .datingLocation span {
     font-family: 'Rubik', sans-serif;
     color: #FFFFFF;
-    padding-right: 10px;
+    padding-right: 0; /* Убрано, так как gap решает задачу */
+    white-space: nowrap; /* Предотвращает перенос текста */
 }
 
 .datingLocation select {
     background: transparent;
     color: #FFFFFF;
+    border: 1px solid inherit; /* Добавлена граница для видимости */
+    padding: 0.25rem; /* Добавлен внутренний отступ */
     z-index: 3;
+    appearance: none; /* Убирает стандартный вид select */
+    cursor: pointer; /* Улучшает UX */
+    transition: border-color 0.2s ease; /* Плавное изменение при hover */
+}
+
+.datingLocation select:hover {
+    border-color: #CCCCCC; /* Лёгкое изменение при наведении */
 }
 
 .flagCountries {
     width: 26px;
     height: 100%;
+    object-fit: cover; /* Улучшает отображение флага */
+    display: block; /* Убирает нижний отступ изображения */
 }

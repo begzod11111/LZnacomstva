@@ -1,15 +1,58 @@
 .userAvaCt {
     width: 12vw;
-    position: static;
+    display: flex;
     align-items: center;
     margin-left: 1.5vw;
-    display: flex;
+    gap: 10px; /* Replaces margin-left on span for modern spacing */
+    box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.25); /* Enhanced shadow */
 }
+
 .userAvaCt span {
-    margin-left: 10px;
-    color: #FFF;
+    color: #ffffff;
     font-size: 1vw;
     font-style: normal;
     font-weight: 300;
-    line-height: 150%; /* 24px */
+    line-height: 150%;
+    transition: color 0.2s ease; /* Smooth color transition */
+}
+
+/* Hover effect for interactivity */
+.userAvaCt:hover span {
+    color: #e0e0e0; /* Subtle lightening on hover */
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+    .userAvaCt {
+        width: 120px; /* Fixed width for better control */
+        margin-left: 1vw;
+        gap: 8px;
+    }
+
+    .userAvaCt span {
+        font-size: 14px; /* Fixed size for readability */
+    }
+}
+
+@media (max-width: 768px) {
+    .userAvaCt {
+        width: 100px;
+        gap: 6px;
+    }
+
+    .userAvaCt span {
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .userAvaCt {
+        width: 80px;
+        margin-left: 0.5vw;
+        gap: 4px;
+    }
+
+    .userAvaCt span {
+        font-size: 10px;
+    }
 }

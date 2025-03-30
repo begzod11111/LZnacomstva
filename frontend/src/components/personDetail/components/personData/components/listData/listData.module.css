@@ -1,35 +1,98 @@
+.listData {
+    margin-top: clamp(0.5rem, 10px, 1rem); /* Адаптивный отступ сверху */
+    width: 100%;
+    padding: 0; /* Сброс отступов для списка */
+    list-style: none; /* Убираем маркеры списка */
+}
+
+/* Элемент строки */
 .listData .lineElement {
     z-index: 2;
-    margin: 1.5vw 0;
+    margin: clamp(1rem, 1.5vw, 1.5rem) 0; /* Адаптивные отступы */
     width: 100%;
     position: relative;
-    color: #FFFDFD;
-    font-size: 1vw;
-    font-style: normal;
-    font-weight: 200;
-    line-height: 150%; /* 24px */
+    color: #fffdfd;
+    font-size: clamp(0.9rem, 1vw, 1.1rem); /* Адаптивный размер шрифта */
+    font-family: 'Inter', sans-serif;
+    font-weight: 300; /* Чуть толще для читаемости */
+    line-height: 1.5; /* Упрощенный синтаксис */
+    display: flex;
+    align-items: center; /* Выравнивание контента */
 }
-.listData {
-    margin-top: 10px;
-}
-.listData li span {
-    z-index: 3;
-    padding: 0 5px;
-    background: #230e2b;
 
-}
-.listData li span:last-child {
-    right: 0;
-    font-size: 1vw;
-    position: absolute
-}
+/* Пунктирная линия */
 .lineElement::before {
-    content: "";
+    content: '';
     position: absolute;
     z-index: -1;
     top: 50%;
     left: 0;
     right: 0;
-    height: 2px;
-    background-image: repeating-linear-gradient(to right, #4A2956, #4A2956 7px, transparent 7px, transparent 15px);
+    height: 0.125rem; /* Более тонкая линия */
+    background-image: repeating-linear-gradient(
+        to right,
+        #4a2956 0,
+        #4a2956 0.5rem,
+        transparent 0.5rem,
+        transparent 1rem
+    ); /* Адаптивный пунктир */
+    transform: translateY(-50%); /* Точное центрирование */
+    transition: opacity 0.3s ease-out;
+}
+
+/* Элементы списка */
+.listData li span {
+    z-index: 3;
+    padding: 0 0.5rem; /* Упрощенные отступы */
+    background: #230e2b;
+    border-radius: 0.25rem; /* Легкое скругление */
+    transition: background 0.3s ease-out;
+}
+
+.listData li span:hover {
+    background: #35143f; /* Подсветка при наведении */
+}
+
+/* Последний span (например, значение справа) */
+.listData li span:last-child {
+    position: absolute;
+    right: 0;
+    font-size: clamp(0.9rem, 1vw, 1.1rem);
+    padding: 0 0.75rem; /* Чуть больше отступов для читаемости */
+}
+
+/* Hover-эффект для строки */
+.listData .lineElement:hover::before {
+    opacity: 0.8; /* Легкое затемнение линии при наведении */
+}
+
+/* Адаптивность для мобильных устройств */
+@media (max-width: 768px) {
+    .listData {
+        margin-top: 0.5rem;
+    }
+
+    .listData .lineElement {
+        margin: 0.75rem 0;
+        font-size: clamp(0.85rem, 2vw, 1rem);
+    }
+
+    .listData li span {
+        padding: 0 0.375rem;
+    }
+
+    .listData li span:last-child {
+        font-size: clamp(0.85rem, 2vw, 1rem);
+        padding: 0 0.5rem;
+    }
+
+    .lineElement::before {
+        background-image: repeating-linear-gradient(
+            to right,
+            #4a2956 0,
+            #4a2956 0.375rem,
+            transparent 0.375rem,
+            transparent 0.75rem
+        ); /* Уменьшенный пунктир */
+    }
 }

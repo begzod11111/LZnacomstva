@@ -19,7 +19,7 @@ const test = (data) => {
 }
 
 
-routerV1.route('/main')
+routerV1.route('/main/(:slug)?')
     .get(async (req, res) => {
         try {
             const docs = await models.GoalMeeting.find().select(
@@ -111,7 +111,9 @@ routerV1.route('/profile/:id')
     .patch(authenticateUser, async (req, res) => {
         const result = await UserServes.update(req.params.id, req.body);
         if (result.error) return res.status(400).json({error: result.error});
-        return res.status(200).json({error: null, message: 'User updated'});
+        return res.status(200).json({error: null,
+            message: 'User updated',
+            fullName: result.user.firstName + ' ' + result.user.lastName,});
     });
 
 

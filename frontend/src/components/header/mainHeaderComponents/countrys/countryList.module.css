@@ -1,8 +1,80 @@
-.countryList {
+/* CountryList.module.css */
+.countryListContainer {
+    position: relative;
+    display: inline-block;
+    width: fit-content;
+}
+
+.countrySelect {
+    /* Reset default styling */
     appearance: none;
-    color: #FFF;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+
+    /* Custom styling */
+    background: linear-gradient(135deg, #2d1436 0%, #3a1b47 100%);
+    color: #e3dada;
     font-size: 1vw;
-    font-style: normal;
     font-weight: 400;
-    line-height: 150%; /* 24px */
+    line-height: 150%;
+    padding: 8px 32px 8px 12px;
+    border: none; /* Removed border for cleaner gradient look */
+    border-radius: 6px; /* Slightly larger radius for softer edges */
+    cursor: pointer;
+    box-shadow: 0 0.125rem 0.5rem rgba(0, 0, 0, 0.2); /* Slightly stronger shadow */
+    transition: all 0.2s ease; /* Smooth transitions for interactions */
+
+    /* Better responsiveness */
+    min-width: 120px;
+}
+
+.countrySelect:hover {
+    background: linear-gradient(135deg, #35183f 0%, #422051 100%); /* Lighter gradient on hover */
+    box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.25); /* Enhanced shadow */
+}
+
+.countrySelect:focus {
+    outline: none;
+    background: linear-gradient(135deg, #35183f 0%, #422051 100%);
+    box-shadow: 0 0 0 3px rgba(58, 27, 71, 0.5); /* Focus ring matching gradient */
+}
+
+.countrySelect option {
+    background: #2d1436; /* Consistent background for dropdown options */
+    color: #e3dada;
+}
+
+.arrowIcon {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #e3dada; /* Matches text color for harmony */
+    pointer-events: none;
+    font-size: 1.2rem; /* Slightly larger for better visibility */
+    transition: color 0.2s ease; /* Smooth color transition */
+}
+
+/* Ensure arrow matches hover state */
+.countryListContainer:hover .arrowIcon {
+    color: #f0e6e6; /* Slightly lighter on hover */
+}
+
+/* Media queries for responsiveness */
+@media (max-width: 768px) {
+    .countrySelect {
+        font-size: 16px; /* Fixed size for smaller screens */
+        padding: 6px 28px 6px 10px; /* Slightly reduced padding */
+    }
+
+    .arrowIcon {
+        font-size: 1rem; /* Adjust arrow size */
+        right: 8px;
+    }
+}
+
+@media (max-width: 480px) {
+    .countrySelect {
+        min-width: 100px; /* Smaller min-width for mobile */
+    }
 }

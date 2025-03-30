@@ -70,6 +70,7 @@ export default class ImageView {
             req.body.file = req.file;
             const oldImageFileName = await ImageServes.getImageFile(req.params.id);
             const result = await ImageServes.update(req.params.id, req.body);
+            console.log(result)
             const dir = new Dir(result.image._referenceModel, result.image._referenceId);
             if (result.error || oldImageFileName.error) {
                 res.status(400).json({message: 'Error updating image', error: result.error});

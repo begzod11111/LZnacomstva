@@ -1,57 +1,131 @@
-
 .peopleList {
     width: 100%;
     display: flex;
     flex-wrap: wrap;
+    gap: 1.5rem; /* Замена margin на gap для более чистой компоновки */
+    padding: 1rem; /* Внутренние отступы для контейнера */
+    box-sizing: border-box;
 }
 
-.peopleList li a {
-    height: 100%;
-    width: 100%;
-    position: absolute;
-    z-index: 8;
-}
-.peopleList li > img {
-    opacity: .7;
-    position: absolute;
-    z-index: 1;
-    height: 100%;
-    width: 100%;
-    border-radius: 2vw;
-    object-fit: cover;
-}
+/* Элемент списка */
 .peopleList li {
-    z-index: 2;
     position: relative;
-    margin: 10px;
-    cursor: pointer;
-    width: calc((100% - 100px) / 5);
-    height: 20vw;
+    width: calc((100% - 6rem) / 5); /* Улучшенный расчет ширины с учетом gap */
+    height: clamp(15rem, 20vw, 25rem); /* Адаптивная высота */
     flex-shrink: 0;
+    z-index: 2;
+    cursor: pointer;
+    border-radius: 1.5rem; /* Более мягкий радиус */
+    overflow: hidden; /* Для обрезки контента */
+    transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
 }
-.peopleList li > button {
+
+.peopleList li:hover {
+    transform: translateY(-0.5rem); /* Поднятие при наведении */
+    box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.15); /* Тень при наведении */
+}
+
+/* Ссылка внутри элемента */
+.peopleList li a {
     position: absolute;
-    bottom: 0;
-    height: 15%;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 8;
+    text-decoration: none; /* Убираем подчеркивание */
 }
+
+/* Изображение */
+.peopleList li > img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    border-radius: inherit; /* Наследование радиуса */
+    opacity: 0.85; /* Чуть выше базовая прозрачность */
+    z-index: 1;
+    transition: opacity 0.3s ease-out;
+}
+
+.peopleList li:hover > img {
+    opacity: 1; /* Полная видимость при наведении */
+}
+
+/* Контейнер текста */
 .peopleList li > div {
     position: absolute;
     z-index: 3;
-    bottom: 20%;
-    left: 10%;
-}
-.peopleList li > div h3 {
-    color: #FFF;
-    font-size: 1.4vw;
-    font-style: normal;
-    font-weight: 500;
-    line-height: 150%; /* 24px */
-}
-.nameCountry {
-    color: #FFF;
-    font-size: .8vw;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 150%; /* 18px */
+    bottom: 15%; /* Уменьшен отступ для компактности */
+    left: 1rem; /* Перевод в rem */
+    width: calc(100% - 2rem); /* Ограничение ширины текста */
+    padding: 0.5rem;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.6), transparent); /* Плавный фон */
+    border-radius: 0 0 1.5rem 1.5rem;
 }
 
+/* Заголовок */
+.peopleList li > div h3 {
+    color: #ffffff;
+    font-size: clamp(1rem, 1.4vw, 1.5rem); /* Адаптивный размер */
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    line-height: 1.5;
+    margin: 0;
+    text-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.3); /* Тень для читаемости */
+}
+
+/* Имя и страна */
+.nameCountry {
+    color: #ffffff;
+    font-size: clamp(0.75rem, 0.8vw, 1rem);
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    line-height: 1.5;
+    margin: 0.25rem 0 0;
+    opacity: 0.9;
+    text-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.3);
+}
+
+/* Кнопка */
+.peopleList li > button {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 15%;
+    cursor: pointer;
+    z-index: 4;
+    transition: background 0.3s ease-out;
+}
+
+.peopleList li > button:hover {
+    background: rgba(255, 255, 255, 0.2); /* Подсветка при наведении */
+}
+
+/* Адаптивность для мобильных устройств */
+@media (max-width: 768px) {
+    .peopleList {
+        gap: 1rem;
+        padding: 0.5rem;
+    }
+
+    .peopleList li {
+        width: calc((100% - 2rem) / 2); /* 2 элемента в ряд */
+        height: clamp(12rem, 40vw, 18rem);
+    }
+
+    .peopleList li > div {
+        bottom: 10%;
+        left: 0.75rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .peopleList li {
+        width: 100%; /* 1 элемент в ряд */
+        height: clamp(10rem, 50vw, 15rem);
+    }
+}

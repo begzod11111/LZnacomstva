@@ -1,56 +1,116 @@
-
 .navBarProfile {
-    height: 230px;
-    width: 230px;
-    border-radius: 30px;
-    background-color: #1C0A22;
-    padding: 20px 0;
+    width: clamp(200px, 230px, 280px); /* Адаптивная ширина */
+    height: clamp(200px, 230px, 280px); /* Адаптивная высота */
+    border-radius: 2rem; /* Более мягкие углы */
+    background: #1C0A22; /* Градиентный фон */
+    padding: 1.5rem 0; /* Отступы в rem */
     position: relative;
+    box-shadow: 0 0.5rem 1.5rem rgba(28, 10, 34, 0.2); /* Мягкая тень */
+    overflow: hidden; /* Для обрезки контента */
+    transition: all 0.3s ease-out;
 }
+
+/* Hover-эффект для контейнера */
+.navBarProfile:hover {
+    box-shadow: 0 0.75rem 2rem rgba(28, 10, 34, 0.3);
+}
+
+/* Кнопка навигации */
 .navBarBt {
     cursor: pointer;
     display: flex;
     align-items: center;
-    height: 30px;
+    height: 2.5rem; /* Увеличенная высота */
     width: 100%;
     position: relative;
-    padding: 0 30px;
+    padding: 0 2rem; /* Улучшенные отступы */
+    transition: background 0.3s ease-out;
 }
+
+
+.navBarBt:last-child {
+    margin-top: 1.5rem; /* Увеличенный отступ для последней кнопки */
+}
+
+/* Псевдоэлемент для индикатора */
 .navBarBt::before {
     content: '';
-    width: 3px;
-    height: 90%;
-    background: linear-gradient(90deg, #EE0979 0%, #FF6A00 100%);
     position: absolute;
-    left: 1px;
-    border-radius: 10px;
+    left: 0.25rem;
+    width: 0.25rem; /* Чуть шире индикатор */
+    height: 80%; /* Уменьшена высота для эстетики */
+    background: linear-gradient(to bottom, #ee0979 0%, #ff6a00 100%); /* Вертикальный градиент */
+    border-radius: 0.5rem;
     opacity: 0;
+    transform: scaleY(0.8); /* Начальное сжатие */
+    transition: opacity 0.3s ease-out, transform 0.3s ease-out;
 }
-.navBarBt:hover:before {
+
+/* Hover-эффект для кнопки */
+.navBarBt:hover::before {
     opacity: 1;
+    transform: scaleY(1); /* Растяжение при наведении */
 }
-.navBarBt:not(:last-child) {
-    margin-top: 10px;
+
+.navBarBt:hover {
+    background: rgba(255, 255, 255, 0.05); /* Легкий фон при наведении */
 }
-.navBarBt:last-child {
-    margin-top: 30px;
-}
-.activeBt > .navBarBtSVG {
-    color: #FE6703;
-}
-.navBarBtSVG:hover {
-    color: #FE6703;
-}
+
+/* Активное состояние */
 .activeBt::before {
     opacity: 1;
+    transform: scaleY(1);
 }
+
+/* SVG иконка */
 .navBarBtSVG {
-    color: #42204E;
+    color: #42204e;
+    font-size: 1.25rem; /* Фиксированный размер для консистентности */
+    transition: color 0.3s ease-out;
 }
+
+.navBarBt:hover .navBarBtSVG {
+    color: #fe6703;
+}
+
+.activeBt > .navBarBtSVG {
+    color: #fe6703;
+}
+
+/* Текст кнопки */
 .navBarBt span {
     font-family: 'Rubik', sans-serif;
-    font-size: 1vw;
-    font-weight: 300;
-    color: #EEEEEE;
-    margin-left: 1vw;
+    font-size: clamp(0.9rem, 1vw, 1.1rem); /* Адаптивный размер */
+    font-weight: 400; /* Чуть толще для читаемости */
+    color: #eeeeee;
+    margin-left: 1rem; /* Перевод в rem */
+    letter-spacing: 0.02em; /* Легкий разряд */
+    transition: color 0.3s ease-out;
+}
+
+.navBarBt:hover span {
+    color: #ffffff; /* Полная яркость при наведении */
+}
+
+/* Адаптивность для мобильных устройств */
+@media (max-width: 768px) {
+    .navBarProfile {
+        width: clamp(180px, 90%, 230px);
+        height: clamp(180px, 75vh, 230px);
+        padding: 1rem 0;
+        border-radius: 1.5rem;
+    }
+
+    .navBarBt {
+        height: 2rem;
+        padding: 0 1.5rem;
+    }
+
+    .navBarBt:not(:last-child) {
+        margin-top: 0.5rem;
+    }
+
+    .navBarBt:last-child {
+        margin-top: 1rem;
+    }
 }

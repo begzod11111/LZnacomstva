@@ -1,52 +1,122 @@
 .personDataCt {
-    width: 33vw;
-    margin: 1vw 0 0 1vw;
+    width: clamp(20rem, 33vw, 40rem); /* Адаптивная ширина */
     height: 100%;
+    margin: clamp(0.75rem, 1vw, 1rem) 0 0 clamp(0.75rem, 1vw, 1rem); /* Адаптивные отступы */
+    display: flex;
+    flex-direction: column; /* Явное направление для структуры */
+    gap: 1rem; /* Расстояние между элементами */
+    box-sizing: border-box;
 }
+
+/* Последний span (например, статус или дополнительная информация) */
 .personDataCt span:last-child {
-    color: #8B5D9A;
-    font-size: .8vw;
-    font-style: normal;
+    color: #8b5d9a;
+    font-size: clamp(0.7rem, 0.8vw, 0.9rem); /* Адаптивный размер */
+    font-family: 'Inter', sans-serif;
     font-weight: 400;
-    line-height: 150%; /* 21px */
+    line-height: 1.5; /* Упрощенный синтаксис */
+    letter-spacing: 0.01em; /* Легкий разряд */
 }
+
+/* Индикатор активности */
 .personDataCt span > .personActive {
-    height: 1vw;
-    width: 1vw;
+    position: absolute;
+    top: 50%;
     right: 0;
-    filter: drop-shadow(0px 4px 20px #33E159);
+    transform: translateY(-50%); /* Корректное центрирование */
+    height: clamp(0.75rem, 1vw, 1rem);
+    width: clamp(0.75rem, 1vw, 1rem);
+    border-radius: 50%;
+    background: #33e159; /* Зеленый цвет для активности */
+    filter: drop-shadow(0 0.25rem 1.25rem rgba(51, 225, 89, 0.5)); /* Более мягкая тень */
 }
+
+/* Основной текст в div */
 .personDataCt div > span {
     position: relative;
-    padding-right: 2vw;
-    color: #FFF;
-    font-size: 2vw;
-    font-style: normal;
+    padding-right: clamp(1.5rem, 2vw, 2rem); /* Адаптивный отступ */
+    color: #ffffff;
+    font-size: clamp(1.5rem, 2vw, 2.5rem); /* Адаптивный размер */
+    font-family: 'Inter', sans-serif;
     font-weight: 500;
-    line-height: 150%; /* 48px */
+    line-height: 1.5;
+    text-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.2); /* Тень для читаемости */
 }
+
+/* Основная кнопка */
 .personDataCt div > .mainBt {
-    font-size: 1vw;
-    margin-top: 1vw;
-    width: 15vw;
-    height: 2.5vw;
+    width: clamp(10rem, 15vw, 12rem);
+    height: clamp(2rem, 2.5vw, 2.5rem);
+    margin-top: clamp(0.75rem, 1vw, 1rem);
+    font-size: clamp(0.9rem, 1vw, 1.1rem);
+    background: linear-gradient(90deg, #ee0979 0%, #ff6a00 100%);
+    color: #ffffff;
+    border: none;
+    border-radius: 0.75rem;
+    cursor: pointer;
+    transition: all 0.3s ease-out;
+    box-shadow: 0 0.25rem 0.75rem rgba(238, 9, 121, 0.2);
 }
-.personDataCt > p {
-    margin-top: 1.5vw;
-    color: #FFFDFD;
-    font-size: 1.2vw;
-    font-style: normal;
-    font-weight: 500;
-    line-height: 150%; /* 27px */
+
+.personDataCt div > .mainBt:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0.375rem 1rem rgba(238, 9, 121, 0.3);
 }
+
+.personDataCt div > .mainBt:active {
+    transform: translateY(1px);
+    box-shadow: 0 0.125rem 0.5rem rgba(238, 9, 121, 0.15);
+}
+
+/* Дополнительная кнопка */
 .personDataCt div > button {
-    width: 250px;
+    width: clamp(12rem, 250px, 15rem); /* Адаптивная ширина */
+    height: clamp(2rem, 2.5vw, 2.5rem);
+    margin-top: 0.75rem;
 }
+
+.personDataCt div > button:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* Описание */
+.personDataCt > p {
+    margin-top: clamp(1rem, 1.5vw, 1.5rem);
+    color: #fffdfd;
+    font-size: clamp(1rem, 1.2vw, 1.25rem);
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    line-height: 1.5;
+    letter-spacing: 0.01em;
+}
+
+/* Блок "Обо мне" */
 .aboutMeCt {
-    padding: 10px;
-    color: #FFFDFD;
-    font-size: 1vw;
-    font-style: normal;
+    padding: 0.75rem; /* Уменьшенный, но адаптивный отступ */
+    color: #fffdfd;
+    font-size: clamp(0.9rem, 1vw, 1.1rem);
+    font-family: 'Inter', sans-serif;
     font-weight: 300;
-    line-height: 150%; /* 24px */
+    line-height: 1.5;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+/* Адаптивность для мобильных устройств */
+@media (max-width: 768px) {
+    .personDataCt {
+        width: clamp(15rem, 80vw, 33rem);
+        margin: 0.5rem 0 0 0.5rem;
+        gap: 0.75rem;
+    }
+
+    .personDataCt div > span {
+        padding-right: 1.5rem;
+    }
+
+    .personDataCt div > .mainBt,
+    .personDataCt div > button {
+        width: clamp(8rem, 50vw, 12rem);
+    }
 }

@@ -4,42 +4,84 @@
     display: flex;
     align-items: center;
     height: 100%;
+    gap: 2.5vw; /* Replaces margin-right for more modern spacing */
 }
-.navBarHeader > a {
-    color: #FFF;
+
+.navBarHeader a {
+    color: #ffffff;
     font-family: 'Rubik', sans-serif;
-    position: relative;
     font-style: normal;
     font-weight: 400;
-    line-height: 150%; /* 24px */
+    line-height: 150%;
     height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
-}
-.navBarHeader > a:hover:before {
-    content: '';
-    width: 100%;
-    height: 3px;
-    background: linear-gradient(90deg, #EE0979 0%, #FF6A00 100%);
-    position: absolute;
-    bottom: 0;
-}
-.navBarHeader > a:hover {
-    color: #FE6703;
-}
-.navBarHeader > a:not(:last-child) {
-    margin-right: 2.5vw;
+    position: relative;
+    text-decoration: none; /* Prevents default underline */
+    transition: color 0.3s ease; /* Smooth color transition */
 }
 
-a.activeLink {
-    color: #FE6703;
+/* Hover effect */
+.navBarHeader a:hover {
+    color: #fe6703;
 }
-.activeLink::before {
+
+.navBarHeader a::before {
     content: '';
-    width: 100%;
-    height: 3px;
-    background: linear-gradient(90deg, #EE0979 0%, #FF6A00 100%);
     position: absolute;
     bottom: 0;
+    left: 0;
+    width: 0; /* Start with no width */
+    height: 3px;
+    background: linear-gradient(90deg, #ee0979 0%, #ff6a00 100%);
+    transition: width 0.3s ease; /* Animate width */
+}
+
+.navBarHeader a:hover::before {
+    width: 100%; /* Expand to full width on hover */
+}
+
+/* Active link styling */
+.navBarHeader a.activeLink {
+    color: #fe6703;
+}
+
+.navBarHeader a.activeLink::before {
+    width: 100%; /* Always full width for active link */
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+    .navBarHeader {
+        font-size: 12px; /* Fixed size for better control */
+        padding: 0 2vw;
+        gap: 2vw;
+    }
+}
+
+@media (max-width: 768px) {
+    .navBarHeader {
+        font-size: 14px;
+        padding: 0 1.5vw;
+        gap: 1.5vw;
+    }
+
+    .navBarHeader a::before {
+        height: 2px; /* Thinner underline on mobile */
+    }
+}
+
+@media (max-width: 480px) {
+    .navBarHeader {
+        flex-direction: column; /* Stack items on small screens */
+        padding: 1rem 0;
+        gap: 1rem;
+        height: auto;
+    }
+
+    .navBarHeader a {
+        height: auto;
+        padding: 0.5rem 0;
+    }
 }

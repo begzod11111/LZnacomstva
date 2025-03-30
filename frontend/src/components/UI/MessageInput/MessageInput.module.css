@@ -1,0 +1,69 @@
+/* MessageInput.module.css */
+
+:root {
+    --primary-bg: #2D1436;
+    --accent-color: #6E447B;
+    --accent-hover: #8A5596;
+    --text-primary: #ffffff;
+    --input-bg: #3F1E4A;
+}
+
+.input__container {
+    display: flex;
+    align-items: center;
+    padding: 10px 0;
+    background: var(--primary-bg);
+    border-top: 1px solid rgba(110, 68, 123, 0.2);
+}
+
+.input {
+    flex: 1;
+    padding: 10px 15px;
+    background: var(--input-bg);
+    border: none;
+    border-radius: 20px;
+    color: var(--text-primary);
+    font-size: 0.95rem;
+    outline: none;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
+    transition: background 0.2s ease;
+}
+
+.input:focus {
+    background: #4A2556;
+}
+
+.send__button {
+    width: 40px;
+    height: 40px;
+    background: var(--accent-color);
+    border: none;
+    border-radius: 50%;
+    margin-left: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s ease;
+}
+
+.send__button:hover {
+    background: var(--accent-hover);
+}
+
+.send__button svg {
+    width: 20px;
+    height: 20px;
+    fill: var(--text-primary);
+}
+
+@media (max-width: 768px) {
+    .input__container {
+        padding: 5px 0;
+    }
+
+    .send__button {
+        width: 35px;
+        height: 35px;
+    }
+}

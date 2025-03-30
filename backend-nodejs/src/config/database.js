@@ -17,7 +17,7 @@ const __dirname = dirname(__filename);
 const storage = multer.diskStorage({
     destination: async (req, file, cb) => {
         let {referenceModel, referenceId} = req.body;
-        console.log(referenceModel);
+        console.log(referenceModel, referenceId);
         const dir = `uploads/${referenceModel}/${referenceId}`;
 
         // Проверка существования директории и создание, если она не существует

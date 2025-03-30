@@ -1,13 +1,59 @@
 .userAvatar {
     position: relative;
     overflow: hidden;
-    height: 3vw;
-    width: 3vw;
-    border-radius: 50px;
-    border: 1px solid blueviolet;
+    height: clamp(2.5rem, 3vw, 3.5rem); /* Адаптивный размер */
+    width: clamp(2.5rem, 3vw, 3.5rem);
+    border-radius: 50%; /* Более современный синтаксис */
+    border: 2px solid #8a2be2; /* blueviolet с hex для консистентности */
+    background: linear-gradient(135deg, #f5f5f5, #e0e0e0); /* Легкий фон */
+    box-shadow: 0 0.25rem 0.5rem rgba(138, 43, 226, 0.15); /* Мягкая тень */
+    transition: all 0.3s ease-out; /* Плавные переходы */
 }
+
+/* Стили изображения */
 .userAvatar img {
     height: 100%;
     width: 100%;
     object-fit: cover;
+    border-radius: inherit; /* Наследование радиуса */
+    display: block; /* Убирает лишние отступы */
+}
+
+/* Hover-эффект */
+.userAvatar:hover {
+    border-color: #a64dff; /* Более светлый оттенок при наведении */
+    transform: scale(1.05); /* Легкое увеличение */
+    box-shadow: 0 0.375rem 0.75rem rgba(138, 43, 226, 0.25);
+}
+
+/* Эффект загрузки или отсутствие изображения */
+.userAvatar::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(138, 43, 226, 0.1);
+    border-radius: inherit;
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.3s ease-out;
+}
+
+.userAvatar:hover::before {
+    opacity: 1; /* Легкое свечение при наведении */
+}
+
+/* Адаптивность для меньших экранов */
+@media (max-width: 768px) {
+    .userAvatar {
+        height: clamp(2rem, 8vw, 2.5rem);
+        width: clamp(2rem, 8vw, 2.5rem);
+        border-width: 1.5px;
+    }
+
+    .userAvatar:hover {
+        transform: scale(1.03); /* Уменьшенный эффект */
+    }
 }

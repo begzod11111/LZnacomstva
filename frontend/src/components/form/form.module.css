@@ -37,6 +37,10 @@
     display: flex;
     flex-direction: column;
 }
+
+.centerFormCt form div > label {
+    width: 11.5vw;
+}
 .centerFormCt form::-webkit-scrollbar {
     display: none;
 }

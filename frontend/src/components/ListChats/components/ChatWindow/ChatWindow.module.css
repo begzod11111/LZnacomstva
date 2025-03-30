@@ -1,0 +1,52 @@
+/* ChatWindow.module.css */
+
+:root {
+    --primary-bg: #2D1436;
+    --accent-color: #6E447B;
+    --accent-hover: #8A5596;
+}
+
+.chat__window {
+    width: 75%;
+    height: 100%;
+    background: var(--primary-bg);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.messages {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    overflow-y: auto;
+    padding-bottom: 20px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent-color) var(--primary-bg);
+}
+
+.messages::-webkit-scrollbar {
+    width: 6px;
+}
+
+.messages::-webkit-scrollbar-track {
+    background: var(--primary-bg);
+}
+
+.messages::-webkit-scrollbar-thumb {
+    background: var(--accent-color);
+    border-radius: 12px;
+}
+
+.messages::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-hover);
+}
+
+@media (max-width: 768px) {
+    .chat__window {
+        width: 100%;
+        height: 50vh;
+    }
+}

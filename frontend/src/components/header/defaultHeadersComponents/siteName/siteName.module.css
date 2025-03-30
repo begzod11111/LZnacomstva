@@ -1,5 +1,8 @@
 .siteName {
-    color: #FFF;
-    font-size: 2.5vh;
+    color: #FFFFFF; /* Полная запись цвета для консистентности */
+    font-size: clamp(1.25rem, 2.5vh, 2rem); /* Адаптивный размер шрифта */
     font-family: 'Rubik', sans-serif;
+    font-weight: 500; /* Добавлено для лучшей читаемости */
+    line-height: 1.2; /* Добавлено для контроля межстрочного интервала */
+    letter-spacing: 0.02em; /* Лёгкое увеличение межбуквенного интервала */
 }

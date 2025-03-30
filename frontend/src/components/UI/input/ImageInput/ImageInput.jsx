@@ -16,8 +16,8 @@ function ImageInput({ className, callBack, imeSrc, ...props }) {
                 // Передаём данные через callBack
                 if (callBack) {
                     callBack({
-                        file: file,            // Сам файл (File объект)
-                        dataUrl: reader.result // Data URL (base64 строка)
+                        file: file,
+                        isNew: !imeSrc,
                     });
                 }
             };
@@ -49,8 +49,8 @@ function ImageInput({ className, callBack, imeSrc, ...props }) {
     }
 
     return (
-        <label className={labelClasses}>
-            <input type="file" onChange={handleFileChange} {...props} />
+        <label className={labelClasses} onChange={handleFileChange}>
+            <input type="file"  {...props} />
             <img src={selectedFile} className={InputClasses} alt="Photo profile" />
             <MdOutlineAddPhotoAlternate className={SVGClasses} />
         </label>

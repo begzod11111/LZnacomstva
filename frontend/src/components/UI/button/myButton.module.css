@@ -1,78 +1,133 @@
+/* Основная кнопка */
 .mainBt {
     height: 3vw;
-    position: relative;
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
+    position: relative;
     z-index: 9;
-    border-radius: 500px;
-    color: #FFF;
-    font-size: 1vw;
-    font-style: normal;
+    border-radius: 50rem;
+    color: #ffffff;
+    font-size: clamp(0.9rem, 1vw, 1.2rem);
     font-weight: 500;
-    line-height: 150%; /* 24px */
-    background: linear-gradient(90deg, #EE0979 0%, #FF6A00 100%);
-    box-shadow: 0 20px 30px 0 rgba(179, 34, 31, 0.20);
-    transition: background-color 100ms ease;
+    font-family: 'Inter', sans-serif;
+    line-height: 1.5;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    background: linear-gradient(90deg, #ee0979 0%, #ff6a00 100%);
+    box-shadow: 0 0.75rem 1.5rem rgba(238, 9, 121, 0.25);
+    border: none;
+    cursor: pointer;
+    overflow: hidden;
+    transition: all 0.3s ease-out;
 }
-.mainBt__disabled {
-    background: #D3D3D3;
-    color: #A9A9A9;
-    cursor: not-allowed;
-}
+
+/* Псевдоэлемент для hover-эффекта */
 .mainBt::before {
     content: '';
-    display: flex;
-    align-items: center;
-    justify-content: center;
     position: absolute;
-    border-radius: 500px;
-    z-index: -1;
     top: 0;
     left: 0;
-    height: 100%;
     width: 100%;
-    transition: opacity .7s ease;
-    background: linear-gradient(90deg, #FFC700 0%, #FF005C 100%);
-    box-shadow: 0 20px 30px 0 rgba(179, 34, 31, 0.20);
+    height: 100%;
+    border-radius: 50rem;
+    z-index: -1;
+    background: linear-gradient(90deg, #ffc700 0%, #ff005c 100%);
+    box-shadow: 0 0.75rem 1.5rem rgba(255, 0, 92, 0.25);
     opacity: 0;
+    transform: scale(0.95);
+    transition: opacity 0.4s ease-out, transform 0.4s ease-out;
 }
+
+/* Hover-эффект */
 .mainBt:hover::before {
     opacity: 1;
+    transform: scale(1);
 }
+
+.mainBt:hover {
+    transform: translateY(-2px);
+}
+
+/* Активное состояние */
 .mainBt:active {
-    background: #F43048;
-    box-shadow: 0 20px 30px 0 rgba(179, 34, 31, 0.20);
+    background: linear-gradient(90deg, #d1086a 0%, #e55e00 100%);
+    box-shadow: 0 0.5rem 1rem rgba(238, 9, 121, 0.3);
+    transform: translateY(1px);
 }
+
+/* Состояние disabled */
+.mainBt__disabled {
+    background: linear-gradient(90deg, #d3d3d3 0%, #b8b8b8 100%);
+    color: #a9a9a9;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
 .mainBt__disabled:hover::before {
     opacity: 0;
+    transform: scale(0.95);
 }
+
 .mainBt__disabled:active {
-    background: #D3D3D3;
-    box-shadow: 0 20px 30px 0 rgba(179, 34, 31, 0.20);
+    background: linear-gradient(90deg, #d3d3d3 0%, #b8b8b8 100%);
+    transform: none;
+    box-shadow: none;
 }
+
+/* Ссылка-кнопка */
 .linkBt {
     height: 3vw;
-    cursor: pointer;
     display: flex;
-    flex-shrink: 0;
-    border-radius: 500px;
     align-items: center;
-    border: .2vw solid  #EE0979;
     justify-content: center;
-    color: #FFFFFF;
-    font-size: 1vw;
-    font-style: normal;
-    font-weight: 400;
+    flex-shrink: 0;
+    border-radius: 50rem;
+    border: 2px solid #ee0979;
+    color: #ffffff;
+    font-size: clamp(0.9rem, 1vw, 1.2rem);
+    font-weight: 500;
+    font-family: 'Inter', sans-serif;
+    text-decoration: none;
+    cursor: pointer;
+    background: transparent;
+    padding: 0 1.5rem;
+    transition: all 0.3s ease-out;
 }
+
+.linkBt:hover {
+    background: rgba(238, 9, 121, 0.1);
+    border-color: #ff6a00;
+    transform: translateY(-2px);
+    box-shadow: 0 0.5rem 1rem rgba(238, 9, 121, 0.2);
+}
+
+.linkBt:active {
+    transform: translateY(1px);
+    box-shadow: 0 0.25rem 0.5rem rgba(238, 9, 121, 0.15);
+}
+
+/* Ссылка для смены пароля */
 .changePassword {
     display: block;
-    margin: 10px auto 0 auto;
-    color:  #925FA4;
+    margin: 0.75rem auto 0;
+    color: #925fa4;
     text-align: center;
-    font-size: 2vh;
-    font-style: normal;
+    font-size: clamp(0.9rem, 2vh, 1.1rem);
+    font-family: 'Inter', sans-serif;
     font-weight: 400;
-    line-height: 150%; /* 21px */
+    line-height: 1.5;
+    text-decoration: none;
+    transition: all 0.2s ease-out;
+}
+
+.changePassword:hover {
+    color: #b573d0;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+.changePassword:active {
+    color: #7d4e8d;
 }

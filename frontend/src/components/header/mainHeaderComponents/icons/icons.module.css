@@ -3,39 +3,55 @@
     position: relative;
     width: 8%;
     display: flex;
+    align-items: center; /* Добавлено для лучшего выравнивания содержимого */
+    gap: 0.5vw; /* Заменяет margin между элементами */
 }
+
 .iconsHeader button {
     display: flex;
-    align-content: center;
+    align-items: center; /* Более подходящее свойство чем align-content для flex */
     justify-content: center;
-    padding: .5vw 0;
-    margin: 0 .5vw;
+    padding: 0.5vw 0;
     width: 50%;
-    font-size: 1.8vw;
+    font-size: clamp(1rem, 1.8vw, 1.5rem); /* Адаптивный размер шрифта */
     color: #925FA4;
+    background: none; /* Добавлено для явного контроля фона */
+    border: none; /* Добавлено для сброса стандартных стилей кнопки */
+    cursor: pointer; /* Улучшает UX */
+    transition: color 0.2s ease; /* Плавное изменение цвета при hover */
 }
+
+.iconsHeader button:hover {
+    color: #7A4D8B; /* Добавлен hover-эффект */
+}
+
 .iconsHeader button:last-child {
     padding-right: 1%;
 }
+
 .iconsHeader > span {
-    pointer-events: none;
-    color: #FFF;
-    padding: .3vw .5vw;
-    text-align: center;
-    font-size: .6vw;
-    font-style: normal;
-    font-weight: 500;
-    line-height: 150%; /* 15px */
-    flex-shrink: 0;
-    border-radius: 10vw;
-    background: linear-gradient(90deg, #EE0979 0%, #FF6A00 100%);
     position: absolute;
     top: 0;
     left: 3.6vw;
+    padding: 0.3vw 0.5vw;
+    color: #FFFFFF;
+    font-size: clamp(0.5rem, 0.6vw, 0.75rem); /* Адаптивный размер */
+    font-weight: 500;
+    line-height: 1.5; /* Упрощенная запись 150% */
+    text-align: center;
+    background: linear-gradient(90deg, #EE0979 0%, #FF6A00 100%);
+    border-radius: 999px; /* Более современная запись для скругления */
+    pointer-events: none;
+    flex-shrink: 0;
+    white-space: nowrap; /* Предотвращает перенос текста */
 }
+
 .iconsHeader > img {
     height: 24px;
+    width: auto; /* Сохраняет пропорции изображения */
+    object-fit: contain; /* Улучшает отображение изображений */
 }
+
 .iconsHeader > img:not(:last-child) {
-    margin-right: 20px;
+    margin-right: 1.25rem; /* Более последовательная единица измерения */
 }

@@ -1,10 +1,39 @@
 .categoryName {
     width: 100%;
-    margin: 3vh 0 2vh 0;
-    color: #FFF;
+    margin: clamp(1.5rem, 3vh, 2.5rem) 0 clamp(1rem, 2vh, 2rem) 0; /* Адаптивные отступы */
+    color: #ffffff;
     display: block;
-    font-size: 1.5vw;
-    font-style: normal;
-    font-weight: 500;
-    line-height: 150%; /* 42px */
+    font-size: clamp(1.25rem, 1.5vw, 2rem); /* Адаптивный размер шрифта */
+    font-family: 'Inter', sans-serif; /* Современный шрифт */
+    font-weight: 600; /* Чуть жирнее для акцента */
+    line-height: 1.5; /* Упрощенный синтаксис */
+    text-align: left; /* Явное выравнивание */
+    letter-spacing: 0.02em; /* Легкий разряд для читаемости */
+    text-transform: capitalize; /* Первая буква заглавная */
+    background: linear-gradient(to right, #ffffff 0%, rgba(255, 255, 255, 0.7) 100%);
+    -webkit-background-clip: text; /* Градиент на тексте */
+    background-clip: text;
+    color: transparent; /* Для работы градиента */
+    transition: all 0.3s ease-out; /* Плавные переходы */
+}
+
+/* Hover-эффект */
+.categoryName:hover {
+    background: linear-gradient(to right, #ffffff 0%, #ff6a00 100%); /* Изменение градиента */
+    -webkit-background-clip: text;
+    background-clip: text;
+    transform: translateX(0.25rem); /* Легкий сдвиг */
+}
+
+/* Адаптивность для мобильных устройств */
+@media (max-width: 768px) {
+    .categoryName {
+        font-size: clamp(1rem, 3vw, 1.5rem);
+        margin: clamp(1rem, 2vh, 1.5rem) 0 clamp(0.75rem, 1.5vh, 1rem) 0;
+        letter-spacing: 0.01em;
+    }
+
+    .categoryName:hover {
+        transform: translateX(0.125rem); /* Уменьшенный сдвиг */
+    }
 }

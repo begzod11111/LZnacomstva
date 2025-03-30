@@ -1,0 +1,60 @@
+/* Message.module.css */
+
+:root {
+    --primary-bg: #2D1436;
+    --text-primary: #ffffff;
+    --shadow-color: rgba(0, 0, 0, 0.3);
+    --read-color: #4CAF50;
+    --unread-color: #B0BEC5;
+}
+
+.message {
+    max-width: 70%;
+    padding: 12px 18px;
+    border-radius: 15px;
+    color: var(--text-primary);
+    font-size: 0.95rem;
+    box-shadow: 0 2px 6px var(--shadow-color);
+    transition: transform 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    word-wrap: break-word;
+}
+
+.message:hover {
+    transform: scale(1.02);
+}
+
+.message--mine {
+    background: linear-gradient(#021B79, #0575E6);
+    align-self: flex-end;
+    border-bottom-right-radius: 4px;
+    flex-direction: row-reverse;
+}
+
+.message--theirs {
+    background: linear-gradient(#EC008C, #FC6767);
+    align-self: flex-start;
+    border-bottom-left-radius: 4px;
+}
+
+.message__status {
+    font-size: 0.8rem;
+    line-height: 1;
+    opacity: 0.8;
+}
+
+.message__status--read {
+    color: var(--read-color);
+}
+
+.message__status--unread {
+    color: var(--unread-color);
+}
+
+@media (max-width: 768px) {
+    .message {
+        max-width: 85%;
+    }
+}

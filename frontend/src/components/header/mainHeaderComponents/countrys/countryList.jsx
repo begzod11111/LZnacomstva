@@ -1,15 +1,32 @@
 import React from "react";
-import classes from './countryList.module.css'
+import styles from './countryList.module.css'; // Changed 'classes' to 'styles' (conventional naming)
 
-function CountryList() {
+const CountryList = () => {
+    // Sample country data (you can expand this or fetch from an API)
+    const countries = [
+        { value: "ru", label: "Россия" },
+        { value: "us", label: "United States" },
+        { value: "uk", label: "United Kingdom" },
+    ];
+
     return (
-        <div className={classes.countryList}>
-            <i className="ri-arrow-down-s-line"></i>
-            <select>
-                <option>Россия</option>
+        <div className={styles.countryListContainer}>
+            <select
+                className={styles.countrySelect}
+                defaultValue="ru"
+            >
+                {countries.map((country) => (
+                    <option
+                        key={country.value}
+                        value={country.value}
+                    >
+                        {country.label}
+                    </option>
+                ))}
             </select>
+            <i className={`${styles.arrowIcon} ri-arrow-down-s-line`}></i>
         </div>
-    )
-}
+    );
+};
 
-export default CountryList
+export default CountryList;
